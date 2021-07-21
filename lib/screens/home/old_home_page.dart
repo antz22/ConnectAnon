@@ -66,23 +66,20 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-              child: FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
                       .collection('Users')
                       .doc(currentUserId)
-                      .get(),
+                      .snapshots(),
                   // .collection('Users')
                   // .limit(_limit)
                   // .snapshots(),
                   builder: (BuildContext context,
-                      AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasData) {
-                      Map<String, dynamic> data =
-                          snapshot.data!.data() as Map<String, dynamic>;
-                      List groups = data['groups'];
                       return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: groups.length,
+                        itemCount: 3,
                         itemBuilder: (BuildContext context, int index) {
                           // final Activity activity = activities[index];
                           return GestureDetector(
@@ -90,8 +87,8 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        ChatScreen(groupChatId: groups[index])),
+                                    builder: (context) => ChatScreen(
+                                        doc: snapshot.data?.docs[index])),
                               );
                             },
                             child: Container(
@@ -101,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                                 right: 0.9 * kDefaultPadding,
                               ),
                               child: ConversationPreview(
-                                  groupChatId: groups[index]),
+                                  doc: snapshot.data?.docs[index]),
                             ),
                           );
                         },

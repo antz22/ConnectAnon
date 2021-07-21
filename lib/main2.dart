@@ -1,3 +1,5 @@
+import 'package:anonymous_chat/screens/account_creation/account_options.dart';
+import 'package:anonymous_chat/screens/account_creation/getting_started.dart';
 import 'package:anonymous_chat/services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/home/home_page.dart';
+import 'screens/landing_page/landing_page.dart';
 import 'screens/sign_in/sign_in_page.dart';
 
 Future<void> main() async {
@@ -21,7 +24,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(
-            create: (_) => AuthenticationService(FirebaseAuth.instance)),
+          create: (_) => AuthenticationService(),
+        ),
         StreamProvider(
           create: (context) =>
               context.read<AuthenticationService>().authStateChanges,
@@ -35,6 +39,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: AuthenticationWrapper(),
+        // home: AuthenticationWrapper(),
       ),
     );
   }
@@ -45,12 +50,15 @@ class AuthenticationWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User>();
-
-    if (firebaseUser != null) {
-      return HomePage();
-    } else {
-      return SignInPage();
-    }
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.hasData) {
+          return HomePage();
+        } else {
+          return SignInPage();
+        }
+      },
+    );
   }
 }

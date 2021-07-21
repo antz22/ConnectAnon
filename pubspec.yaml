@@ -18,6 +18,8 @@ dependencies:
   firebase_auth: "^1.4.1"
   google_sign_in: ^5.0.4
 
+  cloud_firestore: ^2.4.0
+
   provider: ^5.0.0
 
 
