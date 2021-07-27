@@ -1,18 +1,26 @@
 import 'package:anonymous_chat/constants/constants.dart';
 import 'package:anonymous_chat/screens/chat/chat_screen.dart';
 import 'package:anonymous_chat/screens/home/components/conversation_preview.dart';
+import 'package:anonymous_chat/services/api_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key, required this.currentUserId}) : super(key: key);
+
+  final String currentUserId;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(currentUserId: currentUserId);
 }
 
 class _HomePageState extends State<HomePage> {
+  _HomePageState({required this.currentUserId});
+
+  final String currentUserId;
+
   int _selectedIndex = 1;
   int _limit = 10;
   int _limitIncrement = 10;
@@ -28,6 +36,12 @@ class _HomePageState extends State<HomePage> {
         _limit += _limitIncrement;
       });
     }
+  }
+
+  Future<Map<String, String>> _retrievePeerData(group) async {
+    Map<String, String> peerData =
+        await context.read<APIServices>().getPeerData(group);
+    return peerData;
   }
 
   @override
@@ -66,55 +80,91 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-              child: FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance
-                      .collection('Users')
-                      .doc(currentUserId)
-                      .get(),
-                  // .collection('Users')
-                  // .limit(_limit)
-                  // .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (snapshot.hasData) {
-                      Map<String, dynamic> data =
-                          snapshot.data!.data() as Map<String, dynamic>;
-                      List groups = data['groups'];
-                      return ListView.builder(
+            child: StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(currentUserId)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  Map<String, dynamic> data =
+                      snapshot.data!.data() as Map<String, dynamic>;
+                  List groups = data['groups'];
+                  List chattedWith = data['chattedWith'];
+                  return Column(
+                    children: [
+                      ListView.builder(
                         shrinkWrap: true,
                         itemCount: groups.length,
                         itemBuilder: (BuildContext context, int index) {
-                          // final Activity activity = activities[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ChatScreen(groupChatId: groups[index])),
-                              );
+                          return FutureBuilder(
+                            future: _retrievePeerData(groups[index]),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<Map<String, String>> snapshot) {
+                              if (snapshot.hasData) {
+                                String groupChatId = groups[index];
+                                String currentUserId =
+                                    snapshot.data!['currentUserId']!;
+                                String peerId = snapshot.data!['peerId']!;
+                                String peerName = snapshot.data!['peerName']!;
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                          groupChatId: groupChatId,
+                                          currentUserId: currentUserId,
+                                          peerId: peerId,
+                                          peerName: peerName,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      bottom: 0.8 * kDefaultPadding,
+                                      left: 0.9 * kDefaultPadding,
+                                      right: 0.9 * kDefaultPadding,
+                                    ),
+                                    child: ConversationPreview(
+                                      groupChatId: groupChatId,
+                                      currentUserId: currentUserId,
+                                      peerId: peerId,
+                                      peerName: peerName,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
                             },
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                bottom: 0.8 * kDefaultPadding,
-                                left: 0.9 * kDefaultPadding,
-                                right: 0.9 * kDefaultPadding,
-                              ),
-                              child: ConversationPreview(
-                                  groupChatId: groups[index]),
-                            ),
                           );
                         },
-                      );
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(kPrimaryColor),
-                        ),
-                      );
-                    }
-                  }))
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          context
+                              .read<APIServices>()
+                              .createGroup(currentUserId, chattedWith);
+                        },
+                        child: Text('Connect to anonymous peer'),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: buildBottomNavigationBar(),

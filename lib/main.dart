@@ -1,3 +1,4 @@
+import 'package:anonymous_chat/services/api_services.dart';
 import 'package:anonymous_chat/services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<AuthenticationService>(
             create: (_) => AuthenticationService(FirebaseAuth.instance)),
+        Provider<APIServices>(create: (_) => APIServices()),
         StreamProvider(
           create: (context) =>
               context.read<AuthenticationService>().authStateChanges,
@@ -45,12 +47,13 @@ class AuthenticationWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User>();
+    final firebaseUser = Provider.of<User?>(context, listen: true);
 
     if (firebaseUser != null) {
-      return HomePage();
+      return HomePage(currentUserId: firebaseUser.uid);
     } else {
       return SignInPage();
     }
+    // return SignInPage();
   }
 }

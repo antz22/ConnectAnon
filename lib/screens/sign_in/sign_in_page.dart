@@ -13,7 +13,6 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -30,18 +29,9 @@ class _SignInPageState extends State<SignInPage> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 20),
                     Text(
-                      'FlutterFire',
+                      'MontyChat',
                       style: TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 40,
-                      ),
-                    ),
-                    Text(
-                      'Authentication',
-                      style: TextStyle(
-                        color: Colors.orange,
                         fontSize: 40,
                       ),
                     ),

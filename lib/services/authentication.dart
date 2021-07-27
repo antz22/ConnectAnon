@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -32,6 +33,9 @@ class AuthenticationService {
             await _firebaseAuth.signInWithCredential(credential);
 
         user = userCredential.user;
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('id', user!.uid);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -52,6 +56,26 @@ class AuthenticationService {
             content: 'Error occurred using Google Sign In. Try again.',
           ),
         );
+      }
+
+      if (user != null) {
+        var document = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .get();
+        Map<String, dynamic>? userData = document.data();
+        if (userData == null) {
+          // Update data to server if new user
+          FirebaseFirestore.instance.collection('Users').doc(user.uid).set({
+            'uid': user.uid,
+            'displayName': user.displayName,
+            'alias': '',
+            'photoUrl': user.photoURL,
+            'groups': [],
+          });
+        } else {
+          // write data to local with state management
+        }
       }
 
       return user;

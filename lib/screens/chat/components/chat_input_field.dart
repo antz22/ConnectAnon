@@ -2,45 +2,51 @@ import 'package:anonymous_chat/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatInputField extends StatefulWidget {
-  ChatInputField({Key? key}) : super(key: key);
+  ChatInputField({Key? key, required this.groupChatId}) : super(key: key);
+
+  final String groupChatId;
 
   @override
-  _ChatInputFieldState createState() => _ChatInputFieldState();
+  _ChatInputFieldState createState() =>
+      _ChatInputFieldState(groupChatId: groupChatId);
 }
 
 class _ChatInputFieldState extends State<ChatInputField> {
+  final String groupChatId;
+
+  _ChatInputFieldState({required this.groupChatId});
+
   final TextEditingController _textEditingController = TextEditingController();
 
-  void onSendMessage(String content) {
+  bool _isEmpty = true;
+
+  void onSendMessage(String content) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? id = await prefs.getString('id');
+    print(groupChatId);
+
     if (content.trim() != '') {
       _textEditingController.clear();
 
       var documentReference = FirebaseFirestore.instance
           .collection('Messages')
-          .doc(groupChatId)
-          .collection('messages')
-          .doc(DateTime.now().millisecondsSinceEpoch.toString());
+          .doc(groupChatId.trim())
+          .collection('messages');
 
-      FirebaseFirestore.instance.runTransaction((transaction) async {
-        transaction.set(
-          documentReference,
-          {
-            'idFrom': id,
-            'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-            'content': content,
-          }
-        )
-      }) 
+      documentReference.add({
+        'idFrom': id,
+        'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+        'content': content,
+      });
 
       setState(() {
         _isEmpty = true;
       });
     }
   }
-
-  bool _isEmpty = true;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +101,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                       });
                     }
                   },
-                  onSubmitted: (value) {
+                  onSubmitted: (value) async {
                     onSendMessage(_textEditingController.text);
                   },
                 ),
@@ -103,7 +109,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
             ),
             SizedBox(width: kDefaultPadding),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 onSendMessage(_textEditingController.text);
               },
               child: _isEmpty
