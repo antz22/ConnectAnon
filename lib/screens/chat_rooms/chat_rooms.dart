@@ -145,31 +145,45 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                           );
                         },
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => JoinChatRoomScreen(
-                                currentUserId: currentUserId,
-                              ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => JoinChatRoomScreen(
+                                    currentUserId: currentUserId,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text('Join chat room'),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  kPrimaryColor),
                             ),
-                          );
-                        },
-                        child: Text('Join new chat room'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CreateChatRoomScreen(
-                                currentUserId: currentUserId,
-                              ),
+                          ),
+                          SizedBox(width: kDefaultPadding),
+                          ElevatedButton(
+                            onPressed: () async {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CreateChatRoomScreen(
+                                    currentUserId: currentUserId,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text('Create chat room'),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  kPrimaryColor),
                             ),
-                          );
-                        },
-                        child: Text('Create new chat room'),
+                          ),
+                        ],
                       ),
                     ],
                   );

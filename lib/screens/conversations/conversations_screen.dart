@@ -160,6 +160,10 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                           }
                         },
                         child: Text('Connect to anonymous peer'),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(kPrimaryColor),
+                        ),
                       ),
                     ],
                   );

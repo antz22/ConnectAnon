@@ -14,6 +14,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
+    statusBarBrightness: Brightness.dark,
   ));
   runApp(MyApp());
 }
