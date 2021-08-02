@@ -72,6 +72,8 @@ class AuthenticationService {
             'alias': '',
             'photoUrl': user.photoURL,
             'groups': [],
+            'chattedWith': [],
+            'chatRooms': [],
           });
         } else {
           // write data to local with state management

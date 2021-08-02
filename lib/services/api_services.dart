@@ -7,7 +7,8 @@ class APIServices {
   Future<String> createGroup(currentUserId, chattedWith) async {
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
-    users.get().then((QuerySnapshot snapshot) async {
+    var status;
+    await users.get().then((QuerySnapshot snapshot) async {
       snapshot.docs.forEach((DocumentSnapshot doc) {
         String id = doc.id;
         bool valid = true;
@@ -24,38 +25,50 @@ class APIServices {
         }
       });
 
-      Random rng = new Random();
-      int randomNum = rng.nextInt(userIds.length);
-      String randomId = userIds[randomNum];
-      print('random id: ' + randomId);
+      if (userIds.isEmpty) {
+        status = 'No more available users';
+      } else {
+        Random rng = new Random();
+        int randomNum = rng.nextInt(userIds.length);
+        String randomId = userIds[randomNum];
+        print('random id: ' + randomId);
 
-      var groups = await FirebaseFirestore.instance.collection('Groups');
+        var groups = await FirebaseFirestore.instance.collection('Groups');
 
-      groups.add({
-        'members': [currentUserId, randomId]
-      }).then((doc) {
-        String groupId = doc.id;
+        groups.add({
+          'members': [currentUserId, randomId]
+        }).then((doc) {
+          String groupId = doc.id;
 
-        FirebaseFirestore.instance
-            .collection('Users')
-            .doc(currentUserId)
-            .update({
-          'groups': FieldValue.arrayUnion([groupId]),
-          'chattedWith': FieldValue.arrayUnion([randomId]),
+          FirebaseFirestore.instance
+              .collection('Users')
+              .doc(currentUserId)
+              .update({
+            'groups': FieldValue.arrayUnion([groupId]),
+            'chattedWith': FieldValue.arrayUnion([randomId]),
+          });
+
+          FirebaseFirestore.instance.collection('Users').doc(randomId).update({
+            'groups': FieldValue.arrayUnion([groupId]),
+            'chattedWith': FieldValue.arrayUnion([currentUserId]),
+          });
+
+          status = 'Success';
+          return 'Success';
+        }).catchError((err) {
+          print('Error creating group: $err');
+          print(err.runtimeType);
+          status = err;
+          return err;
         });
-
-        FirebaseFirestore.instance.collection('Users').doc(randomId).update({
-          'groups': FieldValue.arrayUnion([groupId]),
-          'chattedWith': FieldValue.arrayUnion([randomId]),
-        });
-
-        return 'Success';
-      }).catchError((err) {
-        print('Error creating group: $err');
-        return err;
-      });
+        status = 'Success';
+      }
+    }).catchError((err) {
+      print('Error creating group: $err');
+      status = err;
+      return err;
     });
-    return 'Error creating group';
+    return status;
   }
 
   Future<Map<String, String>> getPeerData(groupChatId) async {
@@ -87,6 +100,70 @@ class APIServices {
     return {
       'peerId': peerId,
       'peerName': peerName,
+      'currentUserId': currentUserId,
+    };
+  }
+
+  Future<List<String>> retrieveChatRooms() async {
+    var collection = await FirebaseFirestore.instance.collection('ChatRooms');
+    List<String> chatRooms = new List.from([]);
+    collection.get().then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((DocumentSnapshot doc) {
+        chatRooms.add(doc['name']);
+      });
+    });
+    return chatRooms;
+  }
+
+  Future<String> joinChatRoom(currentUserId, chatRoomId) async {
+    FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
+      'chatRooms': FieldValue.arrayUnion([chatRoomId]),
+    });
+
+    FirebaseFirestore.instance.collection('ChatRooms').doc(chatRoomId).update({
+      'members': FieldValue.arrayUnion([currentUserId]),
+    });
+
+    return 'Success';
+  }
+
+  Future<String> createChatRoom(currentUserId, name) async {
+    var chatRooms = await FirebaseFirestore.instance.collection('ChatRooms');
+    var status;
+
+    chatRooms.add({
+      'members': [currentUserId],
+      'name': name,
+    }).then((doc) {
+      String roomId = doc.id;
+
+      FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
+        'chatRooms': FieldValue.arrayUnion([roomId]),
+      });
+
+      status = 'Success';
+    }).catchError((err) {
+      print('Error creating group: $err');
+      status = err;
+    });
+    return status;
+  }
+
+  Future<Map<String, String>> getChatRoomData(chatRoomId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String currentUserId = prefs.getString('id')!;
+    String roomName;
+
+    var document = await FirebaseFirestore.instance
+        .collection('ChatRooms')
+        .doc(chatRoomId)
+        .get();
+    Map<String, dynamic>? data = document.data();
+
+    roomName = data?['name'];
+
+    return {
+      'roomName': roomName,
       'currentUserId': currentUserId,
     };
   }

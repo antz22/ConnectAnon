@@ -1,12 +1,9 @@
 import 'package:anonymous_chat/constants/constants.dart';
 import 'package:anonymous_chat/models/chat_message.dart';
-import 'package:anonymous_chat/screens/chat/components/chat_input_field.dart';
-import 'package:anonymous_chat/screens/chat/components/message.dart';
+import 'package:anonymous_chat/screens/chat/groups/components/chat_input_field.dart';
+import 'package:anonymous_chat/screens/chat/groups/components/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({

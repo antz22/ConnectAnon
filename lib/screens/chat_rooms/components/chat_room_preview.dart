@@ -4,23 +4,21 @@ import 'package:anonymous_chat/services/api_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ConversationPreview extends StatelessWidget {
-  ConversationPreview({
+class ChatRoomPreview extends StatelessWidget {
+  ChatRoomPreview({
     Key? key,
-    required this.groupChatId,
+    required this.chatRoomId,
     required this.currentUserId,
-    required this.peerId,
-    required this.peerName,
+    required this.roomName,
   }) : super(key: key);
 
-  final String groupChatId;
+  final String chatRoomId;
   final String currentUserId;
-  final String peerId;
-  final String peerName;
+  final String roomName;
 
   @override
   Widget build(BuildContext context) {
-    if (groupChatId != null) {
+    if (chatRoomId != null) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -36,14 +34,14 @@ class ConversationPreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  peerName,
+                  '# $roomName',
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
-                  'That sounds awesome!',
+                  'New Message',
                   style: TextStyle(
                     color: Color(0xFF535353),
                     fontSize: 15.0,
@@ -54,7 +52,7 @@ class ConversationPreview extends StatelessWidget {
           ),
           Spacer(),
           Text(
-            '3m ago',
+            'minutes ago',
             style: TextStyle(
               fontSize: 15.0,
               color: Color(0xFF959595),
