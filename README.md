@@ -1,6 +1,6 @@
-<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo.png">
+<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo.svg" align="middle" with="30%">
 <br>
-<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo_text.png">
+<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo_text.svg" align="middle" width="70%">
 
 ConnectAnon is an anonymous chatting app that lets users from the same school chat with each other about sensitive topics.
 
