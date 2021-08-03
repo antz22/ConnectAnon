@@ -46,9 +46,8 @@ This app was created using the Flutter framework developed by Google, using the 
 
 ## Screenshots
 
-![Landing](https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/landing.png)
-
-![Conversations](https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/conversations.png)
+<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/landing.png" width="100">
+<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/conversations.png" width="100">
 
 ![New Chat](https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/new_chat.png)
 

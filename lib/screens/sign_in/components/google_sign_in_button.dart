@@ -1,10 +1,16 @@
+import 'package:anonymous_chat/screens/account_creation/update_user_info.dart';
 import 'package:anonymous_chat/screens/home/home_page.dart';
 import 'package:anonymous_chat/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class GoogleSignInButton extends StatefulWidget {
+  GoogleSignInButton({required this.action});
+
+  final String action;
+
   @override
   _GoogleSignInButtonState createState() => _GoogleSignInButtonState();
 }
@@ -45,11 +51,20 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                 });
 
                 if (user != null) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ),
-                  );
+                  if (widget.action == 'Sign in') {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(),
+                      ),
+                    );
+                  } else if (widget.action == 'Update user') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateUserInfoPage(user: user),
+                      ),
+                    );
+                  }
                 }
               },
               child: Padding(
@@ -58,18 +73,18 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    // Image(
-                    //   image: AssetImage("assets/google_logo.png"),
-                    //   height: 35.0,
-                    // ),
+                    SvgPicture.asset(
+                      "assets/svgs/google.svg",
+                      height: 27.0,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
                         'Sign in with Google',
                         style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     )

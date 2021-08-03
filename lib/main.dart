@@ -1,3 +1,5 @@
+import 'package:anonymous_chat/constants/constants.dart';
+import 'package:anonymous_chat/screens/landing_page/landing_page.dart';
 import 'package:anonymous_chat/services/api_services.dart';
 import 'package:anonymous_chat/services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
         title: 'Anonymous Chat App',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: customSwatch,
         ),
         home: AuthenticationWrapper(),
       ),
@@ -54,11 +56,11 @@ class AuthenticationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = Provider.of<User?>(context, listen: true);
 
-    if (firebaseUser != null) {
-      return HomePage();
-    } else {
-      return SignInPage();
-    }
-    // return SignInPage();
+    // if (firebaseUser != null) {
+    //   return HomePage();
+    // } else {
+    //   return SignInPage();
+    // }
+    return LandingPage();
   }
 }

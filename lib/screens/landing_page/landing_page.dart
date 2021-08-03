@@ -1,3 +1,5 @@
+import 'package:anonymous_chat/screens/account_creation/getting_started.dart';
+import 'package:anonymous_chat/screens/sign_in/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -15,7 +17,7 @@ class LandingPage extends StatelessWidget {
               vertical: MediaQuery.of(context).size.height / 14,
             ),
             decoration: BoxDecoration(),
-            child: SvgPicture.asset('assets/images/landing_page.svg'),
+            child: SvgPicture.asset('assets/svgs/landing_page.svg'),
           ),
           Text(
             'Connect to Peers Anonymously',
@@ -39,7 +41,14 @@ class LandingPage extends StatelessWidget {
           ),
           SizedBox(height: MediaQuery.of(context).size.height / 12),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GettingStartedPage(),
+                ),
+              );
+            },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.7,
               height: 60.0,
@@ -60,16 +69,26 @@ class LandingPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10.0),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.7,
-            height: 60.0,
-            child: Center(
-              child: Text(
-                'Log in',
-                style: TextStyle(
-                  color: Color(0xFF4158D0),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18.0,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignInPage(),
+                ),
+              );
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: 60.0,
+              child: Center(
+                child: Text(
+                  'Log in',
+                  style: TextStyle(
+                    color: Color(0xFF4158D0),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18.0,
+                  ),
                 ),
               ),
             ),

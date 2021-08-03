@@ -57,31 +57,31 @@ class AuthenticationService {
           ),
         );
       }
-
-      if (user != null) {
-        var document = await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(user.uid)
-            .get();
-        Map<String, dynamic>? userData = document.data();
-        if (userData == null) {
-          // Update data to server if new user
-          FirebaseFirestore.instance.collection('Users').doc(user.uid).set({
-            'uid': user.uid,
-            'displayName': user.displayName,
-            'alias': '',
-            'photoUrl': user.photoURL,
-            'groups': [],
-            'chattedWith': [],
-            'chatRooms': [],
-          });
-        } else {
-          // write data to local with state management
-        }
-      }
-
       return user;
     }
+  }
+
+  Future<String> updateUserInfo(String alias, User user) async {
+    if (user != null) {
+      var document = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .get();
+      Map<String, dynamic>? userData = document.data();
+      if (userData == null) {
+        // Update data to server if new user
+        FirebaseFirestore.instance.collection('Users').doc(user.uid).set({
+          'uid': user.uid,
+          'displayName': user.displayName,
+          'alias': alias,
+          'photoUrl': user.photoURL,
+          'groups': [],
+          'chattedWith': [],
+          'chatRooms': [],
+        });
+      }
+    }
+    return 'Success';
   }
 
   // Future<String> signIn({String email, String password}) async {

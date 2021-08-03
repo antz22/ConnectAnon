@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'components/google_sign_in_button.dart';
 
@@ -13,35 +14,39 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 16.0,
-            right: 16.0,
-            bottom: 20.0,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.height / 14,
+            ),
+            decoration: BoxDecoration(),
+            child: SvgPicture.asset('assets/svgs/landing_page.svg'),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Row(),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'MontyChat',
-                      style: TextStyle(
-                        fontSize: 40,
-                      ),
-                    ),
-                  ],
-                ),
+          Text(
+            'Connect to Peers Anonymously',
+            style: TextStyle(
+              fontSize: 23.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 20.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 35.0),
+            child: Text(
+              'Talk with random classmates to make new friends and have spicy conversations',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey.shade500,
+                fontSize: 16.0,
+                height: 1.8,
               ),
-              GoogleSignInButton(),
-            ],
+            ),
           ),
-        ),
+          SizedBox(height: MediaQuery.of(context).size.height / 8),
+          GoogleSignInButton(action: 'Sign in'),
+        ],
       ),
     );
   }

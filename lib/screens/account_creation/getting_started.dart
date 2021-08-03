@@ -29,8 +29,7 @@ class GettingStartedPage extends StatelessWidget {
                   'To get started, we need to make sure you are a student of Montgomery. Just sign in with your school email.',
             ),
             SizedBox(height: kDefaultPadding),
-            GoogleSignInButton(),
-            SizedBox(height: kDefaultPadding),
+            GoogleSignInButton(action: 'Update user'),
             TextBlob(
               text:
                   'Don\'t worry about your anonymity. This is purely for security pruposes, and your email and identity will be kept completely, 100% hidden from other users.',
