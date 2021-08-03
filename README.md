@@ -1,4 +1,6 @@
-![ConnectAnon](https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/hero.png)
+<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo.png">
+<br>
+<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo_text.png">
 
 ConnectAnon is an anonymous chatting app that lets users from the same school chat with each other about sensitive topics.
 
