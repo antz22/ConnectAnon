@@ -46,11 +46,10 @@ This app was created using the Flutter framework developed by Google, using the 
 
 ## Screenshots
 
-<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/landing.png" width="100">
-<img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/conversations.png" width="100">
-
-![New Chat](https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/new_chat.png)
-
-![Chat](https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/chat.png)
-
-![Chat Rooms](https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/chat_rooms.png)
+<p align="middle">
+    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/landing.png" width="45%">
+    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/conversations.png" width="350">
+    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/new_chat.png" width="350">
+    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/chat.png" width="350">
+    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/chat_rooms.png" width="350">
+</p>
