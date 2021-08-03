@@ -4,7 +4,7 @@
     <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo_text.svg" width="80%">
 </p>
 
-ConnectAnon is an anonymous chatting app that lets users from the same school chat with each other about sensitive topics.
+Connect to peers anonymously. Chat with random classmates to make new friends and have spicy conversations. Find company to talk about sensitive personal experiences. ConnectAnon is an anonymous chatting app that lets users from the same school chat with each other about sensitive topics.
 
 ## Inspiration
 
