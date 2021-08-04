@@ -1,6 +1,6 @@
 <p align="middle">
-    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo.svg" width="30%">
-    <br>
+    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo.svg" width="20%">
+    <br />
     <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo_text.svg" width="80%">
 </p>
 
