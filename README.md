@@ -1,3 +1,5 @@
+<br />
+
 <p align="middle">
     <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo.svg" width="20%">
 </p>
