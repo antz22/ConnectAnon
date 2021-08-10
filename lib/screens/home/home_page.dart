@@ -35,9 +35,9 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     _retrieveId();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-    ));
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: Colors.transparent,
+    // ));
     super.initState();
   }
 
@@ -48,9 +48,11 @@ class _HomePageState extends State<HomePage>
       future: _retrieveId(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         return Scaffold(
-          body: IndexedStack(
-            index: _selectedIndex,
-            children: tabs,
+          body: SafeArea(
+            child: IndexedStack(
+              index: _selectedIndex,
+              children: tabs,
+            ),
           ),
           bottomNavigationBar: buildBottomNavigationBar(),
         );

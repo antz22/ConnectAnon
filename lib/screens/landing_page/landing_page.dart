@@ -11,10 +11,11 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).size.height / 14,
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height / 14,
             ),
             decoration: BoxDecoration(),
             child: SvgPicture.asset('assets/svgs/landing_page.svg'),

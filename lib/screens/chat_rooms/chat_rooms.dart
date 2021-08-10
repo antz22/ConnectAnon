@@ -61,8 +61,8 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
             margin: EdgeInsets.only(
               left: 0.9 * kDefaultPadding,
               right: 0.9 * kDefaultPadding,
-              top: 1.5 * kDefaultPadding,
-              bottom: 0.4 * kDefaultPadding,
+              top: 0.7 * kDefaultPadding,
+              bottom: 0.7 * kDefaultPadding,
             ),
             child: Row(
               children: [

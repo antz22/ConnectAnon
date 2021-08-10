@@ -40,11 +40,10 @@ class _MessageState extends State<Message> {
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Padding(
           padding: EdgeInsets.only(bottom: 0.3 * kDefaultPadding),
-          child: Row(
-            mainAxisAlignment:
-                isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment:
+                isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
-              _pressed ? _buildMessageTime() : SizedBox.shrink(),
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -69,11 +68,12 @@ class _MessageState extends State<Message> {
                   child: Text(
                     widget.document?['content'],
                     style: TextStyle(
-                      fontSize: 13.0,
+                      fontSize: 14.5,
                     ),
                   ),
                 ),
               ),
+              _pressed ? _buildMessageTime() : SizedBox.shrink(),
             ],
           ),
         );
@@ -82,16 +82,22 @@ class _MessageState extends State<Message> {
   }
 
   Widget _buildMessageTime() {
-    return Row(
+    return Column(
+      crossAxisAlignment:
+          isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        Text(
-          _getMessageTime(),
-          style: TextStyle(
-            fontSize: 13.0,
-            color: Colors.grey.shade600,
+        Container(
+          margin: isSender
+              ? EdgeInsets.only(right: 5.0, top: 5.0)
+              : EdgeInsets.only(left: 5.0, top: 5.0),
+          child: Text(
+            _getMessageTime(),
+            style: TextStyle(
+              fontSize: 13.0,
+              color: Colors.grey.shade600,
+            ),
           ),
         ),
-        SizedBox(width: 6.0),
       ],
     );
   }

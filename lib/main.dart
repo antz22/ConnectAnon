@@ -16,7 +16,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
-    statusBarBrightness: Brightness.dark,
+    // statusBarBrightness: Brightness.dark,
   ));
   runApp(MyApp());
 }
@@ -56,11 +56,11 @@ class AuthenticationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = Provider.of<User?>(context, listen: true);
 
-    // if (firebaseUser != null) {
-    //   return HomePage();
-    // } else {
-    //   return SignInPage();
-    // }
-    return LandingPage();
+    if (firebaseUser != null) {
+      return HomePage();
+    } else {
+      return LandingPage();
+    }
+    // return LandingPage();
   }
 }

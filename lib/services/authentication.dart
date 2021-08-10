@@ -1,3 +1,4 @@
+import 'package:anonymous_chat/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,11 +52,14 @@ class AuthenticationService {
           );
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          AuthenticationService.customSnackBar(
-            content: 'Error occurred using Google Sign In. Try again.',
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   AuthenticationService.customSnackBar(
+        //     content: 'Error occurred using Google Sign In. Try again.',
+        //   ),
+        // );
+        CustomSnackbar.buildWarningMessage(context, 'Error',
+            'Error occurred using Google Sign In. Try again.');
+        print(e);
       }
       return user;
     }
