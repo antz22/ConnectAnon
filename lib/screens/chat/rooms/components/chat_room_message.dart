@@ -57,16 +57,16 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
                         senderName,
                         style: TextStyle(
                           color: Colors.grey.shade400,
-                          fontSize: 10.0,
+                          fontSize: 12.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
-              Row(
-                mainAxisAlignment:
-                    isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+              Column(
+                crossAxisAlignment: isSender
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
                 children: [
-                  _pressed ? _buildMessageTime() : SizedBox.shrink(),
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -91,11 +91,12 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
                       child: Text(
                         widget.document?['content'],
                         style: TextStyle(
-                          fontSize: 13.0,
+                          fontSize: 14.5,
                         ),
                       ),
                     ),
                   ),
+                  _pressed ? _buildMessageTime() : SizedBox.shrink(),
                 ],
               ),
             ],
@@ -106,16 +107,22 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
   }
 
   Widget _buildMessageTime() {
-    return Row(
+    return Column(
+      crossAxisAlignment:
+          isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        Text(
-          _getMessageTime(),
-          style: TextStyle(
-            fontSize: 13.0,
-            color: Colors.grey.shade600,
+        Container(
+          margin: isSender
+              ? EdgeInsets.only(right: 5.0, top: 5.0)
+              : EdgeInsets.only(left: 5.0, top: 5.0),
+          child: Text(
+            _getMessageTime(),
+            style: TextStyle(
+              fontSize: 13.0,
+              color: Colors.grey.shade600,
+            ),
           ),
         ),
-        SizedBox(width: 6.0),
       ],
     );
   }

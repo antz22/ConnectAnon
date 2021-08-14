@@ -4,6 +4,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class APIServices {
+  Future<Map<String, dynamic>> getUserData(userId) async {
+    var userDocument = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userId.trim())
+        .get();
+    Map<String, dynamic>? userData = userDocument.data();
+    String alias = userData!['alias'];
+    String status = userData['status'];
+    String school = userData['school'];
+    String photoUrl = userData['photoUrl'];
+    int peerChats = userData['chattedWith'].length;
+    int chatRooms = userData['chatRooms'].length;
+    int reports = userData['reports'];
+    return {
+      'alias': alias,
+      'status': status,
+      'school': school,
+      'photoUrl': photoUrl,
+      'peerChats': peerChats,
+      'chatRooms': chatRooms,
+      'reports': reports,
+    };
+  }
+
   Future<String> createGroup(currentUserId, chattedWith) async {
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
@@ -76,6 +100,7 @@ class APIServices {
     String currentUserId = prefs.getString('id')!;
     String peerId;
     String peerName;
+    String peerPhotoUrl;
 
     var document = await FirebaseFirestore.instance
         .collection('Groups')
@@ -96,11 +121,13 @@ class APIServices {
         .get();
     Map<String, dynamic>? userData = userDocument.data();
     peerName = userData!['alias'];
+    peerPhotoUrl = userData['photoUrl'];
 
     return {
       'peerId': peerId,
       'peerName': peerName,
       'currentUserId': currentUserId,
+      'peerPhotoUrl': peerPhotoUrl,
     };
   }
 

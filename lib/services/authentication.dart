@@ -82,6 +82,9 @@ class AuthenticationService {
           'groups': [],
           'chattedWith': [],
           'chatRooms': [],
+          'school': 'MHS',
+          'status': 'Peer',
+          'reports': 0,
         });
       }
     }

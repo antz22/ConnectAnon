@@ -11,12 +11,14 @@ class ConversationPreview extends StatelessWidget {
     required this.currentUserId,
     required this.peerId,
     required this.peerName,
+    required this.peerPhotoUrl,
   }) : super(key: key);
 
   final String groupChatId;
   final String currentUserId;
   final String peerId;
   final String peerName;
+  final String peerPhotoUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class ConversationPreview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage('assets/images/profile2.jpg'),
+            backgroundImage: NetworkImage(peerPhotoUrl),
             radius: 28.0,
           ),
           SizedBox(width: 0.9 * kDefaultPadding),

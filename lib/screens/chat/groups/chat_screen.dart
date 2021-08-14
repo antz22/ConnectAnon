@@ -2,6 +2,8 @@ import 'package:anonymous_chat/constants/constants.dart';
 import 'package:anonymous_chat/models/chat_message.dart';
 import 'package:anonymous_chat/screens/chat/groups/components/chat_input_field.dart';
 import 'package:anonymous_chat/screens/chat/groups/components/message.dart';
+import 'package:anonymous_chat/screens/profile/profile_screen.dart';
+import 'package:anonymous_chat/screens/set_profile_pic/set_profile_pic.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +14,14 @@ class ChatScreen extends StatefulWidget {
     required this.currentUserId,
     required this.peerId,
     required this.peerName,
+    required this.peerPhotoUrl,
   }) : super(key: key);
 
   final String groupChatId;
   final String currentUserId;
   final String peerId;
   final String peerName;
+  final String peerPhotoUrl;
 
   @override
   _ChatScreenState createState() => _ChatScreenState(
@@ -25,6 +29,7 @@ class ChatScreen extends StatefulWidget {
         currentUserId: currentUserId,
         peerId: peerId,
         peerName: peerName,
+        peerPhotoUrl: peerPhotoUrl,
       );
 }
 
@@ -33,12 +38,14 @@ class _ChatScreenState extends State<ChatScreen> {
   final String currentUserId;
   final String peerId;
   final String peerName;
+  final String peerPhotoUrl;
 
   _ChatScreenState({
     required this.groupChatId,
     required this.currentUserId,
     required this.peerId,
     required this.peerName,
+    required this.peerPhotoUrl,
   });
 
   final List<QueryDocumentSnapshot> listMessage = new List.from([]);
@@ -82,7 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             SizedBox(width: 0.75 * kDefaultPadding),
             CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile3.jpg'),
+              backgroundImage: NetworkImage(peerPhotoUrl),
               radius: 17.0,
             ),
             SizedBox(width: 0.75 * kDefaultPadding),
@@ -99,7 +106,14 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.info, color: kPrimaryColor),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(isMe: false, id: peerId),
+                ),
+              );
+            },
           ),
           SizedBox(width: 0.9 * kDefaultPadding),
         ],

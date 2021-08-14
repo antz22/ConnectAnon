@@ -21,9 +21,11 @@ dependencies:
 
   shared_preferences: ^2.0.6
   provider: ^5.0.0
+  http: ^0.13.3
 
   intl: ^0.17.0
   another_flushbar: ^1.10.24
+
 
 
 dev_dependencies:

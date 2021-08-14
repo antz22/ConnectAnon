@@ -34,25 +34,40 @@ This app was created using the Flutter framework developed by Google, using the 
 
 ## TODO
 
-- profile pictures
+- push notifications -- connecting with currently active user
+- firebase admin - notifications and chat buddy functionality
 - bans
-- push notifications -- how to connect them with a currently active user?
+- add default profile pic
+- make changign profile picture part of account setup - make unsplash pictures better
+- chat room creation
+- peer preferences?
+- archive conversations
+
+- clean up and abstract!
 - animations
 - firebase production
-- chat buddy functionality -- chat with chat buddy
+- error checking and null checking lol
 
-- archive conversations
+- new branch: implement newest message, how long ago it was (keep it on a separate branch, keep it low priority)
+
 - figure out sign in through google or through email
 - viewing time
-- make user setup part better
 - error handling on google sign in
-- redesign new pages
 
 - error text
 
 - how to show most recent message, how long ago it was?
-- choose preferences for the user
 - add an if check sayign that if users is over like 50 then dont check thorugh each one?
+
+# Potential Features
+
+If we had enough money...
+
+- change profile pictures
+- change username
+
+- show most recent message
+- mark as unread / read
 
 ## Notes
 

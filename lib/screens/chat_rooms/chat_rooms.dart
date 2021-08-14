@@ -3,6 +3,7 @@ import 'package:anonymous_chat/screens/chat/rooms/chat_room_screen.dart';
 import 'package:anonymous_chat/screens/create_chat_room/create_chat_room.dart';
 import 'package:anonymous_chat/screens/join_chat_room/join_chat_room.dart';
 import 'package:anonymous_chat/services/api_services.dart';
+import 'package:anonymous_chat/widgets/info_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,45 +56,34 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-              left: 0.9 * kDefaultPadding,
-              right: 0.9 * kDefaultPadding,
-              top: 0.7 * kDefaultPadding,
-              bottom: 0.7 * kDefaultPadding,
-            ),
-            child: Row(
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Users')
+            .doc(currentUserId)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            List chatRooms = data['chatRooms'];
+            String photoUrl = data['photoUrl'];
+            return Column(
               children: [
-                Text(
-                  'Chat Rooms',
-                  style: TextStyle(
-                    fontSize: 26.0,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 0.9 * kDefaultPadding,
+                    right: 0.9 * kDefaultPadding,
+                    top: 0.7 * kDefaultPadding,
+                    bottom: 0.7 * kDefaultPadding,
                   ),
+                  child: InfoHeader(
+                      title: 'Chat Rooms',
+                      photoUrl: photoUrl,
+                      id: currentUserId),
                 ),
-                Spacer(),
-                CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/profile1.jpg'),
-                  radius: 25.0,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            child: StreamBuilder<DocumentSnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('Users')
-                  .doc(currentUserId)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  Map<String, dynamic> data =
-                      snapshot.data!.data() as Map<String, dynamic>;
-                  List chatRooms = data['chatRooms'];
-                  return Column(
+                Container(
+                  child: Column(
                     children: [
                       ListView.builder(
                         shrinkWrap: true,
@@ -186,18 +176,18 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                         ],
                       ),
                     ],
-                  );
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
-        ],
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
+              ),
+            );
+          }
+        },
       ),
     );
   }
