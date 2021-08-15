@@ -35,20 +35,17 @@ This app was created using the Flutter framework developed by Google, using the 
 ## TODO
 
 - push notifications -- connecting with currently active user
-- firebase admin - notifications and chat buddy functionality
+- firebase admin - notifications and chat buddy functionality and getting reported
 - bans
-- add default profile pic
-- make changign profile picture part of account setup - make unsplash pictures better
-- chat room creation
 - peer preferences?
-- archive conversations
+- unsplash API production - how to download stuff?
 
 - clean up and abstract!
 - animations
 - firebase production
 - error checking and null checking lol
 - invitations for chat rooms?
-- chat room creatino applications
+- chat room creation applications
 - ban applications
 
 

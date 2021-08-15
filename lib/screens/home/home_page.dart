@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:anonymous_chat/constants/constants.dart';
 import 'package:anonymous_chat/screens/chat_rooms/chat_rooms.dart';
 import 'package:anonymous_chat/screens/conversations/conversations_screen.dart';
 import 'package:anonymous_chat/widgets/custom_snackbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +24,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   int _selectedIndex = 0;
   String currentUserId = '';
@@ -35,12 +42,76 @@ class _HomePageState extends State<HomePage>
     ];
   }
 
+  void registerNotification() {
+    firebaseMessaging.requestPermission();
+
+    FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
+      print('onMessage: $message');
+      if (message.notification != null) {
+        showNotification(message.notification!);
+      }
+    });
+
+    firebaseMessaging.getToken().then((token) {
+      print('token: $token');
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(currentUserId)
+          .update({'pushToken': token});
+    }).catchError((err) {
+      CustomSnackbar.buildWarningMessage(
+          context, 'Error', err.message.toString());
+    });
+  }
+
+  void configLocalNotification() {
+    AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings();
+    InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void showNotification(RemoteNotification remoteNotification) async {
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      Platform.isAndroid
+          ? 'com.example.anonymous_chat'
+          : 'com.example.anonymous_chat_ios_ting',
+      'ConnectAnon Chat App',
+      'your channel description',
+      // playSound: true,
+      // enableVibration: true,
+      // importance: Importance.max,
+      // priority: Priority.high,
+    );
+    IOSNotificationDetails iOSPlatformChannelSpecifics =
+        IOSNotificationDetails();
+    NotificationDetails platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    print(remoteNotification);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      remoteNotification.title,
+      remoteNotification.body,
+      platformChannelSpecifics,
+      payload: null,
+    );
+  }
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     _retrieveId();
+    registerNotification();
+    // configLocalNotification();
     if (widget.message != '') {
       SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
         CustomSnackbar.buildWarningMessage(context, 'Error', widget.message);

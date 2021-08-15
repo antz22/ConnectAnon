@@ -27,8 +27,7 @@ dependencies:
   intl: ^0.17.0
   another_flushbar: ^1.10.24
   url_launcher: ^6.0.9
-
-
+  flutter_local_notifications: ^8.1.1+1
 
 dev_dependencies:
   flutter_test:
