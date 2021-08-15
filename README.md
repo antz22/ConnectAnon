@@ -38,8 +38,10 @@ This app was created using the Flutter framework developed by Google, using the 
 - firebase admin - notifications and chat buddy functionality and getting reported
 - firebase plan
 - connecting with chat buddies - should they be able to connect to the same person twice? or else they might get the same person as a converstaion they're already, ew buggy
+- should chat buddies be able to do the same thing? then what about erasing things in the database, updating chattedwith?
 - SHOULD THE CONVERSATIONS BE DISAPPEARING?
 - change package names
+- profile pics in chat rooms
 - bans
 - peer preferences?
 - unsplash API production - how to download stuff?

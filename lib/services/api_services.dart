@@ -28,144 +28,179 @@ class APIServices {
     };
   }
 
-  Future<String> createGroup(
-      String currentUserId, List chattedWith, bool isChatBuddy) async {
+  Future<String> createGroup(String currentUserId, List chattedWith) async {
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
     var status;
-    if (isChatBuddy) {
-      await users.get().then((QuerySnapshot snapshot) async {
-        snapshot.docs.forEach((DocumentSnapshot doc) {
-          String id = doc.id;
-          bool valid = true;
-          if (id != currentUserId) {
-            chattedWith.forEach((chattedWithId) {
-              if (chattedWithId == id) {
-                valid = false;
-              }
-              print(chattedWithId);
-            });
-            if (valid) {
-              userIds.add(id);
+    await users.get().then((QuerySnapshot snapshot) async {
+      snapshot.docs.forEach((DocumentSnapshot doc) {
+        String id = doc.id;
+        bool valid = true;
+        if (id != currentUserId) {
+          chattedWith.forEach((chattedWithId) {
+            if (chattedWithId == id) {
+              valid = false;
             }
-          }
-        });
-
-        if (userIds.isEmpty) {
-          status = 'No more available users';
-        } else {
-          Random rng = new Random();
-          int randomNum = rng.nextInt(userIds.length);
-          String randomId = userIds[randomNum];
-          print('random id: ' + randomId);
-
-          var groups = await FirebaseFirestore.instance.collection('Groups');
-
-          groups.add({
-            'members': [currentUserId, randomId]
-          }).then((doc) {
-            String groupId = doc.id;
-
-            FirebaseFirestore.instance
-                .collection('Users')
-                .doc(currentUserId)
-                .update({
-              'groups': FieldValue.arrayUnion([groupId]),
-              'chattedWith': FieldValue.arrayUnion([randomId]),
-            });
-
-            FirebaseFirestore.instance
-                .collection('Users')
-                .doc(randomId)
-                .update({
-              'groups': FieldValue.arrayUnion([groupId]),
-              'chattedWith': FieldValue.arrayUnion([currentUserId]),
-            });
-
-            status = 'Success';
-            return 'Success';
-          }).catchError((err) {
-            print('Error creating group: $err');
-            print(err.runtimeType);
-            status = err;
-            return err;
+            print(chattedWithId);
           });
-          status = 'Success';
+          if (valid) {
+            userIds.add(id);
+          }
         }
-      }).catchError((err) {
-        print('Error creating group: $err');
-        status = err;
-        return err;
       });
-    } else {
-      await users
-          .where('status', isEqualTo: 'Chat Buddy')
-          .get()
-          .then((QuerySnapshot snapshot) async {
-        snapshot.docs.forEach((DocumentSnapshot doc) {
-          // userIds.add(doc.id);
-          String id = doc.id;
-          bool valid = true;
-          if (id != currentUserId) {
-            chattedWith.forEach((chattedWithId) {
-              if (chattedWithId == id) {
-                valid = false;
-              }
-              print(chattedWithId);
-            });
-            if (valid) {
-              userIds.add(id);
+
+      if (userIds.isEmpty) {
+        status = 'No more available users';
+      } else {
+        Random rng = new Random();
+        int randomNum = rng.nextInt(userIds.length);
+        String randomId = userIds[randomNum];
+        print('random id: ' + randomId);
+
+        var groups = await FirebaseFirestore.instance.collection('Groups');
+
+        groups.add({
+          'members': [currentUserId, randomId]
+        }).then((doc) {
+          String groupId = doc.id;
+
+          FirebaseFirestore.instance
+              .collection('Users')
+              .doc(currentUserId)
+              .update({
+            'groups': FieldValue.arrayUnion([groupId]),
+            'chattedWith': FieldValue.arrayUnion([randomId]),
+          });
+
+          FirebaseFirestore.instance.collection('Users').doc(randomId).update({
+            'groups': FieldValue.arrayUnion([groupId]),
+            'chattedWith': FieldValue.arrayUnion([currentUserId]),
+          });
+
+          status = 'Success';
+          return 'Success';
+        }).catchError((err) {
+          print('Error creating group: $err');
+          print(err.runtimeType);
+          status = err;
+          return err;
+        });
+        status = 'Success';
+      }
+    }).catchError((err) {
+      print('Error creating group: $err');
+      status = err;
+      return err;
+    });
+
+    return status;
+  }
+
+  Future<String> createSpecialGroup(
+      String currentUserId, List volunteersChattedWith) async {
+    var users = await FirebaseFirestore.instance.collection('Users');
+    List<String> userIds = new List.from([]);
+    List<String> allIds = new List.from([]);
+    var status;
+    await users
+        .where('status', isEqualTo: 'Chat Buddy')
+        .get()
+        .then((QuerySnapshot snapshot) async {
+      snapshot.docs.forEach((DocumentSnapshot doc) {
+        allIds.add(doc.id);
+        String id = doc.id;
+        bool valid = true;
+        if (id != currentUserId) {
+          volunteersChattedWith.forEach((chattedWithId) {
+            if (chattedWithId == id) {
+              valid = false;
             }
-          }
-        });
-
-        if (userIds.isEmpty) {
-          status = 'No more available users';
-        } else {
-          Random rng = new Random();
-          int randomNum = rng.nextInt(userIds.length);
-          String randomId = userIds[randomNum];
-          print('random id: ' + randomId);
-
-          var groups = await FirebaseFirestore.instance.collection('Groups');
-
-          groups.add({
-            'members': [currentUserId, randomId]
-          }).then((doc) {
-            String groupId = doc.id;
-
-            FirebaseFirestore.instance
-                .collection('Users')
-                .doc(currentUserId)
-                .update({
-              'groups': FieldValue.arrayUnion([groupId]),
-              'chattedWith': FieldValue.arrayUnion([randomId]),
-            });
-
-            FirebaseFirestore.instance
-                .collection('Users')
-                .doc(randomId)
-                .update({
-              'groups': FieldValue.arrayUnion([groupId]),
-              'chattedWith': FieldValue.arrayUnion([currentUserId]),
-            });
-
-            status = 'Success';
-            return 'Success';
-          }).catchError((err) {
-            print('Error creating group: $err');
-            print(err.runtimeType);
-            status = err;
-            return err;
+            print(chattedWithId);
           });
-          status = 'Success';
+          if (valid) {
+            userIds.add(id);
+          }
         }
-      }).catchError((err) {
-        print('Error creating group: $err');
-        status = err;
-        return err;
       });
-    }
+
+      if (userIds.isEmpty) {
+        // status = 'No more available users';
+        Random rng = new Random();
+        int randomNum = rng.nextInt(allIds.length);
+        String randomId = allIds[randomNum];
+        print('random id: ' + randomId);
+
+        var groups = await FirebaseFirestore.instance.collection('Groups');
+
+        groups.add({
+          'members': [currentUserId, randomId]
+        }).then((doc) {
+          String groupId = doc.id;
+
+          FirebaseFirestore.instance
+              .collection('Users')
+              .doc(currentUserId)
+              .update({
+            'groups': FieldValue.arrayUnion([groupId]),
+            // renew the volunteers if they've already talked to all of them
+            'specialChattedWith': [randomId],
+          });
+
+          FirebaseFirestore.instance.collection('Users').doc(randomId).update({
+            'groups': FieldValue.arrayUnion([groupId]),
+            'specialChattedWith': FieldValue.arrayUnion([currentUserId]),
+          });
+
+          status = 'Success';
+          return 'Success';
+        }).catchError((err) {
+          print('Error creating group: $err');
+          print(err.runtimeType);
+          status = err;
+          return err;
+        });
+        status = 'Success';
+      } else {
+        Random rng = new Random();
+        int randomNum = rng.nextInt(userIds.length);
+        String randomId = userIds[randomNum];
+        print('random id: ' + randomId);
+
+        var groups = await FirebaseFirestore.instance.collection('Groups');
+
+        groups.add({
+          'members': [currentUserId, randomId]
+        }).then((doc) {
+          String groupId = doc.id;
+
+          FirebaseFirestore.instance
+              .collection('Users')
+              .doc(currentUserId)
+              .update({
+            'groups': FieldValue.arrayUnion([groupId]),
+            'chattedWith': FieldValue.arrayUnion([randomId]),
+          });
+
+          FirebaseFirestore.instance.collection('Users').doc(randomId).update({
+            'groups': FieldValue.arrayUnion([groupId]),
+            'chattedWith': FieldValue.arrayUnion([currentUserId]),
+          });
+
+          status = 'Success';
+          return 'Success';
+        }).catchError((err) {
+          print('Error creating group: $err');
+          print(err.runtimeType);
+          status = err;
+          return err;
+        });
+        status = 'Success';
+      }
+    }).catchError((err) {
+      print('Error creating group: $err');
+      status = err;
+      return err;
+    });
     return status;
   }
 

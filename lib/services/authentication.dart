@@ -82,6 +82,7 @@ class AuthenticationService {
           'photoUrl': photoUrl,
           'groups': [],
           'chattedWith': [],
+          'specialChattedWith': [],
           'chatRooms': [],
           'school': 'MHS',
           'status': 'Peer',

@@ -70,6 +70,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                 snapshot.data!.data() as Map<String, dynamic>;
             List groups = data['groups'];
             List chattedWith = data['chattedWith'];
+            List specialChattedWith = data['specialChattedWith'];
             String photoUrl = data['photoUrl'];
             return Column(children: [
               Container(
@@ -143,10 +144,9 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      bool isChatBuddy = false;
                       var response = await context
                           .read<APIServices>()
-                          .createGroup(currentUserId, chattedWith, isChatBuddy);
+                          .createGroup(currentUserId, chattedWith);
                       if (response != 'Success') {
                         CustomSnackbar.buildWarningMessage(
                             context, 'Error', response);
@@ -160,10 +160,10 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      bool isChatBuddy = true;
                       var response = await context
                           .read<APIServices>()
-                          .createGroup(currentUserId, chattedWith, isChatBuddy);
+                          .createSpecialGroup(
+                              currentUserId, specialChattedWith);
                       if (response != 'Success') {
                         CustomSnackbar.buildWarningMessage(
                             context, 'Error', response);
