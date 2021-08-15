@@ -184,7 +184,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
               ),
-              ChatInputField(groupChatId: groupChatId),
+              ChatInputField(groupChatId: groupChatId, peerId: peerId),
             ],
           ),
         ),

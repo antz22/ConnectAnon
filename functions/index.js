@@ -3,7 +3,7 @@ const admin = require('firebase-admin')
 admin.initializeApp()
 
 exports.sendNotification = functions.firestore
-  .document('Messages/{groupId1}/{groupId2}/{message}')
+  .document('Messages/{groupChatId}/messages/{message}')
   .onCreate((snap, context) => {
     console.log('----------------start function--------------------')
 
@@ -12,7 +12,7 @@ exports.sendNotification = functions.firestore
 
     const idFrom = doc.idFrom
     const idTo = doc.idTo
-    const contentMessage = doc.content
+    const messageContent = doc.content
 
     // Get push token user to (receive)
     admin
@@ -22,21 +22,22 @@ exports.sendNotification = functions.firestore
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(userTo => {
-          console.log(`Found user to: ${userTo.data().nickname}`)
-          if (userTo.data().pushToken && userTo.data().chattingWith !== idFrom) {
+          console.log(`Found user to: ${userTo.data().alias}`)
+        //   if (userTo.data().pushToken && userTo.data().chattingWith !== idFrom) {
+          if (userTo.data().pushToken) {
             // Get info user from (sent)
             admin
               .firestore()
-              .collection('users')
+              .collection('Users')
               .where('id', '==', idFrom)
               .get()
               .then(querySnapshot2 => {
                 querySnapshot2.forEach(userFrom => {
-                  console.log(`Found user from: ${userFrom.data().nickname}`)
+                  console.log(`Found user from: ${userFrom.data().alias}`)
                   const payload = {
                     notification: {
-                      title: `You have a message from "${userFrom.data().nickname}"`,
-                      body: contentMessage,
+                      title: `You have a message from "${userFrom.data().alias}"`,
+                      body: messageContent,
                       badge: '1',
                       sound: 'default'
                     }

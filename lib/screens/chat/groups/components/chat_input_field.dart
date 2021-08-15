@@ -5,9 +5,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatInputField extends StatefulWidget {
-  ChatInputField({Key? key, required this.groupChatId}) : super(key: key);
+  ChatInputField({Key? key, required this.groupChatId, required this.peerId})
+      : super(key: key);
 
   final String groupChatId;
+  final String peerId;
 
   @override
   _ChatInputFieldState createState() =>
@@ -38,6 +40,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
 
       documentReference.add({
         'idFrom': id,
+        'idTo': widget.peerId,
         'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
         'content': content,
       });
