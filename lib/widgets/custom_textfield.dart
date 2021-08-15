@@ -6,10 +6,12 @@ class CustomTextField extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.hintText,
+    this.textarea = false,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String hintText;
+  final bool textarea;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,8 @@ class CustomTextField extends StatelessWidget {
           borderSide: BorderSide(width: 2, color: kPrimaryColor),
         ),
       ),
+      keyboardType: textarea ? TextInputType.multiline : TextInputType.text,
+      maxLines: textarea ? 10 : 1,
     );
   }
 }

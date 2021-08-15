@@ -1,9 +1,13 @@
 import 'dart:convert';
 
+import 'package:anonymous_chat/constants/constants.dart';
+import 'package:anonymous_chat/widgets/custom_snackbar.dart';
+import 'package:anonymous_chat/widgets/photo_credit_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SetProfilePic extends StatefulWidget {
   const SetProfilePic({Key? key}) : super(key: key);
@@ -15,76 +19,93 @@ class SetProfilePic extends StatefulWidget {
 class _SetProfilePicState extends State<SetProfilePic> {
   List data = new List.from([]);
 
+  String photoUrl = '';
+
   Future<String> getimages() async {
     // make random photos instead of nature
     String clientId = 'BmuCli3sV_4br-PeAFKMktHlpQvZvS2ig0Tdowitgiw';
     String url =
-        'https://api.unsplash.com/search/photos?per_page=30&client_id=$clientId&query=nature';
-    print('hi');
+        'https://api.unsplash.com/photos/random?count=30&client_id=$clientId';
     var getdata = await http.get(Uri.parse(url));
     setState(() {
-      var jsondata = json.decode(getdata.body);
-      data = jsondata['results'];
+      data = json.decode(getdata.body);
     });
-    print(data);
     return "Success";
-  }
-
-  Future<String> _onTap(String url) async {
-    // make this in apiservices
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = await prefs.getString('id');
-
-    // if (user != null) {
-    FirebaseFirestore.instance.collection('Users').doc(userId).update({
-      'photoUrl': url,
-    });
-    // }
-    return 'Success';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Wallpaper app")),
+      appBar: AppBar(title: Text("Choose Profile Picture")),
       body: FutureBuilder(
         future: getimages(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          return ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Stack(
-                children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      _onTap(data[index]['urls']['regular']);
-                      showDialog(
-                          context: context,
-                          builder: (context) => Text('Success'));
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 50.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(35.0),
-                          topRight: Radius.circular(35.0),
-                          bottomLeft: Radius.circular(35.0),
-                          bottomRight: Radius.circular(35.0),
-                        ),
-                        child: Image.network(
-                          data[index]['urls']['regular'],
-                          fit: BoxFit.cover,
-                          height: 500.0,
+          if (snapshot.data != null) {
+            return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context, data[index]);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 0.03 * MediaQuery.of(context).size.width),
+                        child: GestureDetector(
+                          onTap: () {
+                            _launchUrl(context, data[index]['urls']['regular']);
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30.0),
+                              topRight: Radius.circular(30.0),
+                              bottomLeft: Radius.circular(30.0),
+                              bottomRight: Radius.circular(30.0),
+                            ),
+                            child: Image.network(
+                              data[index]['urls']['regular'],
+                              fit: BoxFit.cover,
+                              height: 0.45 * MediaQuery.of(context).size.height,
+                              width: 0.94 * MediaQuery.of(context).size.width,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  )
-                ],
-              );
-            },
-          );
+                    SizedBox(height: 5.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            width:
+                                0.03 * MediaQuery.of(context).size.width + 5.0),
+                        PhotoCreditWidget(
+                            name: data[index]['user']['name'],
+                            username: data[index]['user']['username']),
+                      ],
+                    ),
+                    SizedBox(height: 5.0),
+                  ],
+                );
+              },
+            );
+          } else {
+            return Center(child: Text('Error retrieving Unsplash images'));
+          }
         },
       ),
     );
+  }
+
+  void _launchUrl(BuildContext context, String url) async {
+    if (await canLaunch(url)) {
+      await launch(url + '?utm_source=ConnectAnon&utm_medium=referral');
+    } else {
+      CustomSnackbar.buildWarningMessage(
+          context, 'Error', 'Could not navigate to url');
+    }
   }
 }

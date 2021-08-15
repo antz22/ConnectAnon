@@ -1,13 +1,17 @@
 import 'package:anonymous_chat/constants/constants.dart';
 import 'package:anonymous_chat/screens/chat_rooms/chat_rooms.dart';
 import 'package:anonymous_chat/screens/conversations/conversations_screen.dart';
+import 'package:anonymous_chat/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, this.message = ''}) : super(key: key);
+
+  final String message;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -15,6 +19,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   int _selectedIndex = 0;
   String currentUserId = '';
 
@@ -35,6 +41,11 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     _retrieveId();
+    if (widget.message != '') {
+      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+        CustomSnackbar.buildWarningMessage(context, 'Error', widget.message);
+      });
+    }
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     //   statusBarColor: Colors.transparent,
     // ));

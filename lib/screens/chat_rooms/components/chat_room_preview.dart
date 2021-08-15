@@ -2,6 +2,7 @@ import 'package:anonymous_chat/constants/constants.dart';
 import 'package:anonymous_chat/models/chat.dart';
 import 'package:anonymous_chat/services/api_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class ChatRoomPreview extends StatelessWidget {
@@ -22,10 +23,11 @@ class ChatRoomPreview extends StatelessWidget {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            backgroundImage: AssetImage('assets/images/profile2.jpg'),
-            radius: 28.0,
-          ),
+          // CircleAvatar(
+          //   backgroundImage: AssetImage('assets/images/profile2.jpg'),
+          //   radius: 28.0,
+          // ),
+          SvgPicture.asset('assets/svgs/chat_room_selected.svg', height: 46.0),
           SizedBox(width: 0.9 * kDefaultPadding),
           Container(
             height: 53.0,
@@ -34,7 +36,7 @@ class ChatRoomPreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '# $roomName',
+                  '$roomName',
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w700,

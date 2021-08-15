@@ -4,6 +4,7 @@ import 'package:anonymous_chat/screens/chat/groups/components/chat_input_field.d
 import 'package:anonymous_chat/screens/chat/groups/components/message.dart';
 import 'package:anonymous_chat/screens/profile/profile_screen.dart';
 import 'package:anonymous_chat/screens/set_profile_pic/set_profile_pic.dart';
+import 'package:anonymous_chat/widgets/custom_avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -88,10 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
             SizedBox(width: 0.75 * kDefaultPadding),
-            CircleAvatar(
-              backgroundImage: NetworkImage(peerPhotoUrl),
-              radius: 17.0,
-            ),
+            CustomAvatar(photoUrl: peerPhotoUrl, size: 17.0),
             SizedBox(width: 0.75 * kDefaultPadding),
             Text(
               peerName,
@@ -110,7 +108,8 @@ class _ChatScreenState extends State<ChatScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfileScreen(isMe: false, id: peerId),
+                  builder: (context) => ProfileScreen(
+                      isMe: false, id: peerId, groupChatId: groupChatId),
                 ),
               );
             },

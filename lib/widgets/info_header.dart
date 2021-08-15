@@ -1,5 +1,6 @@
 import 'package:anonymous_chat/screens/profile/profile_screen.dart';
 import 'package:anonymous_chat/screens/set_profile_pic/set_profile_pic.dart';
+import 'package:anonymous_chat/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 
 class InfoHeader extends StatelessWidget {
@@ -35,10 +36,7 @@ class InfoHeader extends StatelessWidget {
               ),
             );
           },
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(photoUrl),
-            radius: 25.0,
-          ),
+          child: CustomAvatar(photoUrl: photoUrl, size: 25.0),
         ),
       ],
     );

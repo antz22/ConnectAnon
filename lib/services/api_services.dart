@@ -9,8 +9,8 @@ class APIServices {
         .collection('Users')
         .doc(userId.trim())
         .get();
-    Map<String, dynamic>? userData = userDocument.data();
-    String alias = userData!['alias'];
+    Map<String, dynamic> userData = userDocument.data()!;
+    String alias = userData['alias'];
     String status = userData['status'];
     String school = userData['school'];
     String photoUrl = userData['photoUrl'];
@@ -154,13 +154,14 @@ class APIServices {
     return 'Success';
   }
 
-  Future<String> createChatRoom(currentUserId, name) async {
+  Future<String> createChatRoom(currentUserId, name, description) async {
     var chatRooms = await FirebaseFirestore.instance.collection('ChatRooms');
     var status;
 
     chatRooms.add({
       'members': [currentUserId],
       'name': name,
+      'description': description,
     }).then((doc) {
       String roomId = doc.id;
 
@@ -193,6 +194,68 @@ class APIServices {
       'roomName': roomName,
       'currentUserId': currentUserId,
     };
+  }
+
+  Future<String> reportUser(currentUserId, peerId) async {
+    FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+      'reports': FieldValue.increment(1),
+    });
+
+    // FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
+    //   'lastReported': Now,
+    // });
+
+    // FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+    //   'lastBeenReported': Now,
+    // });
+
+    return 'Success';
+  }
+
+  Future<String> archiveConversation(currentUserId, peerId, groupId) async {
+    try {
+      FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+        'groups': FieldValue.arrayRemove([groupId]),
+      });
+
+      FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
+        'groups': FieldValue.arrayRemove([groupId]),
+      });
+
+      FirebaseFirestore.instance.collection('Groups').doc(groupId).delete();
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+
+    return 'Success';
+
+    //   groups.add({
+    //     'members': [currentUserId, randomId]
+    //   }).then((doc) {
+    //     String groupId = doc.id;
+
+    //     FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
+    //       'groups': FieldValue.arrayUnion([groupId]),
+    //       'chattedWith': FieldValue.arrayUnion([randomId]),
+    //     });
+
+    //     FirebaseFirestore.instance.collection('Users').doc(randomId).update({
+    //       'groups': FieldValue.arrayUnion([groupId]),
+    //       'chattedWith': FieldValue.arrayUnion([currentUserId]),
+    //     });
+
+    //     status = 'Success';
+    //     return 'Success';
+    //   }).catchError((err) {
+    //     print('Error creating group: $err');
+    //     print(err.runtimeType);
+    //     status = err;
+    //     return err;
+    //   });
+    //   status = 'Success';
+    // }
+    return 'Success';
   }
 }
 

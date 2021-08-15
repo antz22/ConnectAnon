@@ -24,4 +24,16 @@ class CustomSnackbar {
       icon: Icon(Icons.info, color: Colors.red),
     )..show(context);
   }
+
+  // static void buildNavWarningMessage(
+  //     GlobalKey _scaffoldKey, String title, String message) {
+  //   WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+  //     Flushbar(
+  //       title: title,
+  //       message: message,
+  //       duration: Duration(seconds: 4),
+  //       icon: Icon(Icons.info, color: Colors.red),
+  //     )..show(_scaffoldKey.currentState!.context);
+  //   });
+  // }
 }

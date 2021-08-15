@@ -47,6 +47,10 @@ This app was created using the Flutter framework developed by Google, using the 
 - animations
 - firebase production
 - error checking and null checking lol
+- invitations for chat rooms?
+- chat room creatino applications
+- ban applications
+
 
 - new branch: implement newest message, how long ago it was (keep it on a separate branch, keep it low priority)
 

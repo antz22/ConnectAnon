@@ -1,4 +1,5 @@
 import 'package:anonymous_chat/constants/constants.dart';
+import 'package:anonymous_chat/screens/account_creation/update_user_info.dart';
 import 'package:anonymous_chat/screens/landing_page/landing_page.dart';
 import 'package:anonymous_chat/services/api_services.dart';
 import 'package:anonymous_chat/services/authentication.dart';
@@ -14,10 +15,10 @@ import 'screens/sign_in/sign_in_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    // statusBarBrightness: Brightness.dark,
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  // statusBarColor: Colors.transparent,
+  // statusBarBrightness: Brightness.dark,
+  // ));
   runApp(MyApp());
 }
 
@@ -62,5 +63,6 @@ class AuthenticationWrapper extends StatelessWidget {
       return LandingPage();
     }
     // return LandingPage();
+    // return UpdateUserInfoPage(user: firebaseUser!);
   }
 }

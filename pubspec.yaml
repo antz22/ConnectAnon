@@ -17,6 +17,7 @@ dependencies:
   cloud_firestore: ^2.4.0
   firebase_core: "^1.3.0"
   firebase_auth: "^1.4.1"
+  firebase_messaging: ^10.0.4
   google_sign_in: ^5.0.4
 
   shared_preferences: ^2.0.6
@@ -25,6 +26,7 @@ dependencies:
 
   intl: ^0.17.0
   another_flushbar: ^1.10.24
+  url_launcher: ^6.0.9
 
 
 

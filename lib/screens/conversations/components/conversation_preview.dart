@@ -1,6 +1,7 @@
 import 'package:anonymous_chat/constants/constants.dart';
 import 'package:anonymous_chat/models/chat.dart';
 import 'package:anonymous_chat/services/api_services.dart';
+import 'package:anonymous_chat/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +27,7 @@ class ConversationPreview extends StatelessWidget {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(peerPhotoUrl),
-            radius: 28.0,
-          ),
+          CustomAvatar(photoUrl: peerPhotoUrl, size: 28.0),
           SizedBox(width: 0.9 * kDefaultPadding),
           Container(
             height: 53.0,

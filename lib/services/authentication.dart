@@ -65,7 +65,8 @@ class AuthenticationService {
     }
   }
 
-  Future<String> updateUserInfo(String alias, User user) async {
+  Future<String> updateUserInfo(
+      String alias, User user, String photoUrl) async {
     if (user != null) {
       var document = await FirebaseFirestore.instance
           .collection('Users')
@@ -78,7 +79,7 @@ class AuthenticationService {
           'uid': user.uid,
           'displayName': user.displayName,
           'alias': alias,
-          'photoUrl': user.photoURL,
+          'photoUrl': photoUrl,
           'groups': [],
           'chattedWith': [],
           'chatRooms': [],
@@ -86,6 +87,8 @@ class AuthenticationService {
           'status': 'Peer',
           'reports': 0,
         });
+      } else {
+        return 'You already have an account, signing in now';
       }
     }
     return 'Success';
