@@ -28,70 +28,144 @@ class APIServices {
     };
   }
 
-  Future<String> createGroup(currentUserId, chattedWith) async {
+  Future<String> createGroup(
+      String currentUserId, List chattedWith, bool isChatBuddy) async {
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
     var status;
-    await users.get().then((QuerySnapshot snapshot) async {
-      snapshot.docs.forEach((DocumentSnapshot doc) {
-        String id = doc.id;
-        bool valid = true;
-        if (id != currentUserId) {
-          chattedWith.forEach((chattedWithId) {
-            if (chattedWithId == id) {
-              valid = false;
+    if (isChatBuddy) {
+      await users.get().then((QuerySnapshot snapshot) async {
+        snapshot.docs.forEach((DocumentSnapshot doc) {
+          String id = doc.id;
+          bool valid = true;
+          if (id != currentUserId) {
+            chattedWith.forEach((chattedWithId) {
+              if (chattedWithId == id) {
+                valid = false;
+              }
+              print(chattedWithId);
+            });
+            if (valid) {
+              userIds.add(id);
             }
-            print(chattedWithId);
-          });
-          if (valid) {
-            userIds.add(id);
           }
-        }
-      });
-
-      if (userIds.isEmpty) {
-        status = 'No more available users';
-      } else {
-        Random rng = new Random();
-        int randomNum = rng.nextInt(userIds.length);
-        String randomId = userIds[randomNum];
-        print('random id: ' + randomId);
-
-        var groups = await FirebaseFirestore.instance.collection('Groups');
-
-        groups.add({
-          'members': [currentUserId, randomId]
-        }).then((doc) {
-          String groupId = doc.id;
-
-          FirebaseFirestore.instance
-              .collection('Users')
-              .doc(currentUserId)
-              .update({
-            'groups': FieldValue.arrayUnion([groupId]),
-            'chattedWith': FieldValue.arrayUnion([randomId]),
-          });
-
-          FirebaseFirestore.instance.collection('Users').doc(randomId).update({
-            'groups': FieldValue.arrayUnion([groupId]),
-            'chattedWith': FieldValue.arrayUnion([currentUserId]),
-          });
-
-          status = 'Success';
-          return 'Success';
-        }).catchError((err) {
-          print('Error creating group: $err');
-          print(err.runtimeType);
-          status = err;
-          return err;
         });
-        status = 'Success';
-      }
-    }).catchError((err) {
-      print('Error creating group: $err');
-      status = err;
-      return err;
-    });
+
+        if (userIds.isEmpty) {
+          status = 'No more available users';
+        } else {
+          Random rng = new Random();
+          int randomNum = rng.nextInt(userIds.length);
+          String randomId = userIds[randomNum];
+          print('random id: ' + randomId);
+
+          var groups = await FirebaseFirestore.instance.collection('Groups');
+
+          groups.add({
+            'members': [currentUserId, randomId]
+          }).then((doc) {
+            String groupId = doc.id;
+
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(currentUserId)
+                .update({
+              'groups': FieldValue.arrayUnion([groupId]),
+              'chattedWith': FieldValue.arrayUnion([randomId]),
+            });
+
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(randomId)
+                .update({
+              'groups': FieldValue.arrayUnion([groupId]),
+              'chattedWith': FieldValue.arrayUnion([currentUserId]),
+            });
+
+            status = 'Success';
+            return 'Success';
+          }).catchError((err) {
+            print('Error creating group: $err');
+            print(err.runtimeType);
+            status = err;
+            return err;
+          });
+          status = 'Success';
+        }
+      }).catchError((err) {
+        print('Error creating group: $err');
+        status = err;
+        return err;
+      });
+    } else {
+      await users
+          .where('status', isEqualTo: 'Chat Buddy')
+          .get()
+          .then((QuerySnapshot snapshot) async {
+        snapshot.docs.forEach((DocumentSnapshot doc) {
+          // userIds.add(doc.id);
+          String id = doc.id;
+          bool valid = true;
+          if (id != currentUserId) {
+            chattedWith.forEach((chattedWithId) {
+              if (chattedWithId == id) {
+                valid = false;
+              }
+              print(chattedWithId);
+            });
+            if (valid) {
+              userIds.add(id);
+            }
+          }
+        });
+
+        if (userIds.isEmpty) {
+          status = 'No more available users';
+        } else {
+          Random rng = new Random();
+          int randomNum = rng.nextInt(userIds.length);
+          String randomId = userIds[randomNum];
+          print('random id: ' + randomId);
+
+          var groups = await FirebaseFirestore.instance.collection('Groups');
+
+          groups.add({
+            'members': [currentUserId, randomId]
+          }).then((doc) {
+            String groupId = doc.id;
+
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(currentUserId)
+                .update({
+              'groups': FieldValue.arrayUnion([groupId]),
+              'chattedWith': FieldValue.arrayUnion([randomId]),
+            });
+
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(randomId)
+                .update({
+              'groups': FieldValue.arrayUnion([groupId]),
+              'chattedWith': FieldValue.arrayUnion([currentUserId]),
+            });
+
+            status = 'Success';
+            return 'Success';
+          }).catchError((err) {
+            print('Error creating group: $err');
+            print(err.runtimeType);
+            status = err;
+            return err;
+          });
+          status = 'Success';
+        }
+      }).catchError((err) {
+        print('Error creating group: $err');
+        status = err;
+        return err;
+      });
+    }
     return status;
   }
 

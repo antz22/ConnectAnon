@@ -143,15 +143,33 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      dynamic response = await context
+                      bool isChatBuddy = false;
+                      var response = await context
                           .read<APIServices>()
-                          .createGroup(currentUserId, chattedWith);
+                          .createGroup(currentUserId, chattedWith, isChatBuddy);
                       if (response != 'Success') {
                         CustomSnackbar.buildWarningMessage(
                             context, 'Error', response);
                       }
                     },
                     child: Text('Connect to anonymous peer'),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(kPrimaryColor),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      bool isChatBuddy = true;
+                      var response = await context
+                          .read<APIServices>()
+                          .createGroup(currentUserId, chattedWith, isChatBuddy);
+                      if (response != 'Success') {
+                        CustomSnackbar.buildWarningMessage(
+                            context, 'Error', response);
+                      }
+                    },
+                    child: Text('Connect to chat buddy'),
                     style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all<Color>(kPrimaryColor),

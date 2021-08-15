@@ -36,10 +36,15 @@ This app was created using the Flutter framework developed by Google, using the 
 
 - push notifications -- connecting with currently active user
 - firebase admin - notifications and chat buddy functionality and getting reported
+- firebase plan
+- connecting with chat buddies - should they be able to connect to the same person twice? or else they might get the same person as a converstaion they're already, ew buggy
+- SHOULD THE CONVERSATIONS BE DISAPPEARING?
+- change package names
 - bans
 - peer preferences?
 - unsplash API production - how to download stuff?
 
+- billion null errors
 - clean up and abstract!
 - animations
 - firebase production
