@@ -1,4 +1,4 @@
-import 'package:anonymous_chat/widgets/custom_snackbar.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';

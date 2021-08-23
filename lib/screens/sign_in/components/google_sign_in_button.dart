@@ -1,6 +1,6 @@
-import 'package:anonymous_chat/screens/account_creation/update_user_info.dart';
-import 'package:anonymous_chat/screens/home/home_page.dart';
-import 'package:anonymous_chat/services/authentication.dart';
+import 'package:connect_anon/screens/account_creation/update_user_info.dart';
+import 'package:connect_anon/screens/home/home_page.dart';
+import 'package:connect_anon/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';

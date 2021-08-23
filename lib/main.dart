@@ -1,8 +1,8 @@
-import 'package:anonymous_chat/constants/constants.dart';
-import 'package:anonymous_chat/screens/account_creation/update_user_info.dart';
-import 'package:anonymous_chat/screens/landing_page/landing_page.dart';
-import 'package:anonymous_chat/services/api_services.dart';
-import 'package:anonymous_chat/services/authentication.dart';
+import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/screens/account_creation/update_user_info.dart';
+import 'package:connect_anon/screens/landing_page/landing_page.dart';
+import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';

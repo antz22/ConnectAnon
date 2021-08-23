@@ -1,9 +1,9 @@
-import 'package:anonymous_chat/constants/constants.dart';
-import 'package:anonymous_chat/screens/chat/rooms/chat_room_screen.dart';
-import 'package:anonymous_chat/screens/create_chat_room/create_chat_room.dart';
-import 'package:anonymous_chat/screens/join_chat_room/join_chat_room.dart';
-import 'package:anonymous_chat/services/api_services.dart';
-import 'package:anonymous_chat/widgets/info_header.dart';
+import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/screens/chat/rooms/chat_room_screen.dart';
+import 'package:connect_anon/screens/create_chat_room/create_chat_room.dart';
+import 'package:connect_anon/screens/join_chat_room/join_chat_room.dart';
+import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/widgets/info_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

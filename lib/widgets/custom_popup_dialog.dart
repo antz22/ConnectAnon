@@ -1,6 +1,6 @@
-import 'package:anonymous_chat/screens/home/home_page.dart';
-import 'package:anonymous_chat/services/api_services.dart';
-import 'package:anonymous_chat/services/authentication.dart';
+import 'package:connect_anon/screens/home/home_page.dart';
+import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/services/authentication.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

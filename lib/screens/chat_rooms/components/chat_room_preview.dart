@@ -1,6 +1,6 @@
-import 'package:anonymous_chat/constants/constants.dart';
-import 'package:anonymous_chat/models/chat.dart';
-import 'package:anonymous_chat/services/api_services.dart';
+import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/models/chat.dart';
+import 'package:connect_anon/services/api_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';

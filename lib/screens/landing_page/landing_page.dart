@@ -1,5 +1,5 @@
-import 'package:anonymous_chat/screens/account_creation/getting_started.dart';
-import 'package:anonymous_chat/screens/sign_in/sign_in_page.dart';
+import 'package:connect_anon/screens/account_creation/getting_started.dart';
+import 'package:connect_anon/screens/sign_in/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

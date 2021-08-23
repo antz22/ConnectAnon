@@ -1,5 +1,5 @@
-import 'package:anonymous_chat/constants/constants.dart';
-import 'package:anonymous_chat/screens/sign_in/components/google_sign_in_button.dart';
+import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/screens/sign_in/components/google_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
