@@ -1,13 +1,13 @@
 <br />
 
 <p align="middle">
-    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo.svg" width="20%">
+    <img src="https://github.com/antz22/ConnectAnon/blob/master/screenshots/logo.svg" width="20%">
 </p>
 
 <br />
 
 <p align="middle">
-    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/logo_text.svg" width="80%">
+    <img src="https://github.com/antz22/ConnectAnon/blob/master/screenshots/logo_text.svg" width="80%">
 </p>
 
 <p align="middle">
@@ -91,11 +91,11 @@ If we had enough money...
 ## Screenshots
 
 <p align="middle">
-    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/landing.png" width="40%">
+    <img src="https://github.com/antz22/ConnectAnon/blob/master/screenshots/landing.png" width="40%">
     &nbsp;&nbsp;&nbsp;
-    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/conversations.png" width="40%">
-    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/new_chat.png" width="40%">
+    <img src="https://github.com/antz22/ConnectAnon/blob/master/screenshots/conversations.png" width="40%">
+    <img src="https://github.com/antz22/ConnectAnon/blob/master/screenshots/new_chat.png" width="40%">
     &nbsp;&nbsp;&nbsp;
-    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/chat.png" width="41%">
-    <img src="https://github.com/antz22/AnonymousChatApp/blob/master/screenshots/chat_rooms.png" width="40%">
+    <img src="https://github.com/antz22/ConnectAnon/blob/master/screenshots/chat.png" width="41%">
+    <img src="https://github.com/antz22/ConnectAnon/blob/master/screenshots/chat_rooms.png" width="40%">
 </p>
