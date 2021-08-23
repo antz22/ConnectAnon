@@ -1,4 +1,4 @@
-package com.example.anonymous_chat
+package com.antz.connect_anon
 
 import io.flutter.embedding.android.FlutterActivity
 

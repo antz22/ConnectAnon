@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:225357550380:android:c64ac930a7f132a756d289",
         "android_client_info": {
-          "package_name": "com.antz.connect_anon"
+          "package_name": "com.example.anonymous_chat"
         }
       },
       "oauth_client": [

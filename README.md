@@ -86,6 +86,7 @@ If we had enough money...
 ## Resources
 
 - [Google Sign In](https://medium.com/flutter-community/flutter-implementing-google-sign-in-71888bca24edn)
+- [Changing Project name](https://github.com/flutter/flutter/issues/35976)
 
 ## Screenshots
 
