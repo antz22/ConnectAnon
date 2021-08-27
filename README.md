@@ -36,12 +36,16 @@ This app was created using the Flutter framework developed by Google, using the 
 
 - firebase plan - put in credit card (this is only a dev project so it should be fine)
 
+
+1 read and unread messages?
+2 most recent message and the time of the most recent message ? 
+3 ANIMATIONS
+  - these will step up your app to be potentially usable.
 - push notifications -- connecting with currently active user
 - firebase admin - notifications and chat buddy functionality and getting reported
 - connecting with chat buddies - should they be able to connect to the same person twice? or else they might get the same person as a converstaion they're already, ew buggy
 - should chat buddies be able to do the same thing? then what about erasing things in the database, updating chattedwith?
 - SHOULD THE CONVERSATIONS BE DISAPPEARING?
-- change package names
 - profile pics in chat rooms
 - bans
 - peer preferences?
