@@ -41,6 +41,9 @@ This app was created using the Flutter framework developed by Google, using the 
 2 most recent message and the time of the most recent message ? 
 3 ANIMATIONS
   - these will step up your app to be potentially usable.
+- implement lastReported (banned if reports % 3 == 0), banSeen, isBanned, lastConnected
+- admin notifications - chat room creation, reports, chat buddies
+
 - push notifications -- connecting with currently active user
 - firebase admin - notifications and chat buddy functionality and getting reported
 - connecting with chat buddies - should they be able to connect to the same person twice? or else they might get the same person as a converstaion they're already, ew buggy

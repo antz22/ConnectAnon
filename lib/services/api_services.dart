@@ -70,11 +70,13 @@ class APIServices {
               .update({
             'groups': FieldValue.arrayUnion([groupId]),
             'chattedWith': FieldValue.arrayUnion([randomId]),
+            'lastConnected': DateTime.now().millisecondsSinceEpoch.toString(),
           });
 
           FirebaseFirestore.instance.collection('Users').doc(randomId).update({
             'groups': FieldValue.arrayUnion([groupId]),
             'chattedWith': FieldValue.arrayUnion([currentUserId]),
+            'lastConnected': DateTime.now().millisecondsSinceEpoch.toString(),
           });
 
           status = 'Success';

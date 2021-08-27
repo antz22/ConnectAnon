@@ -87,6 +87,8 @@ class AuthenticationService {
           'school': 'MHS',
           'status': 'Peer',
           'reports': 0,
+          'banSeen': false,
+          'isBanned': false,
         });
       } else {
         return 'You already have an account, signing in now';
