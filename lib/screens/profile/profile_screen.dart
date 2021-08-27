@@ -2,11 +2,9 @@ import 'dart:io';
 
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/profile/components/bold_text.dart';
-import 'package:connect_anon/screens/set_profile_pic/set_profile_pic.dart';
 import 'package:connect_anon/services/api_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_popup_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

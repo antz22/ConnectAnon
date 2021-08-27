@@ -66,7 +66,7 @@ class AuthenticationService {
   }
 
   Future<String> updateUserInfo(
-      String alias, User user, String photoUrl) async {
+      String alias, User? user, String photoUrl) async {
     if (user != null) {
       var document = await FirebaseFirestore.instance
           .collection('Users')
@@ -90,11 +90,12 @@ class AuthenticationService {
           'banSeen': false,
           'isBanned': false,
         });
+        return 'Success';
       } else {
         return 'You already have an account, signing in now';
       }
     }
-    return 'Success';
+    return 'Error';
   }
 
   // Future<String> signIn({String email, String password}) async {

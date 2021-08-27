@@ -1,9 +1,6 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/models/chat.dart';
-import 'package:connect_anon/services/api_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ConversationPreview extends StatelessWidget {
   ConversationPreview({
@@ -15,7 +12,7 @@ class ConversationPreview extends StatelessWidget {
     required this.peerPhotoUrl,
   }) : super(key: key);
 
-  final String groupChatId;
+  final String? groupChatId;
   final String currentUserId;
   final String peerId;
   final String peerName;

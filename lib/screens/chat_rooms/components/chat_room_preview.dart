@@ -1,9 +1,6 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/models/chat.dart';
-import 'package:connect_anon/services/api_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 
 class ChatRoomPreview extends StatelessWidget {
   ChatRoomPreview({
@@ -13,7 +10,7 @@ class ChatRoomPreview extends StatelessWidget {
     required this.roomName,
   }) : super(key: key);
 
-  final String chatRoomId;
+  final String? chatRoomId;
   final String currentUserId;
   final String roomName;
 

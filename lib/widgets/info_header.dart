@@ -1,5 +1,4 @@
 import 'package:connect_anon/screens/profile/profile_screen.dart';
-import 'package:connect_anon/screens/set_profile_pic/set_profile_pic.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 

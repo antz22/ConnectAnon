@@ -4,7 +4,6 @@ import 'package:connect_anon/widgets/chat_rooms_header.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:connect_anon/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class CreateChatRoomScreen extends StatefulWidget {
