@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:anonymous_chat/constants/constants.dart';
-import 'package:anonymous_chat/widgets/custom_snackbar.dart';
-import 'package:anonymous_chat/widgets/photo_credit_widget.dart';
+import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
+import 'package:connect_anon/widgets/photo_credit_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

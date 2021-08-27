@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:anonymous_chat/constants/constants.dart';
-import 'package:anonymous_chat/screens/chat_rooms/chat_rooms.dart';
-import 'package:anonymous_chat/screens/conversations/conversations_screen.dart';
-import 'package:anonymous_chat/widgets/custom_snackbar.dart';
+import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/screens/chat_rooms/chat_rooms.dart';
+import 'package:connect_anon/screens/conversations/conversations_screen.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +78,8 @@ class _HomePageState extends State<HomePage>
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       Platform.isAndroid
-          ? 'com.example.anonymous_chat'
-          : 'com.example.anonymous_chat_ios_ting',
+          ? 'com.antz.connect_anon'
+          : 'com.antz.connect_anon_ios_ting',
       'ConnectAnon Chat App',
       'your channel description',
       // playSound: true,

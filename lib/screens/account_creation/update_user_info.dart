@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io' show Platform;
 
-import 'package:anonymous_chat/constants/constants.dart';
-import 'package:anonymous_chat/screens/home/home_page.dart';
-import 'package:anonymous_chat/screens/set_profile_pic/set_profile_pic.dart';
-import 'package:anonymous_chat/services/authentication.dart';
-import 'package:anonymous_chat/widgets/custom_avatar.dart';
-import 'package:anonymous_chat/widgets/custom_popup_dialog.dart';
-import 'package:anonymous_chat/widgets/custom_snackbar.dart';
-import 'package:anonymous_chat/widgets/photo_credit_widget.dart';
+import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/screens/home/home_page.dart';
+import 'package:connect_anon/screens/set_profile_pic/set_profile_pic.dart';
+import 'package:connect_anon/services/authentication.dart';
+import 'package:connect_anon/widgets/custom_avatar.dart';
+import 'package:connect_anon/widgets/custom_popup_dialog.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
+import 'package:connect_anon/widgets/photo_credit_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

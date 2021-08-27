@@ -1,6 +1,6 @@
 {
-    "name": "anonymous_chat",
-    "short_name": "anonymous_chat",
+    "name": "connect_anon",
+    "short_name": "connect_anon",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

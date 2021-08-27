@@ -1,7 +1,7 @@
-import 'package:anonymous_chat/constants/constants.dart';
-import 'package:anonymous_chat/services/api_services.dart';
-import 'package:anonymous_chat/widgets/chat_rooms_header.dart';
-import 'package:anonymous_chat/widgets/custom_snackbar.dart';
+import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/widgets/chat_rooms_header.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

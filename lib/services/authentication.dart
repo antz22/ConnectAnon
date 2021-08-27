@@ -1,4 +1,4 @@
-import 'package:anonymous_chat/widgets/custom_snackbar.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
