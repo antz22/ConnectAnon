@@ -5,20 +5,22 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatRoomInputField extends StatefulWidget {
-  ChatRoomInputField({Key? key, required this.chatRoomId}) : super(key: key);
+  ChatRoomInputField({
+    Key? key,
+    required this.chatRoomId,
+    required this.alias,
+    required this.photoUrl,
+  }) : super(key: key);
 
   final String chatRoomId;
+  final String alias;
+  final String photoUrl;
 
   @override
-  _ChatRoomInputFieldState createState() =>
-      _ChatRoomInputFieldState(chatRoomId: chatRoomId);
+  _ChatRoomInputFieldState createState() => _ChatRoomInputFieldState();
 }
 
 class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
-  final String chatRoomId;
-
-  _ChatRoomInputFieldState({required this.chatRoomId});
-
   final TextEditingController _textEditingController = TextEditingController();
 
   bool _isEmpty = true;
@@ -26,7 +28,7 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
   void onSendMessage(String content) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? id = await prefs.getString('id');
-    print(chatRoomId);
+    print(widget.chatRoomId);
 
     // final user = Provider.of<User?>(context, listen: false);
 
@@ -35,13 +37,13 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
 
       var documentReference = FirebaseFirestore.instance
           .collection('ChatRoomMessages')
-          .doc(chatRoomId.trim())
+          .doc(widget.chatRoomId.trim())
           .collection('messages');
 
       documentReference.add({
         'idFrom': id,
-        // FIX HERE
-        'nameFrom': 'hi',
+        'nameFrom': widget.alias,
+        'photoUrlFrom': widget.photoUrl,
         'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
         'content': content,
       });

@@ -71,6 +71,28 @@ class CustomPopupDialog {
                   );
                 }
                 break;
+              case 'Block User':
+                String currentUserId = params['currentUserId'];
+                String peerId = params['peerId'];
+                String groupChatId = params['groupChatId'];
+                String response = await context
+                    .read<APIServices>()
+                    .blockUser(currentUserId, peerId, groupChatId);
+                if (response == 'Success') {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                    ),
+                  );
+                } else {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return HomePage(message: response);
+                      },
+                    ),
+                  );
+                }
             }
           },
           child: Text('Confirm'),

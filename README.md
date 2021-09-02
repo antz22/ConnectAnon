@@ -46,10 +46,7 @@ This app was created using the Flutter framework developed by Google, using the 
 
 - push notifications -- connecting with currently active user
 - firebase admin - notifications and chat buddy functionality and getting reported
-- connecting with chat buddies - should they be able to connect to the same person twice? or else they might get the same person as a converstaion they're already, ew buggy
 - should chat buddies be able to do the same thing? then what about erasing things in the database, updating chattedwith?
-- SHOULD THE CONVERSATIONS BE DISAPPEARING?
-- profile pics in chat rooms
 - bans
 - peer preferences?
 - unsplash API production - how to download stuff?
@@ -74,6 +71,10 @@ This app was created using the Flutter framework developed by Google, using the 
 
 - how to show most recent message, how long ago it was?
 - add an if check sayign that if users is over like 50 then dont check thorugh each one?
+
+# Questions
+
+- SHOULD THE CONVERSATIONS BE DISAPPEARING? -> no, just use archive as 'end live chat' button
 
 # Potential Features
 

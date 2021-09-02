@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/screens/profile/components/bold_text.dart';
 import 'package:connect_anon/services/api_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
@@ -41,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if (snapshot.hasData) {
             var userData = snapshot.data!;
+            bool hasReport = snapshot.data!['reports'] != 0 ? true : false;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -157,37 +159,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SubText(text: 'status'),
                 SizedBox(height: 0.05 * MediaQuery.of(context).size.height),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: hasReport
+                      ? MainAxisAlignment.spaceEvenly
+                      : MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        BoldText(text: userData['peerChats'].toString()),
-                        SubText(text: 'Peer chats'),
-                      ],
+                    Container(
+                      width: 85.0,
+                      margin: EdgeInsets.only(
+                          right: hasReport ? 0 : 1.3 * kDefaultPadding),
+                      child: Column(
+                        children: [
+                          BoldText(text: userData['peerChats'].toString()),
+                          SubText(text: 'Peer chats'),
+                        ],
+                      ),
                     ),
-                    SizedBox(width: 2 * kDefaultPadding),
-                    Column(
-                      children: [
-                        BoldText(text: userData['chatRooms'].toString()),
-                        SubText(text: 'Chat Rooms'),
-                      ],
-                    ),
-                    snapshot.data!['reports'] != 0
-                        ? Column(
-                            children: [
-                              SizedBox(width: 2.09 * kDefaultPadding),
-                              Column(
-                                children: [
-                                  BoldText(
-                                    text: userData['reports'].toString(),
-                                    color: Colors.red,
-                                  ),
-                                  SubText(text: '  Reports '),
-                                ],
-                              ),
-                            ],
+                    hasReport
+                        ? Container(
+                            width: 85.0,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  children: [
+                                    BoldText(
+                                      text: userData['reports'].toString(),
+                                      color: Colors.red,
+                                    ),
+                                    SubText(text: '  Reports '),
+                                  ],
+                                ),
+                              ],
+                            ),
                           )
                         : SizedBox.shrink(),
+                    Container(
+                      width: 85.0,
+                      margin: EdgeInsets.only(
+                          left: hasReport ? 0 : 1.3 * kDefaultPadding),
+                      child: Column(
+                        children: [
+                          BoldText(text: userData['chatRooms'].toString()),
+                          SubText(text: 'Chat Rooms'),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
                 widget.isMe
@@ -198,51 +214,102 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height:
                                   0.07 * MediaQuery.of(context).size.height),
                           ElevatedButton(
-                              onPressed: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                String? currentUserId = prefs.getString('id');
-                                Map<String, dynamic> params = {
-                                  'currentUserId': currentUserId,
-                                  'peerId': widget.id,
-                                  'groupChatId': widget.groupChatId,
-                                };
-                                String title = 'Archive';
-                                String content =
-                                    'Are you sure you want to archive this conversation? You won\'t be able to chat with this user again.';
-                                String purpose = 'Archive Conversation';
-
-                                if (Platform.isAndroid) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => CustomPopupDialog
-                                          .buildMaterialPopupDialog(context,
-                                              params, title, content, purpose));
-                                } else {
-                                  showCupertinoDialog(
-                                      context: context,
-                                      builder: (context) => CustomPopupDialog
-                                          .buildCupertinoPopupDialog(context,
-                                              params, title, content, purpose));
-                                }
-                              },
-                              child: Text('Archive')),
-                          TextButton(
                             onPressed: () async {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               String? currentUserId = prefs.getString('id');
+                              Map<String, dynamic> params = {
+                                'currentUserId': currentUserId,
+                                'peerId': widget.id,
+                                'groupChatId': widget.groupChatId,
+                              };
+                              String title = 'Archive';
+                              String content =
+                                  'Are you sure you want to archive this conversation? You won\'t be able to access your conversation anymore.';
+                              String purpose = 'Archive Conversation';
 
-                              await context
-                                  .read<APIServices>()
-                                  .reportUser(currentUserId, widget.id);
+                              if (Platform.isAndroid) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => CustomPopupDialog
+                                        .buildMaterialPopupDialog(context,
+                                            params, title, content, purpose));
+                              } else {
+                                showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) => CustomPopupDialog
+                                        .buildCupertinoPopupDialog(context,
+                                            params, title, content, purpose));
+                              }
                             },
-                            child: Text(
-                              'Report',
-                              style: TextStyle(
-                                color: Colors.red,
+                            child: Text('Archive'),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                onPressed: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  String? currentUserId = prefs.getString('id');
+
+                                  await context
+                                      .read<APIServices>()
+                                      .reportUser(currentUserId, widget.id);
+                                },
+                                child: Text(
+                                  'Report',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(width: kDefaultPadding),
+                              TextButton(
+                                onPressed: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  String? currentUserId = prefs.getString('id');
+                                  Map<String, dynamic> params = {
+                                    'currentUserId': currentUserId,
+                                    'peerId': widget.id,
+                                    'groupChatId': widget.groupChatId,
+                                  };
+                                  String title = 'Block';
+                                  String content =
+                                      'Are you sure you want to block this user? You won\'t be able to chat with this user again.';
+                                  String purpose = 'Block User';
+
+                                  if (Platform.isAndroid) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => CustomPopupDialog
+                                            .buildMaterialPopupDialog(
+                                                context,
+                                                params,
+                                                title,
+                                                content,
+                                                purpose));
+                                  } else {
+                                    showCupertinoDialog(
+                                        context: context,
+                                        builder: (context) => CustomPopupDialog
+                                            .buildCupertinoPopupDialog(
+                                                context,
+                                                params,
+                                                title,
+                                                content,
+                                                purpose));
+                                  }
+                                },
+                                child: Text(
+                                  'Block',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       )

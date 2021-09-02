@@ -68,6 +68,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                 snapshot.data!.data() as Map<String, dynamic>;
             List chatRooms = data['chatRooms'];
             String photoUrl = data['photoUrl'];
+            String alias = data['alias'];
             return Column(
               children: [
                 Container(
@@ -108,6 +109,8 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                                           chatRoomId: chatRoomId,
                                           currentUserId: currentUserId,
                                           roomName: roomName,
+                                          alias: alias,
+                                          photoUrl: photoUrl,
                                         ),
                                       ),
                                     );

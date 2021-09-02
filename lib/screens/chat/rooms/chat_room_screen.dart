@@ -11,31 +11,21 @@ class ChatRoomScreen extends StatefulWidget {
     required this.chatRoomId,
     required this.currentUserId,
     required this.roomName,
+    required this.alias,
+    required this.photoUrl,
   }) : super(key: key);
 
   final String chatRoomId;
   final String currentUserId;
   final String roomName;
+  final String alias;
+  final String photoUrl;
 
   @override
-  _ChatRoomScreenState createState() => _ChatRoomScreenState(
-        chatRoomId: chatRoomId,
-        currentUserId: currentUserId,
-        roomName: roomName,
-      );
+  _ChatRoomScreenState createState() => _ChatRoomScreenState();
 }
 
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
-  final String chatRoomId;
-  final String currentUserId;
-  final String roomName;
-
-  _ChatRoomScreenState({
-    required this.chatRoomId,
-    required this.currentUserId,
-    required this.roomName,
-  });
-
   final List<QueryDocumentSnapshot> listMessage = new List.from([]);
 
   final int _limitIncrement = 20;
@@ -82,7 +72,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             ),
             SizedBox(width: 0.75 * kDefaultPadding),
             Text(
-              roomName,
+              widget.roomName,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18.0,
@@ -105,11 +95,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           child: Column(
             children: [
               Expanded(
-                child: chatRoomId.isNotEmpty
+                child: widget.chatRoomId.isNotEmpty
                     ? StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('ChatRoomMessages')
-                            .doc(chatRoomId.trim())
+                            .doc(widget.chatRoomId.trim())
                             .collection('messages')
                             .orderBy('timestamp', descending: true)
                             .limit(_limit)
@@ -143,7 +133,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                       : EdgeInsets.symmetric(
                                           horizontal: kDefaultPadding),
                                   child: ChatRoomMessage(
-                                      userId: currentUserId,
+                                      userId: widget.currentUserId,
                                       document: snapshot.data?.docs[index]),
                                 ),
                               );
@@ -165,7 +155,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         ),
                       ),
               ),
-              ChatRoomInputField(chatRoomId: chatRoomId),
+              ChatRoomInputField(
+                chatRoomId: widget.chatRoomId,
+                alias: widget.alias,
+                photoUrl: widget.photoUrl,
+              ),
             ],
           ),
         ),

@@ -161,8 +161,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                       : EdgeInsets.symmetric(
                                           horizontal: kDefaultPadding),
                                   child: Message(
-                                      userId: currentUserId,
-                                      document: snapshot.data?.docs[index]),
+                                    userId: currentUserId,
+                                    document: snapshot.data?.docs[index],
+                                    photoUrl: peerPhotoUrl,
+                                  ),
                                 ),
                               );
                             }

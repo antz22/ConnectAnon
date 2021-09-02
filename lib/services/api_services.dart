@@ -28,11 +28,15 @@ class APIServices {
     };
   }
 
-  Future<String> createGroup(String currentUserId, List chattedWith) async {
+  Future<String> createGroup(
+      String currentUserId, List chattedWith, List blocked) async {
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
     var status;
-    await users.get().then((QuerySnapshot snapshot) async {
+    await users
+        .where('status', isEqualTo: 'Peer')
+        .get()
+        .then((QuerySnapshot snapshot) async {
       snapshot.docs.forEach((DocumentSnapshot doc) {
         String id = doc.id;
         bool valid = true;
@@ -44,7 +48,17 @@ class APIServices {
             print(chattedWithId);
           });
           if (valid) {
-            userIds.add(id);
+            print('yeet');
+            blocked.forEach((blockedId) {
+              if (blockedId == id) {
+                valid = false;
+              }
+            });
+            print(blocked);
+            if (valid) {
+              print('yeet2');
+              userIds.add(id);
+            }
           }
         }
       });
@@ -99,7 +113,7 @@ class APIServices {
   }
 
   Future<String> createSpecialGroup(
-      String currentUserId, List volunteersChattedWith) async {
+      String currentUserId, List volunteersChattedWith, List blocked) async {
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
     List<String> allIds = new List.from([]);
@@ -120,7 +134,14 @@ class APIServices {
             print(chattedWithId);
           });
           if (valid) {
-            userIds.add(id);
+            blocked.forEach((blockedId) {
+              if (blockedId == id) {
+                valid = false;
+              }
+            });
+            if (valid) {
+              userIds.add(id);
+            }
           }
         }
       });
@@ -267,9 +288,9 @@ class APIServices {
 
   Future<String> createChatRoom(currentUserId, name, description) async {
     var chatRooms = await FirebaseFirestore.instance.collection('ChatRooms');
-    var status;
+    var status = '';
 
-    chatRooms.add({
+    await chatRooms.add({
       'members': [currentUserId],
       'name': name,
       'description': description,
@@ -323,7 +344,14 @@ class APIServices {
     return 'Success';
   }
 
-  Future<String> archiveConversation(currentUserId, peerId, groupId) async {
+  Future<String> blockUser(currentUserId, peerId, groupId) async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(currentUserId)
+        .update({
+      'blocked': FieldValue.arrayUnion([peerId]),
+    });
+
     try {
       FirebaseFirestore.instance.collection('Users').doc(peerId).update({
         'groups': FieldValue.arrayRemove([groupId]),
@@ -331,6 +359,27 @@ class APIServices {
 
       FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
         'groups': FieldValue.arrayRemove([groupId]),
+      });
+
+      FirebaseFirestore.instance.collection('Groups').doc(groupId).delete();
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+
+    return 'Success';
+  }
+
+  Future<String> archiveConversation(currentUserId, peerId, groupId) async {
+    try {
+      FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+        'groups': FieldValue.arrayRemove([groupId]),
+        'chattedWith': FieldValue.arrayRemove([currentUserId]),
+      });
+
+      FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
+        'groups': FieldValue.arrayRemove([groupId]),
+        'chattedWith': FieldValue.arrayRemove([peerId]),
       });
 
       FirebaseFirestore.instance.collection('Groups').doc(groupId).delete();

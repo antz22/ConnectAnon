@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Message extends StatefulWidget {
-  Message({Key? key, required this.userId, required this.document})
-      : super(key: key);
+  Message({
+    Key? key,
+    required this.userId,
+    required this.document,
+    required this.photoUrl,
+  }) : super(key: key);
 
   final String userId;
   final DocumentSnapshot? document;
+  final String photoUrl;
 
   @override
   _MessageState createState() => _MessageState();
@@ -40,40 +45,56 @@ class _MessageState extends State<Message> {
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Padding(
           padding: EdgeInsets.only(bottom: 0.3 * kDefaultPadding),
-          child: Column(
-            crossAxisAlignment:
-                isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment:
+                isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if (_pressed == true) {
-                      _pressed = false;
-                    } else {
-                      _pressed = true;
-                    }
-                  });
-                },
-                child: Container(
-                  constraints: BoxConstraints(maxWidth: _maxWidth),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 0.75 * kDefaultPadding,
-                    vertical: 0.5 * kDefaultPadding,
-                  ),
-                  decoration: BoxDecoration(
-                      color: isSender
-                          ? kPrimaryColor.withOpacity(0.2)
-                          : kTertiaryColor,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    widget.document?['content'],
-                    style: TextStyle(
-                      fontSize: 14.5,
+              isSender
+                  ? SizedBox.shrink()
+                  : Container(
+                      margin: EdgeInsets.only(right: 0.5 * kDefaultPadding),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(widget.photoUrl),
+                        radius: 13.0,
+                      ),
+                    ),
+              Column(
+                crossAxisAlignment: isSender
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (_pressed == true) {
+                          _pressed = false;
+                        } else {
+                          _pressed = true;
+                        }
+                      });
+                    },
+                    child: Container(
+                      constraints: BoxConstraints(maxWidth: _maxWidth),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 0.75 * kDefaultPadding,
+                        vertical: 0.5 * kDefaultPadding,
+                      ),
+                      decoration: BoxDecoration(
+                          color: isSender
+                              ? kPrimaryColor.withOpacity(0.2)
+                              : kTertiaryColor,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        widget.document?['content'],
+                        style: TextStyle(
+                          fontSize: 14.5,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  _pressed ? _buildMessageTime() : SizedBox.shrink(),
+                ],
               ),
-              _pressed ? _buildMessageTime() : SizedBox.shrink(),
             ],
           ),
         );

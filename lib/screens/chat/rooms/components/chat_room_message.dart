@@ -20,11 +20,13 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
   bool isSender = false;
   bool _pressed = false;
   String senderName = '';
+  String photoUrlFrom = '';
 
   Future<bool> _checkSender() async {
     isSender = widget.document?.get('idFrom') == widget.userId ? true : false;
     senderName = widget.document?.get('nameFrom');
-    return widget.document?.get('idFrom') == widget.userId ? true : false;
+    photoUrlFrom = widget.document?.get('photoUrlFrom');
+    return isSender;
   }
 
   String _getMessageTime() {
@@ -46,64 +48,107 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
             crossAxisAlignment:
                 isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
-              isSender
-                  ? SizedBox.shrink()
-                  : Container(
-                      margin: EdgeInsets.only(
-                        bottom: 5.0,
-                        left: 5.0,
-                      ),
-                      child: Text(
-                        senderName,
-                        style: TextStyle(
-                          color: Colors.grey.shade400,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-              Column(
-                crossAxisAlignment: isSender
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (_pressed == true) {
-                          _pressed = false;
-                        } else {
-                          _pressed = true;
-                        }
-                      });
-                    },
-                    child: Container(
-                      constraints: BoxConstraints(maxWidth: _maxWidth),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 0.75 * kDefaultPadding,
-                        vertical: 0.5 * kDefaultPadding,
-                      ),
-                      decoration: BoxDecoration(
-                          color: isSender
-                              ? kPrimaryColor.withOpacity(0.2)
-                              : kTertiaryColor,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Text(
-                        widget.document?['content'],
-                        style: TextStyle(
-                          fontSize: 14.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                  _pressed ? _buildMessageTime() : SizedBox.shrink(),
-                ],
-              ),
+              _buildMessage(isSender),
             ],
           ),
         );
       },
     );
+  }
+
+  Widget _buildMessage(bool isSender) {
+    if (isSender) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          SizedBox.shrink(),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                if (_pressed == true) {
+                  _pressed = false;
+                } else {
+                  _pressed = true;
+                }
+              });
+            },
+            child: Container(
+              constraints: BoxConstraints(maxWidth: _maxWidth),
+              padding: EdgeInsets.symmetric(
+                horizontal: 0.75 * kDefaultPadding,
+                vertical: 0.5 * kDefaultPadding,
+              ),
+              decoration: BoxDecoration(
+                  color: kPrimaryColor.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Text(
+                widget.document?['content'],
+                style: TextStyle(
+                  fontSize: 14.5,
+                ),
+              ),
+            ),
+          ),
+          _pressed ? _buildMessageTime() : SizedBox.shrink(),
+        ],
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          CircleAvatar(
+            backgroundImage: NetworkImage(photoUrlFrom),
+            radius: 14.0,
+          ),
+          SizedBox(width: 0.5 * kDefaultPadding),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 5.0, left: 4.0),
+                child: Text(
+                  widget.document?['nameFrom'],
+                  style: TextStyle(
+                    fontSize: 11.5,
+                    color: Colors.grey.shade500,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (_pressed == true) {
+                      _pressed = false;
+                    } else {
+                      _pressed = true;
+                    }
+                  });
+                },
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: _maxWidth),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 0.75 * kDefaultPadding,
+                    vertical: 0.5 * kDefaultPadding,
+                  ),
+                  decoration: BoxDecoration(
+                      color: kTertiaryColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    widget.document?['content'],
+                    style: TextStyle(
+                      fontSize: 14.5,
+                    ),
+                  ),
+                ),
+              ),
+              _pressed ? _buildMessageTime() : SizedBox.shrink(),
+            ],
+          ),
+        ],
+      );
+    }
   }
 
   Widget _buildMessageTime() {

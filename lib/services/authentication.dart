@@ -83,6 +83,7 @@ class AuthenticationService {
           'groups': [],
           'chattedWith': [],
           'specialChattedWith': [],
+          'blocked': [],
           'chatRooms': [],
           'school': 'MHS',
           'status': 'Peer',

@@ -68,6 +68,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
             List groups = data['groups'];
             List chattedWith = data['chattedWith'];
             List specialChattedWith = data['specialChattedWith'];
+            List blocked = data['blocked'];
             String photoUrl = data['photoUrl'];
             return Column(children: [
               Container(
@@ -143,7 +144,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                     onPressed: () async {
                       var response = await context
                           .read<APIServices>()
-                          .createGroup(currentUserId, chattedWith);
+                          .createGroup(currentUserId, chattedWith, blocked);
                       if (response != 'Success') {
                         CustomSnackbar.buildWarningMessage(
                             context, 'Error', response);
@@ -160,7 +161,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                       var response = await context
                           .read<APIServices>()
                           .createSpecialGroup(
-                              currentUserId, specialChattedWith);
+                              currentUserId, specialChattedWith, blocked);
                       if (response != 'Success') {
                         CustomSnackbar.buildWarningMessage(
                             context, 'Error', response);
