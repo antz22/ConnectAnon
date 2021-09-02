@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -37,26 +38,68 @@ class AuthenticationService {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('id', user!.uid);
+
+        var userDocument = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid.trim())
+            .get();
+
+        if (userDocument.exists) {
+          Map<String, dynamic> userData = userDocument.data()!;
+          String alias = userData['alias'];
+          String photoUrl = userData['photoUrl'];
+          bool isBanned = userData['isBanned'];
+          String bannedSince = userData['bannedSince'];
+          String status = userData['status'];
+          if (isBanned) {
+            DateTime lastDateTime =
+                DateTime.fromMillisecondsSinceEpoch(int.parse(bannedSince));
+            DateTime currentDateTime = DateTime.now();
+            var difference =
+                currentDateTime.difference(lastDateTime).inMilliseconds;
+            // it's been less than 3 days
+            if (difference <= 259200000) {
+              CustomSnackbar.buildWarningMessage(context, 'Warning',
+                  'Unfortunately, you have been temporarily banned (3 days) due to reports filed against you.');
+              await prefs.setBool('isBanned', true);
+            } else {
+              // relieve them from the ban if it's been over 3 days
+              FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(user.uid.trim())
+                  .update({
+                'isBanned': false,
+              });
+
+              await prefs.setBool('isBanned', false);
+            }
+          } else {
+            await prefs.setString('alias', alias);
+            await prefs.setString('photoUrl', photoUrl);
+            await prefs.setString('status', status);
+          }
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            AuthenticationService.customSnackBar(
-              content: 'The account already exists with a different credential',
-            ),
-          );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   AuthenticationService.customSnackBar(
+          //     content: 'The account already exists with a different credential',
+          //   ),
+          // );
+          CustomSnackbar.buildWarningMessage(context, 'Error',
+              'The account already exists with a different credential');
+          print(e);
         } else if (e.code == 'invalid-credential') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            AuthenticationService.customSnackBar(
-              content: 'Error occurred while accessing credentials. Try again.',
-            ),
-          );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   AuthenticationService.customSnackBar(
+          //     content: 'Error occurred while accessing credentials. Try again.',
+          //   ),
+          // );
+          CustomSnackbar.buildWarningMessage(context, 'Error',
+              'Error occurred while accessing credentials. Try again.');
+          print(e);
         }
       } catch (e) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   AuthenticationService.customSnackBar(
-        //     content: 'Error occurred using Google Sign In. Try again.',
-        //   ),
-        // );
         CustomSnackbar.buildWarningMessage(context, 'Error',
             'Error occurred using Google Sign In. Try again.');
         print(e);
@@ -88,9 +131,14 @@ class AuthenticationService {
           'school': 'MHS',
           'status': 'Peer',
           'reports': 0,
-          'banSeen': false,
+          'lastReportedAt': '',
+          'bannedSince': '',
           'isBanned': false,
         });
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('alias', alias);
+        await prefs.setString('photoUrl', photoUrl);
+        await prefs.setString('status', 'Peer');
         return 'Success';
       } else {
         return 'You already have an account, signing in now';

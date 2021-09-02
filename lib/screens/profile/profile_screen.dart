@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/screens/profile/components/bold_text.dart';
+import 'package:connect_anon/screens/report/report_screen.dart';
 import 'package:connect_anon/services/api_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_popup_dialog.dart';
@@ -253,9 +254,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       await SharedPreferences.getInstance();
                                   String? currentUserId = prefs.getString('id');
 
-                                  await context
-                                      .read<APIServices>()
-                                      .reportUser(currentUserId, widget.id);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ReportScreen(
+                                          currentUserId: currentUserId,
+                                          peerId: widget.id),
+                                    ),
+                                  );
                                 },
                                 child: Text(
                                   'Report',

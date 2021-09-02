@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect_anon/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ChatRoomPreview extends StatelessWidget {
   ChatRoomPreview({
@@ -17,50 +19,71 @@ class ChatRoomPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (chatRoomId != null) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // CircleAvatar(
-          //   backgroundImage: AssetImage('assets/images/profile2.jpg'),
-          //   radius: 28.0,
-          // ),
-          SvgPicture.asset('assets/svgs/chat_room_selected.svg', height: 46.0),
-          SizedBox(width: 0.9 * kDefaultPadding),
-          Container(
-            height: 53.0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('ChatRooms')
+            .doc(chatRoomId?.trim())
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '$roomName',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w700,
+                SvgPicture.asset('assets/svgs/chat_room_selected.svg',
+                    height: 46.0),
+                SizedBox(width: 0.9 * kDefaultPadding),
+                Container(
+                  height: 53.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '$roomName',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        data['lastMessage'],
+                        style: TextStyle(
+                          color: Color(0xFF535353),
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                Spacer(),
                 Text(
-                  'New Message',
+                  _buildLastTimestamp(data['lastTimestamp']),
                   style: TextStyle(
-                    color: Color(0xFF535353),
                     fontSize: 15.0,
+                    color: Color(0xFF959595),
                   ),
                 ),
               ],
-            ),
-          ),
-          Spacer(),
-          Text(
-            'minutes ago',
-            style: TextStyle(
-              fontSize: 15.0,
-              color: Color(0xFF959595),
-            ),
-          ),
-        ],
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
       );
     } else {
       return SizedBox.shrink();
     }
+  }
+
+  String _buildLastTimestamp(String lastTimestamp) {
+    DateTime lastDateTime =
+        DateTime.fromMillisecondsSinceEpoch(int.parse(lastTimestamp));
+    DateTime currentDateTime = DateTime.now();
+    var difference = currentDateTime.difference(lastDateTime).inMilliseconds;
+    final timeAgo = DateTime.now().subtract(Duration(milliseconds: difference));
+    return timeago.format(timeAgo, locale: 'en_short');
   }
 }

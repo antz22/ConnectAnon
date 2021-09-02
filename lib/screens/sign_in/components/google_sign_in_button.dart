@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleSignInButton extends StatefulWidget {
   GoogleSignInButton({required this.action});
@@ -46,24 +47,28 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                       context: context,
                     );
 
-                setState(() {
-                  _isSigningIn = false;
-                });
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                bool? isBanned = await prefs.getBool('isBanned');
+                if (!isBanned!) {
+                  setState(() {
+                    _isSigningIn = false;
+                  });
 
-                if (user != null) {
-                  if (widget.action == 'Sign in') {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    );
-                  } else if (widget.action == 'Update user') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UpdateUserInfoPage(user: user),
-                      ),
-                    );
+                  if (user != null) {
+                    if (widget.action == 'Sign in') {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                      );
+                    } else if (widget.action == 'Update user') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateUserInfoPage(user: user),
+                        ),
+                      );
+                    }
                   }
                 }
               },

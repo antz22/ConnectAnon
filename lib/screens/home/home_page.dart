@@ -13,9 +13,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, this.message = ''}) : super(key: key);
+  const HomePage({
+    Key? key,
+    this.message = '',
+    this.messageStatus = '',
+  }) : super(key: key);
 
   final String message;
+  final String messageStatus;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -112,9 +117,15 @@ class _HomePageState extends State<HomePage>
     registerNotification();
     // configLocalNotification();
     if (widget.message != '') {
-      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-        CustomSnackbar.buildWarningMessage(context, 'Error', widget.message);
-      });
+      if (widget.messageStatus == '') {
+        SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+          CustomSnackbar.buildWarningMessage(context, 'Error', widget.message);
+        });
+      } else {
+        SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+          CustomSnackbar.buildInfoMessage(context, 'Success', widget.message);
+        });
+      }
     }
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     //   statusBarColor: Colors.transparent,

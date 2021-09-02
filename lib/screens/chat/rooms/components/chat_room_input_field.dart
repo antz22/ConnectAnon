@@ -1,8 +1,10 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class ChatRoomInputField extends StatefulWidget {
   ChatRoomInputField({
@@ -30,27 +32,20 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
     String? id = await prefs.getString('id');
     print(widget.chatRoomId);
 
-    // final user = Provider.of<User?>(context, listen: false);
-
     if (content.trim() != '') {
       _textEditingController.clear();
 
-      var documentReference = FirebaseFirestore.instance
-          .collection('ChatRoomMessages')
-          .doc(widget.chatRoomId.trim())
-          .collection('messages');
+      String response = await context.read<APIServices>().sendChatRoomMessage(
+          content, id, widget.alias, widget.photoUrl, widget.chatRoomId);
 
-      documentReference.add({
-        'idFrom': id,
-        'nameFrom': widget.alias,
-        'photoUrlFrom': widget.photoUrl,
-        'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-        'content': content,
-      });
-
-      setState(() {
-        _isEmpty = true;
-      });
+      if (response == 'Success') {
+        setState(() {
+          _isEmpty = true;
+        });
+      } else {
+        CustomSnackbar.buildWarningMessage(
+            context, 'Error', 'The message failed to send');
+      }
     }
   }
 

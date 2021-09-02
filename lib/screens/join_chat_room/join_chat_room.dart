@@ -1,4 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/screens/chat_room_info/chat_room_info_screen.dart';
 import 'package:connect_anon/services/api_services.dart';
 import 'package:connect_anon/widgets/chat_rooms_header.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
@@ -17,11 +18,6 @@ class JoinChatRoomScreen extends StatefulWidget {
 }
 
 class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
-  // Future<List<String>> _retrieveChatRooms() async {
-  //   List<String> rooms = await context.read<APIServices>().retrieveChatRooms();
-  //   return rooms;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +42,7 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
                     return Container(
                       margin: EdgeInsets.only(top: kDefaultPadding),
                       child: Text(
-                        'No current chat rooms.',
+                        'No more chat rooms.',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w600,
@@ -61,10 +57,11 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
                         Map<String, dynamic> chatRoom =
                             docs[index].data() as Map<String, dynamic>;
                         String chatRoomId = docs[index].id;
-                        if (chatRoom['members']
-                            .contains(widget.currentUserId)) {
-                          return Container(
-                              child: Row(
+                        // if (!chatRoom['members']
+                        //     .contains(widget.currentUserId)) {
+                        return Container(
+                          margin: EdgeInsets.only(top: 0.5 * kDefaultPadding),
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -74,64 +71,87 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
                                   fontSize: 20.0,
                                 ),
                               ),
-                              Text(
-                                '(already joined)',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey.shade500,
-                                  fontSize: 17.0,
-                                ),
-                              ),
-                            ],
-                          ));
-                        } else {
-                          return GestureDetector(
-                            onTap: () async {
-                              String response = await context
-                                  .read<APIServices>()
-                                  .joinChatRoom(
-                                      widget.currentUserId, chatRoomId);
-                              if (response == 'Success') {
-                                Navigator.pop(context);
-                              } else {
-                                CustomSnackbar.buildWarningMessage(
-                                    context, 'Error', response);
-                              }
-                            },
-                            child: Container(
-                              margin:
-                                  EdgeInsets.only(top: 0.5 * kDefaultPadding),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '# ' + chatRoom['name'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.0,
-                                    ),
-                                  ),
-                                  SizedBox(width: kDefaultPadding),
-                                  Flexible(
-                                    child: Container(
-                                      child: Text(
-                                        chatRoom['description'],
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.grey.shade500,
-                                          fontSize: 17.0,
-                                        ),
+                              SizedBox(width: kDefaultPadding),
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChatRoomInfoScreen(
+                                        roomId: chatRoomId,
+                                        roomName: chatRoom['name'],
+                                        description: chatRoom['description'],
+                                        members: chatRoom['members'],
+                                        memberNames: chatRoom['memberNames'],
+                                        memberPhotoUrls:
+                                            chatRoom['memberPhotoUrls'],
+                                        currentUserId: widget.currentUserId,
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  );
+                                },
+                                icon: Icon(Icons.arrow_forward),
+                                // Flexible(
+                                //   child: Container(
+                                //     child: Text(
+                                //       chatRoom['description'],
+                                //       overflow: TextOverflow.ellipsis,
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.w400,
+                                //         color: Colors.grey.shade500,
+                                //         fontSize: 17.0,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
                               ),
-                            ),
-                          );
-                        }
+                            ],
+                          ),
+                        );
+                        // return Container(
+                        //     child: Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Text(
+                        //       '# ' + chatRoom['name'],
+                        //       style: TextStyle(
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize: 20.0,
+                        //       ),
+                        //     ),
+                        //     IconButton(
+                        //       onPressed: () {
+                        //         Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => ChatRoomInfoScreen(
+                        //               roomId: chatRoomId,
+                        //               roomName: chatRoom['name'],
+                        //               description: chatRoom['description'],
+                        //               members: chatRoom['members'],
+                        //               memberNames: chatRoom['memberNames'],
+                        //               memberPhotoUrls:
+                        //                   chatRoom['memberPhotoUrls'],
+                        //               currentUserId: widget.currentUserId,
+                        //             ),
+                        //           ),
+                        //         );
+                        //       },
+                        //       icon: Icon(Icons.arrow_forward),
+                        //     )
+                        //     //   ,
+                        //     //   overflow: TextOverflow.ellipsis,
+                        //     //   style: TextStyle(
+                        //     //     fontWeight: FontWeight.w400,
+                        //     //     color: Colors.grey.shade500,
+                        //     //     fontSize: 17.0,
+                        //     //   ),
+                        //     // ),
+                        //   ],
+                        // ));
+                        // } else {
+                        //   return SizedBox.shrink();
+                        // }
                       },
                       separatorBuilder: (context, index) {
                         return Column(children: [

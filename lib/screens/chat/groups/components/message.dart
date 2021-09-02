@@ -1,5 +1,6 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -53,9 +54,9 @@ class _MessageState extends State<Message> {
                   ? SizedBox.shrink()
                   : Container(
                       margin: EdgeInsets.only(right: 0.5 * kDefaultPadding),
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(widget.photoUrl),
-                        radius: 13.0,
+                      child: CustomAvatar(
+                        photoUrl: widget.photoUrl,
+                        size: 13.0,
                       ),
                     ),
               Column(

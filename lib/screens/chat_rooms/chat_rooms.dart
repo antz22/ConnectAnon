@@ -41,8 +41,8 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
     }
   }
 
-  Future<Map<String, String>> _retrieveChatRoomData(group) async {
-    Map<String, String> chatRoomData =
+  Future<Map<String, dynamic>> _retrieveChatRoomData(group) async {
+    Map<String, dynamic> chatRoomData =
         await context.read<APIServices>().getChatRoomData(group);
     return chatRoomData;
   }
@@ -94,12 +94,20 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                           return FutureBuilder(
                             future: _retrieveChatRoomData(chatRooms[index]),
                             builder: (BuildContext context,
-                                AsyncSnapshot<Map<String, String>> snapshot) {
+                                AsyncSnapshot<Map<String, dynamic>> snapshot) {
                               if (snapshot.hasData) {
                                 String chatRoomId = chatRooms[index];
                                 String currentUserId =
                                     snapshot.data!['currentUserId']!;
                                 String roomName = snapshot.data!['roomName']!;
+                                String description =
+                                    snapshot.data!['description']!;
+                                List<dynamic> members =
+                                    snapshot.data!['members']!;
+                                List<dynamic> memberNames =
+                                    snapshot.data!['memberNames']!;
+                                List<dynamic> memberPhotoUrls =
+                                    snapshot.data!['memberPhotoUrls'];
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.push(
@@ -111,6 +119,10 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                                           roomName: roomName,
                                           alias: alias,
                                           photoUrl: photoUrl,
+                                          members: members,
+                                          memberNames: memberNames,
+                                          memberPhotoUrls: memberPhotoUrls,
+                                          description: description,
                                         ),
                                       ),
                                     );

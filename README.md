@@ -37,17 +37,26 @@ This app was created using the Flutter framework developed by Google, using the 
 - firebase plan - put in credit card (this is only a dev project so it should be fine)
 
 
-1 read and unread messages?
-2 most recent message and the time of the most recent message ? 
+1 read and unread messages
 3 ANIMATIONS
   - these will step up your app to be potentially usable.
+
 - implement lastReported (banned if reports % 3 == 0), banSeen, isBanned, lastConnected
 - admin notifications - chat room creation, reports, chat buddies
+- dealing with requests for chat buddies
+- referring somebody to another volunteer
+- upon joining, joining general chat room and volunteer support if volunteer
 
+- manual review
+    1. Chat Buddy requests
+    2. Reports
+    3. Chat Room creation requests
+
+
+- sorting conversations / chat rooms by last timestamp (would have to change a lot)
 - push notifications -- connecting with currently active user
 - firebase admin - notifications and chat buddy functionality and getting reported
 - should chat buddies be able to do the same thing? then what about erasing things in the database, updating chattedwith?
-- bans
 - peer preferences?
 - unsplash API production - how to download stuff?
 
@@ -56,20 +65,11 @@ This app was created using the Flutter framework developed by Google, using the 
 - animations
 - firebase production
 - error checking and null checking lol
-- invitations for chat rooms?
 - chat room creation applications
-- ban applications
-
-
-- new branch: implement newest message, how long ago it was (keep it on a separate branch, keep it low priority)
 
 - figure out sign in through google or through email
-- viewing time
 - error handling on google sign in
 
-- error text
-
-- how to show most recent message, how long ago it was?
 - add an if check sayign that if users is over like 50 then dont check thorugh each one?
 
 # Questions

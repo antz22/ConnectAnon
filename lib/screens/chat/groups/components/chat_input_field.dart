@@ -1,8 +1,10 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class ChatInputField extends StatefulWidget {
   ChatInputField({Key? key, required this.groupChatId, required this.peerId})
@@ -33,21 +35,18 @@ class _ChatInputFieldState extends State<ChatInputField> {
     if (content.trim() != '') {
       _textEditingController.clear();
 
-      var documentReference = FirebaseFirestore.instance
-          .collection('Messages')
-          .doc(groupChatId.trim())
-          .collection('messages');
+      String response = await context
+          .read<APIServices>()
+          .sendPeerMessage(content, id, widget.peerId, groupChatId);
 
-      documentReference.add({
-        'idFrom': id,
-        'idTo': widget.peerId,
-        'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-        'content': content,
-      });
-
-      setState(() {
-        _isEmpty = true;
-      });
+      if (response == 'Success') {
+        setState(() {
+          _isEmpty = true;
+        });
+      } else {
+        CustomSnackbar.buildWarningMessage(
+            context, 'Error', 'The message failed to send');
+      }
     }
   }
 

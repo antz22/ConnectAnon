@@ -40,10 +40,10 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
     }
   }
 
-  Future<Map<String, String>> _retrievePeerData(group) async {
-    Map<String, String> peerData =
-        await context.read<APIServices>().getPeerData(group);
-    return peerData;
+  Future<Map<String, String>> _retrieveConversationData(group) async {
+    Map<String, String> conversationData =
+        await context.read<APIServices>().getConversationData(group);
+    return conversationData;
   }
 
   @override
@@ -89,7 +89,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                     itemCount: groups.length,
                     itemBuilder: (BuildContext context, int index) {
                       return FutureBuilder(
-                        future: _retrievePeerData(groups[index]),
+                        future: _retrieveConversationData(groups[index]),
                         builder: (BuildContext context,
                             AsyncSnapshot<Map<String, String>> snapshot) {
                           if (snapshot.hasData) {

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class APIServices {
@@ -73,8 +74,16 @@ class APIServices {
 
         var groups = await FirebaseFirestore.instance.collection('Groups');
 
+        String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+
         groups.add({
-          'members': [currentUserId, randomId]
+          'members': [currentUserId, randomId],
+          'lastMessage': 'New Conversation - Say Hi!',
+          'lastTimestamp': timestamp,
+          'lastUpdatedBy': currentUserId,
+          'createdAt': timestamp,
+          'createdBy': currentUserId,
+          'type': 'Peer-Peer',
         }).then((doc) {
           String groupId = doc.id;
 
@@ -155,8 +164,16 @@ class APIServices {
 
         var groups = await FirebaseFirestore.instance.collection('Groups');
 
+        String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+
         groups.add({
-          'members': [currentUserId, randomId]
+          'members': [currentUserId, randomId],
+          'lastMessage': 'New Conversation - Say Hi!',
+          'lastTimestamp': timestamp,
+          'lastUpdatedBy': currentUserId,
+          'createdAt': timestamp,
+          'createdBy': currentUserId,
+          'type': 'Peer-Volunteer',
         }).then((doc) {
           String groupId = doc.id;
 
@@ -191,8 +208,16 @@ class APIServices {
 
         var groups = await FirebaseFirestore.instance.collection('Groups');
 
+        String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+
         groups.add({
-          'members': [currentUserId, randomId]
+          'members': [currentUserId, randomId],
+          'lastMessage': 'New Conversation - Say Hi!',
+          'lastTimestamp': timestamp,
+          'lastUpdatedBy': currentUserId,
+          'createdAt': timestamp,
+          'createdBy': currentUserId,
+          'type': 'Peer-Volunteer',
         }).then((doc) {
           String groupId = doc.id;
 
@@ -227,7 +252,7 @@ class APIServices {
     return status;
   }
 
-  Future<Map<String, String>> getPeerData(groupChatId) async {
+  Future<Map<String, String>> getConversationData(groupChatId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String currentUserId = prefs.getString('id')!;
     String peerId;
@@ -238,9 +263,9 @@ class APIServices {
         .collection('Groups')
         .doc(groupChatId)
         .get();
-    Map<String, dynamic>? data = document.data();
+    Map<String, dynamic>? groupData = document.data();
 
-    var memberIDs = data?['members'];
+    var memberIDs = groupData?['members'];
     if (memberIDs[0] == currentUserId) {
       peerId = memberIDs[1];
     } else {
@@ -275,25 +300,61 @@ class APIServices {
   }
 
   Future<String> joinChatRoom(currentUserId, chatRoomId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? currentUserName = await prefs.getString('alias');
+    String? currentUserPhotoUrl = await prefs.getString('photoUrl');
+
     FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
       'chatRooms': FieldValue.arrayUnion([chatRoomId]),
     });
 
     FirebaseFirestore.instance.collection('ChatRooms').doc(chatRoomId).update({
       'members': FieldValue.arrayUnion([currentUserId]),
+      'memberNames': FieldValue.arrayUnion([currentUserName]),
+      'memberPhotoUrls': FieldValue.arrayUnion([currentUserPhotoUrl]),
     });
 
+    return 'Success';
+  }
+
+  Future<String> leaveChatRoom(currentUserId, chatRoomId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? currentUserName = await prefs.getString('alias');
+    String? currentUserPhotoUrl = await prefs.getString('alias');
+
+    FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
+      'chatRooms': FieldValue.arrayRemove([chatRoomId]),
+    });
+
+    FirebaseFirestore.instance.collection('ChatRooms').doc(chatRoomId).update({
+      'members': FieldValue.arrayRemove([currentUserId]),
+      'memberNames': FieldValue.arrayRemove([currentUserName]),
+      'memberPhotoUrls': FieldValue.arrayRemove([currentUserPhotoUrl]),
+    });
     return 'Success';
   }
 
   Future<String> createChatRoom(currentUserId, name, description) async {
     var chatRooms = await FirebaseFirestore.instance.collection('ChatRooms');
     var status = '';
+    String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? currentUserName = await prefs.getString('alias');
+    String? currentUserPhotoUrl = await prefs.getString('photoUrl');
 
     await chatRooms.add({
       'members': [currentUserId],
+      'memberNames': [currentUserName],
+      'memberPhotoUrls': [currentUserPhotoUrl],
       'name': name,
       'description': description,
+      'lastMessage': 'New Discussion - Say Hi!',
+      'lastTimestamp': timestamp,
+      'lastUpdatedById': currentUserId,
+      'lastUpdatedByName': currentUserName,
+      'createdAt': timestamp,
+      'createdBy': currentUserId,
     }).then((doc) {
       String roomId = doc.id;
 
@@ -309,10 +370,9 @@ class APIServices {
     return status;
   }
 
-  Future<Map<String, String>> getChatRoomData(chatRoomId) async {
+  Future<Map<String, dynamic>> getChatRoomData(chatRoomId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String currentUserId = prefs.getString('id')!;
-    String roomName;
 
     var document = await FirebaseFirestore.instance
         .collection('ChatRooms')
@@ -320,28 +380,120 @@ class APIServices {
         .get();
     Map<String, dynamic>? data = document.data();
 
-    roomName = data?['name'];
+    String roomName = data?['name'];
+    String description = data?['description'];
+    List<dynamic> members = data?['members'];
+    List<dynamic> memberNames = data?['memberNames'];
+    List<dynamic> memberPhotoUrls = data?['memberPhotoUrls'];
 
     return {
       'roomName': roomName,
       'currentUserId': currentUserId,
+      'description': description,
+      'members': members,
+      'memberNames': memberNames,
+      'memberPhotoUrls': memberPhotoUrls,
     };
   }
 
-  Future<String> reportUser(currentUserId, peerId) async {
-    FirebaseFirestore.instance.collection('Users').doc(peerId).update({
-      'reports': FieldValue.increment(1),
-    });
+  Future<String> reportUser(currentUserId, peerId, topic, description) async {
+    // add checking to see last report of user, if they can still report
 
-    // FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
-    //   'lastReported': Now,
-    // });
+    // might have to only do this after manual review
 
-    // FirebaseFirestore.instance.collection('Users').doc(peerId).update({
-    //   'lastBeenReported': Now,
-    // });
+    var userDocument = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(currentUserId.trim())
+        .get();
+    Map<String, dynamic> userData = userDocument.data()!;
+    String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    String lastReportedAt = userData['lastReportedAt'];
+    if (lastReportedAt != '') {
+      DateTime lastReportedTimeAt =
+          DateTime.fromMillisecondsSinceEpoch(int.parse(lastReportedAt));
+      DateTime currentDateTime = DateTime.now();
+      var difference =
+          currentDateTime.difference(lastReportedTimeAt).inMilliseconds;
+      // it's been over an 1 hour
+      if (difference > 3600000) {
+        var peerDocument = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(peerId.trim())
+            .get();
+        Map<String, dynamic> peerData = peerDocument.data()!;
 
-    return 'Success';
+        if (peerData['reports'] + 1 % 3 == 0 && peerData['banned'] == false) {
+          FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+            'isBanned': true,
+            'bannedSince': timestamp,
+            'reports': FieldValue.increment(1),
+          });
+        } else {
+          FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+            'reports': FieldValue.increment(1),
+          });
+        }
+
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(currentUserId.trim())
+            .update({
+          'lastReportedAt': timestamp,
+        });
+
+        var reports = await FirebaseFirestore.instance.collection('Reports');
+
+        await reports.add({
+          'reportedBy': currentUserId,
+          'reportedOn': peerId,
+          'timestamp': timestamp,
+          'reviewed': false,
+          'topic': topic,
+          'description': description,
+        }).catchError((error) => error);
+
+        return 'Success';
+      } else {
+        return 'Error';
+      }
+      // user hasn't reported anyone before
+    } else {
+      var peerDocument = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(peerId.trim())
+          .get();
+      Map<String, dynamic> peerData = peerDocument.data()!;
+      if (peerData['reports'] + 1 % 3 == 0 && peerData['banned'] == false) {
+        FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+          'isBanned': true,
+          'bannedSince': timestamp,
+          'reports': FieldValue.increment(1),
+        });
+      } else {
+        FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+          'reports': FieldValue.increment(1),
+        });
+      }
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(currentUserId.trim())
+          .update({
+        'lastReportedAt': timestamp,
+      });
+
+      var reports = await FirebaseFirestore.instance.collection('Reports');
+
+      await reports.add({
+        'reportedBy': currentUserId,
+        'reportedOn': peerId,
+        'timestamp': timestamp,
+        'reviewed': false,
+        'topic': topic,
+        'description': description,
+      }).catchError((error) => error);
+
+      return 'Success';
+    }
   }
 
   Future<String> blockUser(currentUserId, peerId, groupId) async {
@@ -417,7 +569,76 @@ class APIServices {
     // }
     // return 'Success';
   }
+
+  Future<String> sendPeerMessage(
+      String content, String? idFrom, String? idTo, String groupChatId) async {
+    try {
+      var messagesReference = FirebaseFirestore.instance
+          .collection('Messages')
+          .doc(groupChatId.trim())
+          .collection('messages');
+
+      String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+
+      messagesReference.add({
+        'idFrom': idFrom,
+        'idTo': idTo,
+        'timestamp': timestamp,
+        'content': content,
+      });
+
+      var groupReference = FirebaseFirestore.instance
+          .collection('Groups')
+          .doc(groupChatId.trim());
+
+      groupReference.update({
+        'lastMessage': content,
+        'lastTimestamp': timestamp,
+        'lastUpdatedById': idFrom,
+      });
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+    return 'Success';
+  }
+
+  Future<String> sendChatRoomMessage(String content, String? idFrom,
+      String? nameFrom, String? photoUrlFrom, String chatRoomId) async {
+    try {
+      var messagesReference = FirebaseFirestore.instance
+          .collection('ChatRoomMessages')
+          .doc(chatRoomId.trim())
+          .collection('messages');
+
+      String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+
+      messagesReference.add({
+        'idFrom': idFrom,
+        'nameFrom': nameFrom,
+        'timestamp': timestamp,
+        'content': content,
+        'photoUrlFrom': photoUrlFrom,
+      });
+
+      var chatRoomReference = FirebaseFirestore.instance
+          .collection('ChatRooms')
+          .doc(chatRoomId.trim());
+
+      chatRoomReference.update({
+        'lastMessage': content,
+        'lastTimestamp': timestamp,
+        'lastUpdatedById': idFrom,
+        'lastUpdatedByName': nameFrom,
+      });
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+    return 'Success';
+  }
 }
+
 
 // var users = await FirebaseFirestore.instance.collection('Users').get();
 // var blah = users.docs.map((doc) => doc.data()).toList();

@@ -1,5 +1,6 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -97,9 +98,9 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(photoUrlFrom),
-            radius: 14.0,
+          CustomAvatar(
+            photoUrl: photoUrlFrom,
+            size: 14.0,
           ),
           SizedBox(width: 0.5 * kDefaultPadding),
           Column(

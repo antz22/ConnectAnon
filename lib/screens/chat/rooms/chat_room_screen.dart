@@ -3,7 +3,9 @@ import 'package:connect_anon/models/chat_message.dart';
 import 'package:connect_anon/screens/chat/rooms/components/chat_room_input_field.dart';
 import 'package:connect_anon/screens/chat/rooms/components/chat_room_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_anon/screens/chat_room_info/chat_room_info_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   ChatRoomScreen({
@@ -13,6 +15,10 @@ class ChatRoomScreen extends StatefulWidget {
     required this.roomName,
     required this.alias,
     required this.photoUrl,
+    required this.members,
+    required this.memberNames,
+    required this.memberPhotoUrls,
+    required this.description,
   }) : super(key: key);
 
   final String chatRoomId;
@@ -20,6 +26,10 @@ class ChatRoomScreen extends StatefulWidget {
   final String roomName;
   final String alias;
   final String photoUrl;
+  final List<dynamic> members;
+  final List<dynamic> memberNames;
+  final List<dynamic> memberPhotoUrls;
+  final String description;
 
   @override
   _ChatRoomScreenState createState() => _ChatRoomScreenState();
@@ -66,9 +76,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               },
             ),
             SizedBox(width: 0.75 * kDefaultPadding),
-            CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile3.jpg'),
-              radius: 17.0,
+            // CircleAvatar(
+            //   backgroundImage: AssetImage('assets/images/profile3.jpg'),
+            //   radius: 17.0,
+            // ),
+            SvgPicture.asset(
+              'assets/svgs/hashtag.svg',
+              height: 17.0,
             ),
             SizedBox(width: 0.75 * kDefaultPadding),
             Text(
@@ -84,7 +98,22 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.info, color: kPrimaryColor),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatRoomInfoScreen(
+                    roomId: widget.chatRoomId,
+                    roomName: widget.roomName,
+                    members: widget.members,
+                    memberNames: widget.memberNames,
+                    memberPhotoUrls: widget.memberPhotoUrls,
+                    description: widget.description,
+                    currentUserId: widget.currentUserId,
+                  ),
+                ),
+              );
+            },
           ),
           SizedBox(width: 0.9 * kDefaultPadding),
         ],
