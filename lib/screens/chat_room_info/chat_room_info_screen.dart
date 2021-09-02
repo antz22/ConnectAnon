@@ -5,7 +5,6 @@ import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 class ChatRoomInfoScreen extends StatefulWidget {

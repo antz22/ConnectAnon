@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/screens/profile/components/bold_text.dart';
 import 'package:connect_anon/screens/report/report_screen.dart';
 import 'package:connect_anon/services/api_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_popup_dialog.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,9 +28,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String? status = '';
+
   Future<Map<String, dynamic>> _retrieveUserData() async {
     Map<String, dynamic> userData =
         await context.read<APIServices>().getUserData(widget.id);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    status = await prefs.getString('status');
+    print(status);
     return userData;
   }
 
@@ -317,6 +322,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ],
                           ),
+                          status == 'Chat Buddy'
+                              ? ElevatedButton(
+                                  onPressed: () async {
+                                    var response = await context
+                                        .read<APIServices>()
+                                        .referNewVolunteer(
+                                          widget.id,
+                                        );
+                                    if (response != 'Success') {
+                                      CustomSnackbar.buildWarningMessage(
+                                          context, 'Error', response);
+                                    }
+                                  },
+                                  child: Text(
+                                      'Chat Buddy - Refer to other volunteer'),
+                                )
+                              : SizedBox.shrink(),
                         ],
                       )
               ],

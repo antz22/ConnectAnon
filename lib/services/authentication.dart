@@ -72,6 +72,9 @@ class AuthenticationService {
               });
 
               await prefs.setBool('isBanned', false);
+              await prefs.setString('alias', alias);
+              await prefs.setString('photoUrl', photoUrl);
+              await prefs.setString('status', status);
             }
           } else {
             await prefs.setString('alias', alias);

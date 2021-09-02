@@ -34,14 +34,16 @@ class _HomePageState extends State<HomePage>
 
   int _selectedIndex = 0;
   String currentUserId = '';
+  String? status = '';
 
   List<Widget> tabs = new List.from([]);
 
   Future<void> _retrieveId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    currentUserId = prefs.getString('id')!;
+    currentUserId = await prefs.getString('id')!;
+    status = await prefs.getString('status');
     tabs = [
-      ConversationsScreen(currentUserId: currentUserId),
+      ConversationsScreen(currentUserId: currentUserId, status: status),
       ChatRoomsScreen(currentUserId: currentUserId),
     ];
   }

@@ -47,6 +47,10 @@ This app was created using the Flutter framework developed by Google, using the 
 - referring somebody to another volunteer
 - upon joining, joining general chat room and volunteer support if volunteer
 
+- change 'chat buddy name'
+- think about other schools
+- null errors!!
+
 - manual review
     1. Chat Buddy requests
     2. Reports

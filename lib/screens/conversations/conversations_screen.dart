@@ -9,10 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ConversationsScreen extends StatefulWidget {
-  ConversationsScreen({Key? key, required this.currentUserId})
-      : super(key: key);
+  ConversationsScreen({
+    Key? key,
+    required this.currentUserId,
+    required this.status,
+  }) : super(key: key);
 
   final String currentUserId;
+  final String? status;
 
   @override
   _ConversationsScreenState createState() =>
@@ -140,39 +144,44 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                       );
                     },
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      var response = await context
-                          .read<APIServices>()
-                          .createGroup(currentUserId, chattedWith, blocked);
-                      if (response != 'Success') {
-                        CustomSnackbar.buildWarningMessage(
-                            context, 'Error', response);
-                      }
-                    },
-                    child: Text('Connect to anonymous peer'),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(kPrimaryColor),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      var response = await context
-                          .read<APIServices>()
-                          .createSpecialGroup(
-                              currentUserId, specialChattedWith, blocked);
-                      if (response != 'Success') {
-                        CustomSnackbar.buildWarningMessage(
-                            context, 'Error', response);
-                      }
-                    },
-                    child: Text('Connect to chat buddy'),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(kPrimaryColor),
-                    ),
-                  ),
+                  widget.status != 'Chat Buddy'
+                      ? ElevatedButton(
+                          onPressed: () async {
+                            var response = await context
+                                .read<APIServices>()
+                                .createGroup(
+                                    currentUserId, chattedWith, blocked);
+                            if (response != 'Success') {
+                              CustomSnackbar.buildWarningMessage(
+                                  context, 'Error', response);
+                            }
+                          },
+                          child: Text('Connect to anonymous peer'),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(kPrimaryColor),
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                  widget.status != 'Chat Buddy'
+                      ? ElevatedButton(
+                          onPressed: () async {
+                            var response = await context
+                                .read<APIServices>()
+                                .createSpecialGroup(
+                                    currentUserId, specialChattedWith, blocked);
+                            if (response != 'Success') {
+                              CustomSnackbar.buildWarningMessage(
+                                  context, 'Error', response);
+                            }
+                          },
+                          child: Text('Connect to chat buddy'),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(kPrimaryColor),
+                          ),
+                        )
+                      : SizedBox.shrink(),
                 ],
               )),
             ]);

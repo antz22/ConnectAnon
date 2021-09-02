@@ -1,5 +1,6 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/landing_page/landing_page.dart';
+import 'package:connect_anon/screens/sign_in/sign_in_page.dart';
 import 'package:connect_anon/services/api_services.dart';
 import 'package:connect_anon/services/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -54,12 +55,12 @@ class AuthenticationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = Provider.of<User?>(context, listen: true);
 
-    if (firebaseUser != null) {
-      return HomePage();
-    } else {
-      return LandingPage();
-    }
-    // return LandingPage();
+    // if (firebaseUser != null) {
+    //   return HomePage();
+    // } else {
+    //   return LandingPage();
+    // }
+    return SignInPage();
     // return UpdateUserInfoPage(user: firebaseUser!);
   }
 }
