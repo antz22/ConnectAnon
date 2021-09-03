@@ -138,6 +138,7 @@ class AuthenticationService {
           'reports': 0,
           'lastReportedAt': '',
           'lastRequestedAt': '',
+          'requestedIds': [],
           'totalRequests': 0,
           'bannedSince': '',
           'isBanned': false,

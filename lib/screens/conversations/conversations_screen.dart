@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/chat/groups/chat_screen.dart';
 import 'package:connect_anon/screens/conversations/components/conversation_preview.dart';
 import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/widgets/custom_popup_dialog.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:connect_anon/widgets/info_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -73,6 +77,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
             List chattedWith = data['chattedWith'];
             List specialChattedWith = data['specialChattedWith'];
             List blocked = data['blocked'];
+            List requestedIds = data['requestedIds'];
             String photoUrl = data['photoUrl'];
             return Column(children: [
               Container(
@@ -166,16 +171,29 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                   widget.status != 'Chat Buddy'
                       ? ElevatedButton(
                           onPressed: () async {
-                            var response = await context
-                                .read<APIServices>()
-                                .requestVolunteer(
-                                    currentUserId, specialChattedWith, blocked);
-                            if (response != 'Success') {
-                              CustomSnackbar.buildWarningMessage(
-                                  context, 'Error', response);
+                            Map<String, dynamic> params = {
+                              'currentUserId': currentUserId,
+                              'specialChattedWith': specialChattedWith,
+                              'blocked': blocked,
+                              'requestedIds': requestedIds,
+                            };
+                            String title = 'Confirm';
+                            String content =
+                                'You can only request 3 volunteers per hour. Continue?';
+                            String purpose = 'Request Volunteer';
+
+                            if (Platform.isAndroid) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => CustomPopupDialog
+                                      .buildMaterialPopupDialog(context, params,
+                                          title, content, purpose));
                             } else {
-                              CustomSnackbar.buildInfoMessage(context,
-                                  'Success', 'A volunteer has been requested');
+                              showCupertinoDialog(
+                                  context: context,
+                                  builder: (context) => CustomPopupDialog
+                                      .buildCupertinoPopupDialog(context,
+                                          params, title, content, purpose));
                             }
                           },
                           child: Text('Connect to chat buddy'),

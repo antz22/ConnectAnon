@@ -121,7 +121,7 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
                         widget.document?['nameFrom'],
                         style: TextStyle(
                           fontSize: 11.5,
-                          color: Colors.grey.shade500,
+                          color: Colors.grey.shade600,
                           fontWeight: FontWeight.w300,
                         ),
                       ),

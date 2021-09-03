@@ -53,9 +53,8 @@ class _ChatInputFieldState extends State<ChatInputField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: kDefaultPadding,
-        vertical: 0.5 * kDefaultPadding,
+      padding: EdgeInsets.only(
+        left: 0.8 * kDefaultPadding,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -72,6 +71,9 @@ class _ChatInputFieldState extends State<ChatInputField> {
           children: [
             Expanded(
               child: Container(
+                margin: EdgeInsets.symmetric(
+                  vertical: 0.5 * kDefaultPadding,
+                ),
                 padding: EdgeInsets.symmetric(
                   horizontal: 0.8 * kDefaultPadding,
                 ),
@@ -85,7 +87,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                     hintText: 'Type here...',
                     hintStyle: TextStyle(
                       color: Color(0xFF9A9A9A),
-                      fontSize: 12.0,
+                      fontSize: 14.0,
                     ),
                     border: InputBorder.none,
                   ),
@@ -109,15 +111,13 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 ),
               ),
             ),
-            SizedBox(width: kDefaultPadding),
-            // onSendMessage(_textEditingController.text);
             Container(
-              width: 28.0,
-              height: 28.0,
+              width: 50.0,
+              height: 50.0,
               decoration: BoxDecoration(
-                // color: Colors.black,
                 shape: BoxShape.circle,
               ),
+              margin: EdgeInsets.only(right: 0.2 * kDefaultPadding),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -126,17 +126,10 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   },
                   customBorder: CircleBorder(),
                   child: Container(
-                    width: 23.0,
-                    height: 23.0,
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: _isEmpty
-                        ? SvgPicture.asset(
-                            'assets/svgs/send_unvalid.svg',
-                            height: 23.0,
-                          )
-                        : SvgPicture.asset(
-                            'assets/svgs/send_valid.svg',
-                            height: 23.0,
-                          ),
+                        ? SvgPicture.asset('assets/svgs/send_unvalid.svg')
+                        : SvgPicture.asset('assets/svgs/send_valid.svg'),
                   ),
                 ),
               ),

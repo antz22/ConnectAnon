@@ -37,20 +37,20 @@ This app was created using the Flutter framework developed by Google, using the 
 - firebase plan - put in credit card (this is only a dev project so it should be fine)
 
 
-1 read and unread messages
-3 ANIMATIONS
+- ANIMATIONS
   - these will step up your app to be potentially usable.
+- keyboard slow animation
 
 - admin notifications - chat room creation, reports, chat buddies
-- requesting a volunteer - and also based on their current status
+- current status
 - upon joining, joining general chat room and volunteer support if volunteer
 
 - chat preview name purple if chat buddy, streambuilder on chats screen
-- what if someone requests the same chat buddy multiple times?
 
 - big refactoring
     creating group
     random id needs to be within volunteers
+    fix referrals
 - array contains any for group convos? for the 'members' field, then you can sort by time as well. but have to convert it to a streambuilder instead of futurebuilder
 - scrolling and stuff
 
@@ -85,6 +85,9 @@ This app was created using the Flutter framework developed by Google, using the 
 # Questions
 
 - SHOULD THE CONVERSATIONS BE DISAPPEARING? -> no, just use archive as 'end live chat' button
+
+- what if someone requests the same chat buddy multiple times?
+    just be ware of duplicate requests, delete the other one. it should rarely happen
 
 # Potential Features
 

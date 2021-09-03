@@ -131,6 +131,7 @@ class APIServices {
           // FIX THISSSSSSS
           'specialChattedWith': FieldValue.arrayUnion([volunteerId]),
           'lastConnected': timestamp,
+          'requestedIds': FieldValue.arrayRemove([volunteerId]),
         });
         FirebaseFirestore.instance.collection('Users').doc(volunteerId).update({
           'groups': FieldValue.arrayUnion([groupId]),
@@ -144,6 +145,7 @@ class APIServices {
           // FIX THISSSSSSS
           'specialChattedWith': [volunteerId],
           'lastConnected': timestamp,
+          'requestedIds': FieldValue.arrayRemove([volunteerId]),
         });
         FirebaseFirestore.instance.collection('Users').doc(volunteerId).update({
           'groups': FieldValue.arrayUnion([groupId]),
@@ -180,8 +182,8 @@ class APIServices {
     return 'Success';
   }
 
-  Future<String> requestVolunteer(
-      String currentUserId, List volunteersChattedWith, List blocked) async {
+  Future<String> requestVolunteer(String currentUserId,
+      List volunteersChattedWith, List blocked, List requestedIds) async {
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
     List<String> allIds = new List.from([]);
@@ -211,7 +213,9 @@ class APIServices {
             if (id != currentUserId) {
               if (!volunteersChattedWith.contains(id)) {
                 if (!blocked.contains(id)) {
-                  userIds.add(id);
+                  if (!requestedIds.contains(id)) {
+                    userIds.add(id);
+                  }
                 }
               }
             }
@@ -247,6 +251,7 @@ class APIServices {
                 .update({
               'lastRequestedAt': timestamp,
               'totalRequests': FieldValue.increment(1),
+              'requestedIds': FieldValue.arrayUnion([randomId]),
             });
             status = 'Success';
             return 'Success';
@@ -280,7 +285,9 @@ class APIServices {
           if (id != currentUserId) {
             if (!volunteersChattedWith.contains(id)) {
               if (!blocked.contains(id)) {
-                userIds.add(id);
+                if (!requestedIds.contains(id)) {
+                  userIds.add(id);
+                }
               }
             }
           }
@@ -315,6 +322,7 @@ class APIServices {
               .update({
             'lastRequestedAt': timestamp,
             'totalRequests': FieldValue.increment(1),
+            'requestedIds': FieldValue.arrayUnion([randomId]),
           });
           status = 'Success';
           return 'Success';
