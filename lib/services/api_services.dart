@@ -17,6 +17,7 @@ class APIServices {
     int peerChats = userData['chattedWith'].length;
     int chatRooms = userData['chatRooms'].length;
     int reports = userData['reports'];
+    bool isBanned = userData['isBanned'];
     return {
       'alias': alias,
       'status': status,
@@ -25,6 +26,7 @@ class APIServices {
       'peerChats': peerChats,
       'chatRooms': chatRooms,
       'reports': reports,
+      'isBanned': isBanned,
     };
   }
 
@@ -48,12 +50,10 @@ class APIServices {
         .then((QuerySnapshot snapshot) async {
       snapshot.docs.forEach((DocumentSnapshot doc) {
         String id = doc.id;
-        if (id != currentUserId) {
-          if (!chattedWith.contains(id)) {
-            if (!blocked.contains(id)) {
-              userIds.add(id);
-            }
-          }
+        if (id != currentUserId &&
+            !chattedWith.contains(id) &&
+            !blocked.contains(id)) {
+          userIds.add(id);
         }
       });
 
@@ -109,7 +109,6 @@ class APIServices {
           return 'Success';
         }).catchError((err) {
           print('Error creating group: $err');
-          print(err.runtimeType);
           status = err;
           return err;
         });
@@ -160,8 +159,6 @@ class APIServices {
       if (availableUsers) {
         FirebaseFirestore.instance.collection('Users').doc(peerId).update({
           'groups': FieldValue.arrayUnion([groupId]),
-          // renew the volunteers if they've already talked to all of them
-          // FIX THISSSSSSS
           'specialChattedWith': FieldValue.arrayUnion([volunteerId]),
           'lastConnected': timestamp,
           'requestedIds': FieldValue.arrayRemove([volunteerId]),
@@ -198,7 +195,6 @@ class APIServices {
       return 'Success';
     }).catchError((err) {
       print('Error creating group: $err');
-      print(err.runtimeType);
       status = err;
       return err;
     });
@@ -226,9 +222,10 @@ class APIServices {
     Map<String, dynamic>? userData = userDocument.data();
     String lastRequestedAt = userData?['lastRequestedAt'];
     int totalRequests = userData?['totalRequests'];
-    List<dynamic> volunteersChattedWith = userData?['volunteersChattedWith'];
+    List<dynamic> volunteersChattedWith = userData?['specialChattedWith'];
     List<dynamic> blocked = userData?['blocked'];
     List<dynamic> requestedIds = userData?['requestedIds'];
+    var status;
     if (lastRequestedAt != '') {
       DateTime lastReportedTimeAt =
           DateTime.fromMillisecondsSinceEpoch(int.parse(lastRequestedAt));
@@ -237,7 +234,6 @@ class APIServices {
           currentDateTime.difference(lastReportedTimeAt).inMilliseconds;
       // it's been over an 1 hour
       if (difference > 3600000 || totalRequests % 3 != 0) {
-        var status;
         await users
             .where('status', isEqualTo: 'Chat Buddy')
             .get()
@@ -245,14 +241,11 @@ class APIServices {
           snapshot.docs.forEach((DocumentSnapshot doc) {
             allIds.add(doc.id);
             String id = doc.id;
-            if (id != currentUserId) {
-              if (!volunteersChattedWith.contains(id)) {
-                if (!blocked.contains(id)) {
-                  if (!requestedIds.contains(id)) {
-                    userIds.add(id);
-                  }
-                }
-              }
+            if (id != currentUserId &&
+                !volunteersChattedWith.contains(id) &&
+                !blocked.contains(id) &&
+                !requestedIds.contains(id)) {
+              userIds.add(id);
             }
           });
 
@@ -260,7 +253,7 @@ class APIServices {
           // status = 'No more available users';
           Random rng = new Random();
           int randomNum = rng.nextInt(allIds.length);
-          String randomId = allIds[randomNum];
+          String randomId = userIds[randomNum];
           print('random id: ' + randomId);
 
           var requests =
@@ -292,7 +285,6 @@ class APIServices {
             return 'Success';
           }).catchError((err) {
             print('Error processing request: $err');
-            print(err.runtimeType);
             status = err;
             return err;
           });
@@ -330,9 +322,10 @@ class APIServices {
 
         // if (userIds.isEmpty) {
         // status = 'No more available users';
+        print(userIds);
         Random rng = new Random();
         int randomNum = rng.nextInt(allIds.length);
-        String randomId = allIds[randomNum];
+        String randomId = userIds[randomNum];
         print('random id: ' + randomId);
 
         var requests = await FirebaseFirestore.instance.collection('Requests');
@@ -363,7 +356,6 @@ class APIServices {
           return 'Success';
         }).catchError((err) {
           print('Error processing request: $err');
-          print(err.runtimeType);
           status = err;
           return err;
         });
@@ -516,53 +508,6 @@ class APIServices {
     return status;
   }
 
-  Future<Map<String, String>> getConversationData(groupChatId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String currentUserId = prefs.getString('id')!;
-    String peerId;
-    String peerName;
-    String peerPhotoUrl;
-
-    var document = await FirebaseFirestore.instance
-        .collection('Groups')
-        .doc(groupChatId)
-        .get();
-    Map<String, dynamic>? groupData = document.data();
-
-    var memberIDs = groupData?['members'];
-    if (memberIDs[0] == currentUserId) {
-      peerId = memberIDs[1];
-    } else {
-      peerId = memberIDs[0];
-    }
-
-    var userDocument = await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(peerId.trim())
-        .get();
-    Map<String, dynamic>? userData = userDocument.data();
-    peerName = userData!['alias'];
-    peerPhotoUrl = userData['photoUrl'];
-
-    return {
-      'peerId': peerId,
-      'peerName': peerName,
-      'currentUserId': currentUserId,
-      'peerPhotoUrl': peerPhotoUrl,
-    };
-  }
-
-  Future<List<String>> retrieveChatRooms() async {
-    var collection = await FirebaseFirestore.instance.collection('ChatRooms');
-    List<String> chatRooms = new List.from([]);
-    collection.get().then((QuerySnapshot snapshot) {
-      snapshot.docs.forEach((DocumentSnapshot doc) {
-        chatRooms.add(doc['name']);
-      });
-    });
-    return chatRooms;
-  }
-
   Future<String> joinChatRoom(currentUserId, chatRoomId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? currentUserName = await prefs.getString('alias');
@@ -634,35 +579,7 @@ class APIServices {
     return status;
   }
 
-  Future<Map<String, dynamic>> getChatRoomData(chatRoomId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String currentUserId = prefs.getString('id')!;
-
-    var document = await FirebaseFirestore.instance
-        .collection('ChatRooms')
-        .doc(chatRoomId)
-        .get();
-    Map<String, dynamic>? data = document.data();
-
-    String roomName = data?['name'];
-    String description = data?['description'];
-    List<dynamic> members = data?['members'];
-    List<dynamic> memberNames = data?['memberNames'];
-    List<dynamic> memberPhotoUrls = data?['memberPhotoUrls'];
-
-    return {
-      'roomName': roomName,
-      'currentUserId': currentUserId,
-      'description': description,
-      'members': members,
-      'memberNames': memberNames,
-      'memberPhotoUrls': memberPhotoUrls,
-    };
-  }
-
   Future<String> reportUser(currentUserId, peerId, topic, description) async {
-    // add checking to see last report of user, if they can still report
-
     // might have to only do this after manual review
 
     var userDocument = await FirebaseFirestore.instance
@@ -879,8 +796,3 @@ class APIServices {
     return 'Success';
   }
 }
-
-// var users = await FirebaseFirestore.instance.collection('Users').get();
-// var blah = users.docs.map((doc) => doc.data()).toList();
-// print(blah);
-

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';

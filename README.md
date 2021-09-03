@@ -43,14 +43,15 @@ This app was created using the Flutter framework developed by Google, using the 
 - current status
 - upon joining, joining general chat room and volunteer support if volunteer
 
-- chat preview name purple if chat buddy, streambuilder on chats screen
+- chat preview name purple if chat buddy
+
+- factory, from json
 
 - big refactoring
     creating group
     random id needs to be within volunteers
     fix referrals
     apiservices.dart...
-- array contains any for group convos? for the 'members' field, then you can sort by time as well. but have to convert it to a streambuilder instead of futurebuilder
 - scrolling and stuff
 
 - change 'chat buddy name'
@@ -91,6 +92,11 @@ This app was created using the Flutter framework developed by Google, using the 
 - ANIMATIONS
   - these will step up your app to be potentially usable.
   - don't think it's gonna work. frontend and backend are completely separated.
+
+- streambuilders instead of futurebuilders
+    simply added more fields to the Group and ChatRooms collections so you wouldn't have to query the user doc each time
+    also sorts it based on last timestamp
+    doesn't have to query the group separately on the preview components
 
 # Potential Features
 

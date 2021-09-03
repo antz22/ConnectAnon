@@ -1,5 +1,4 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/models/chat_message.dart';
 import 'package:connect_anon/screens/chat/groups/components/chat_input_field.dart';
 import 'package:connect_anon/screens/chat/groups/components/message.dart';
 import 'package:connect_anon/screens/profile/profile_screen.dart';

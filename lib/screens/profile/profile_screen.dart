@@ -35,7 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         await context.read<APIServices>().getUserData(widget.id);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     status = await prefs.getString('status');
-    print(status);
     return userData;
   }
 
@@ -338,7 +337,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: Text(
                                       '(Chat Buddy) Refer to other volunteer'),
                                 )
-                              : SizedBox.shrink(),
+                              : userData['isBanned']
+                                  ? Container(
+                                      margin:
+                                          EdgeInsets.only(top: kDefaultPadding),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.info),
+                                          SizedBox(
+                                              width: 0.5 * kDefaultPadding),
+                                          Text(
+                                              'NOTE: This user has been temporarily banned'),
+                                        ],
+                                      ),
+                                    )
+                                  : SizedBox.shrink(),
                         ],
                       )
               ],

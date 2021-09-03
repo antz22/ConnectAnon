@@ -36,7 +36,7 @@ class ChatRoomsHeader extends StatelessWidget {
                 ],
               ),
               SvgPicture.asset(
-                'assets/svgs/chat_room_unselected.svg',
+                'assets/svgs/chat_room.svg',
                 height: 80.0,
                 color: Colors.white,
               ),

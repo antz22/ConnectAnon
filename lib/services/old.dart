@@ -116,3 +116,87 @@
 //   });
 //   return status;
 // }
+
+
+  // Future<Map<String, String>> getConversationData(groupChatId) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String currentUserId = prefs.getString('id')!;
+  //   String peerId;
+  //   String peerName;
+  //   String peerPhotoUrl;
+
+  //   var document = await FirebaseFirestore.instance
+  //       .collection('Groups')
+  //       .doc(groupChatId)
+  //       .get();
+  //   Map<String, dynamic>? groupData = document.data();
+
+  //   var memberIDs = groupData?['members'];
+  //   if (memberIDs[0] == currentUserId) {
+  //     peerId = memberIDs[1];
+  //   } else {
+  //     peerId = memberIDs[0];
+  //   }
+
+  //   var userDocument = await FirebaseFirestore.instance
+  //       .collection('Users')
+  //       .doc(peerId.trim())
+  //       .get();
+  //   Map<String, dynamic>? userData = userDocument.data();
+  //   peerName = userData!['alias'];
+  //   peerPhotoUrl = userData['photoUrl'];
+
+  //   return {
+  //     'peerId': peerId,
+  //     'peerName': peerName,
+  //     'currentUserId': currentUserId,
+  //     'peerPhotoUrl': peerPhotoUrl,
+  //   };
+  // }
+
+
+
+  // Future<List<String>> retrieveChatRooms() async {
+  //   var collection = await FirebaseFirestore.instance.collection('ChatRooms');
+  //   List<String> chatRooms = new List.from([]);
+  //   collection.get().then((QuerySnapshot snapshot) {
+  //     snapshot.docs.forEach((DocumentSnapshot doc) {
+  //       chatRooms.add(doc['name']);
+  //     });
+  //   });
+  //   return chatRooms;
+  // }
+
+
+
+  // Future<Map<String, dynamic>> getChatRoomData(chatRoomId) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String currentUserId = prefs.getString('id')!;
+
+  //   var document = await FirebaseFirestore.instance
+  //       .collection('ChatRooms')
+  //       .doc(chatRoomId)
+  //       .get();
+  //   Map<String, dynamic>? data = document.data();
+
+  //   String roomName = data?['name'];
+  //   String description = data?['description'];
+  //   List<dynamic> members = data?['members'];
+  //   List<dynamic> memberNames = data?['memberNames'];
+  //   List<dynamic> memberPhotoUrls = data?['memberPhotoUrls'];
+
+  //   return {
+  //     'roomName': roomName,
+  //     'currentUserId': currentUserId,
+  //     'description': description,
+  //     'members': members,
+  //     'memberNames': memberNames,
+  //     'memberPhotoUrls': memberPhotoUrls,
+  //   };
+  // }
+
+
+// var users = await FirebaseFirestore.instance.collection('Users').get();
+// var blah = users.docs.map((doc) => doc.data()).toList();
+// print(blah);
+

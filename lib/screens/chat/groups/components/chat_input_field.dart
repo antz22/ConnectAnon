@@ -30,7 +30,6 @@ class _ChatInputFieldState extends State<ChatInputField> {
   void onSendMessage(String content) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? id = await prefs.getString('id');
-    print(groupChatId);
 
     if (content.trim() != '') {
       _textEditingController.clear();
