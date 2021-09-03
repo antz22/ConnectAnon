@@ -15,13 +15,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'components/sub_text.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen(
-      {Key? key, required this.isMe, required this.id, this.groupChatId = ''})
-      : super(key: key);
+  const ProfileScreen({
+    Key? key,
+    required this.isMe,
+    required this.id,
+    this.groupChatId = '',
+    this.isReviewing = false,
+  }) : super(key: key);
 
   final bool isMe;
   final String id;
   final String groupChatId;
+  final bool isReviewing;
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -213,69 +218,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 widget.isMe
                     ? SizedBox.shrink()
-                    : Column(
-                        children: [
-                          SizedBox(
-                              height:
-                                  0.07 * MediaQuery.of(context).size.height),
-                          ElevatedButton(
-                            onPressed: () async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              String? currentUserId = prefs.getString('id');
-                              Map<String, dynamic> params = {
-                                'currentUserId': currentUserId,
-                                'peerId': widget.id,
-                                'groupChatId': widget.groupChatId,
-                              };
-                              String title = 'Archive';
-                              String content =
-                                  'Are you sure you want to archive this conversation? You won\'t be able to access your conversation anymore.';
-                              String purpose = 'Archive Conversation';
-
-                              if (Platform.isAndroid) {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => CustomPopupDialog
-                                        .buildMaterialPopupDialog(context,
-                                            params, title, content, purpose));
-                              } else {
-                                showCupertinoDialog(
-                                    context: context,
-                                    builder: (context) => CustomPopupDialog
-                                        .buildCupertinoPopupDialog(context,
-                                            params, title, content, purpose));
-                              }
-                            },
-                            child: Text('Archive'),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                    : widget.isReviewing
+                        ? Container(
+                            margin: EdgeInsets.only(top: 2 * kDefaultPadding),
+                            child: _buildReferralButton(context),
+                          )
+                        : Column(
                             children: [
-                              TextButton(
-                                onPressed: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  String? currentUserId = prefs.getString('id');
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ReportScreen(
-                                          currentUserId: currentUserId,
-                                          peerId: widget.id),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  'Report',
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: kDefaultPadding),
-                              TextButton(
+                              SizedBox(
+                                  height: 0.07 *
+                                      MediaQuery.of(context).size.height),
+                              ElevatedButton(
                                 onPressed: () async {
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
@@ -285,10 +238,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     'peerId': widget.id,
                                     'groupChatId': widget.groupChatId,
                                   };
-                                  String title = 'Block';
+                                  String title = 'Archive';
                                   String content =
-                                      'Are you sure you want to block this user? You won\'t be able to chat with this user again.';
-                                  String purpose = 'Block User';
+                                      'Are you sure you want to archive this conversation? You won\'t be able to access your conversation anymore.';
+                                  String purpose = 'Archive Conversation';
 
                                   if (Platform.isAndroid) {
                                     showDialog(
@@ -312,50 +265,105 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 purpose));
                                   }
                                 },
-                                child: Text(
-                                  'Block',
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                  ),
-                                ),
+                                child: Text('Archive'),
                               ),
-                            ],
-                          ),
-                          status == 'Chat Buddy'
-                              ? ElevatedButton(
-                                  onPressed: () async {
-                                    var response = await context
-                                        .read<APIServices>()
-                                        .referNewVolunteer(
-                                          widget.id,
-                                        );
-                                    if (response != 'Success') {
-                                      CustomSnackbar.buildWarningMessage(
-                                          context, 'Error', response);
-                                    }
-                                  },
-                                  child: Text(
-                                      '(Chat Buddy) Refer to other volunteer'),
-                                )
-                              : userData['isBanned']
-                                  ? Container(
-                                      margin:
-                                          EdgeInsets.only(top: kDefaultPadding),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.info),
-                                          SizedBox(
-                                              width: 0.5 * kDefaultPadding),
-                                          Text(
-                                              'NOTE: This user has been temporarily banned'),
-                                        ],
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextButton(
+                                    onPressed: () async {
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      String? currentUserId =
+                                          prefs.getString('id');
+
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ReportScreen(
+                                              currentUserId: currentUserId,
+                                              peerId: widget.id),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'Report',
+                                      style: TextStyle(
+                                        color: Colors.red,
                                       ),
-                                    )
-                                  : SizedBox.shrink(),
-                        ],
-                      )
+                                    ),
+                                  ),
+                                  SizedBox(width: kDefaultPadding),
+                                  TextButton(
+                                    onPressed: () async {
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      String? currentUserId =
+                                          prefs.getString('id');
+                                      Map<String, dynamic> params = {
+                                        'currentUserId': currentUserId,
+                                        'peerId': widget.id,
+                                        'groupChatId': widget.groupChatId,
+                                      };
+                                      String title = 'Block';
+                                      String content =
+                                          'Are you sure you want to block this user? You won\'t be able to chat with this user again.';
+                                      String purpose = 'Block User';
+
+                                      if (Platform.isAndroid) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                CustomPopupDialog
+                                                    .buildMaterialPopupDialog(
+                                                        context,
+                                                        params,
+                                                        title,
+                                                        content,
+                                                        purpose));
+                                      } else {
+                                        showCupertinoDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                CustomPopupDialog
+                                                    .buildCupertinoPopupDialog(
+                                                        context,
+                                                        params,
+                                                        title,
+                                                        content,
+                                                        purpose));
+                                      }
+                                    },
+                                    child: Text(
+                                      'Block',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              status == 'Chat Buddy'
+                                  ? _buildReferralButton(context)
+                                  : userData['isBanned']
+                                      ? Container(
+                                          margin: EdgeInsets.only(
+                                              top: kDefaultPadding),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.info),
+                                              SizedBox(
+                                                  width: 0.5 * kDefaultPadding),
+                                              Text(
+                                                  'NOTE: This user has been temporarily banned'),
+                                            ],
+                                          ),
+                                        )
+                                      : SizedBox.shrink(),
+                            ],
+                          )
               ],
             );
           } else {
@@ -363,6 +371,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
       ),
+    );
+  }
+
+  ElevatedButton _buildReferralButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        var response = await context.read<APIServices>().referNewVolunteer(
+              widget.id,
+            );
+        if (response != 'Success') {
+          CustomSnackbar.buildWarningMessage(context, 'Error', response);
+        }
+      },
+      child: Text('(Chat Buddy) Refer to other volunteer'),
     );
   }
 }

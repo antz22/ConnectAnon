@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
+import 'package:connect_anon/screens/profile/profile_screen.dart';
 import 'package:connect_anon/services/api_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
@@ -114,30 +115,47 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                           photoUrl: peerPhotoUrl, size: 20.0),
                                       SizedBox(width: 0.9 * kDefaultPadding),
                                       Expanded(
-                                        child: Container(
-                                          height: 53.0,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                peerName,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  fontWeight: FontWeight.w700,
+                                        child: GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfileScreen(
+                                                  isMe: false,
+                                                  id: peerId,
+                                                  isReviewing: true,
                                                 ),
                                               ),
-                                              Text(
-                                                _buildTimeAgo(timestamp),
-                                                style: TextStyle(
-                                                  color: Color(0xFF535353),
-                                                  fontSize: 15.0,
+                                            );
+                                          },
+                                          child: Container(
+                                            height: 53.0,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  peerName,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                                Text(
+                                                  _buildTimeAgo(timestamp),
+                                                  style: TextStyle(
+                                                    color: Color(0xFF535353),
+                                                    fontSize: 15.0,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),

@@ -186,10 +186,14 @@ class _HomePageState extends State<HomePage>
               label: "Messages",
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/svgs/request.svg',
-                color:
-                    _selectedIndex == 1 ? kPrimaryColor : Colors.grey.shade400,
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 3.0),
+                child: SvgPicture.asset(
+                  'assets/svgs/request.svg',
+                  color: _selectedIndex == 1
+                      ? kPrimaryColor
+                      : Colors.grey.shade400,
+                ),
               ),
               label: "Requests",
             ),

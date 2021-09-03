@@ -34,51 +34,39 @@ This app was created using the Flutter framework developed by Google, using the 
 
 ## TODO
 
+IMPORTANT
 - firebase plan - put in credit card (this is only a dev project so it should be fine)
-
-
-- keyboard slow animation
-
 - admin notifications - chat room creation, reports, chat buddies
 - current status
-- upon joining, joining general chat room and volunteer support if volunteer
-
-- chat preview name purple if chat buddy
-
 - factory, from json
-
 - big refactoring
     creating group
     random id needs to be within volunteers
     fix referrals
     apiservices.dart...
-- scrolling and stuff
+- null errors!!
+- manual review
+    Reports
+    Chat Room creation requests
+- firebase production
+- figure out sign in through google or through email
 
+
+MINOR
+- keyboard slow animation
+- unsplash API production - how to download stuff?
+- clean up and abstract!
+
+
+POTENTIAL
+- dark mode...
+- upon joining, joining general chat room and volunteer support if volunteer
+- chat preview name purple if chat buddy
 - change 'chat buddy name'
 - think about other schools
-- null errors!!
 
-- manual review
-    2. Reports
-    3. Chat Room creation requests
-
-
-- sorting conversations / chat rooms by last timestamp (would have to change a lot)
-- push notifications -- connecting with currently active user
-- firebase admin - notifications and chat buddy functionality and getting reported
 - should chat buddies be able to do the same thing? then what about erasing things in the database, updating chattedwith?
 - peer preferences?
-- unsplash API production - how to download stuff?
-
-- billion null errors
-- clean up and abstract!
-- animations
-- firebase production
-- error checking and null checking lol
-- chat room creation applications
-
-- figure out sign in through google or through email
-- error handling on google sign in
 
 - add an if check sayign that if users is over like 50 then dont check thorugh each one?
 
