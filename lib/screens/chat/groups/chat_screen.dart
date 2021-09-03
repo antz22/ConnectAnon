@@ -151,21 +151,32 @@ class _ChatScreenState extends State<ChatScreen> {
                                 padding: EdgeInsets.only(bottom: 5.0),
                                 reverse: true,
                                 itemCount: snapshot.data?.docs.length,
-                                itemBuilder: (context, index) => Padding(
-                                  // if this element is the first text
-                                  padding: index == demoChatMessages.length - 1
-                                      ? EdgeInsets.only(
-                                          top: 0.3 * kDefaultPadding,
-                                          left: kDefaultPadding,
-                                          right: kDefaultPadding)
-                                      : EdgeInsets.symmetric(
-                                          horizontal: kDefaultPadding),
-                                  child: Message(
-                                    userId: currentUserId,
-                                    document: snapshot.data?.docs[index],
-                                    photoUrl: peerPhotoUrl,
-                                  ),
-                                ),
+                                itemBuilder: (context, index) {
+                                  bool displayPhoto = false;
+                                  // order is reversed
+                                  if (index != 0) {
+                                    if (snapshot.data?.docs[index - 1]
+                                            ['idFrom'] !=
+                                        peerId) {
+                                      displayPhoto = true;
+                                    }
+                                  } else {
+                                    if (snapshot.data?.docs[index]['idFrom'] ==
+                                        peerId) {
+                                      displayPhoto = true;
+                                    }
+                                  }
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: kDefaultPadding),
+                                    child: Message(
+                                      userId: currentUserId,
+                                      document: snapshot.data?.docs[index],
+                                      photoUrl: peerPhotoUrl,
+                                      displayPhoto: displayPhoto,
+                                    ),
+                                  );
+                                },
                               );
                             }
                           } else {

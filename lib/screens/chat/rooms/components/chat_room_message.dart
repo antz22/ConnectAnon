@@ -5,11 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ChatRoomMessage extends StatefulWidget {
-  ChatRoomMessage({Key? key, required this.userId, required this.document})
-      : super(key: key);
+  ChatRoomMessage({
+    Key? key,
+    required this.userId,
+    required this.document,
+    required this.displayPhoto,
+    required this.displayName,
+  }) : super(key: key);
 
   final String userId;
   final DocumentSnapshot? document;
+  final bool displayPhoto;
+  final bool displayName;
 
   @override
   _ChatRoomMessageState createState() => _ChatRoomMessageState();
@@ -62,7 +69,6 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox.shrink(),
           GestureDetector(
             onTap: () {
               setState(() {
@@ -98,25 +104,29 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          CustomAvatar(
-            photoUrl: photoUrlFrom,
-            size: 14.0,
-          ),
+          widget.displayPhoto
+              ? CustomAvatar(
+                  photoUrl: photoUrlFrom,
+                  size: 14.0,
+                )
+              : SizedBox(width: 28.0),
           SizedBox(width: 0.5 * kDefaultPadding),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 5.0, left: 4.0),
-                child: Text(
-                  widget.document?['nameFrom'],
-                  style: TextStyle(
-                    fontSize: 11.5,
-                    color: Colors.grey.shade500,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ),
+              widget.displayName
+                  ? Container(
+                      margin: EdgeInsets.only(bottom: 5.0, left: 6.0),
+                      child: Text(
+                        widget.document?['nameFrom'],
+                        style: TextStyle(
+                          fontSize: 11.5,
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
               GestureDetector(
                 onTap: () {
                   setState(() {

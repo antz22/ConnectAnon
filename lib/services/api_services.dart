@@ -722,6 +722,7 @@ class APIServices {
       });
 
       FirebaseFirestore.instance.collection('Groups').doc(groupId).delete();
+      FirebaseFirestore.instance.collection('Messages').doc(groupId).delete();
     } catch (e) {
       print(e);
       return e.toString();
@@ -743,6 +744,7 @@ class APIServices {
       });
 
       FirebaseFirestore.instance.collection('Groups').doc(groupId).delete();
+      FirebaseFirestore.instance.collection('Messages').doc(groupId).delete();
     } catch (e) {
       print(e);
       return e.toString();

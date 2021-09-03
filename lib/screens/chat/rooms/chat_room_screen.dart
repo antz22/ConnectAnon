@@ -1,5 +1,4 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/models/chat_message.dart';
 import 'package:connect_anon/screens/chat/rooms/components/chat_room_input_field.dart';
 import 'package:connect_anon/screens/chat/rooms/components/chat_room_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -152,19 +151,47 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                 padding: EdgeInsets.only(bottom: 5.0),
                                 reverse: true,
                                 itemCount: snapshot.data?.docs.length,
-                                itemBuilder: (context, index) => Padding(
-                                  // if this element is the first text
-                                  padding: index == demoChatMessages.length - 1
-                                      ? EdgeInsets.only(
-                                          top: 0.3 * kDefaultPadding,
-                                          left: kDefaultPadding,
-                                          right: kDefaultPadding)
-                                      : EdgeInsets.symmetric(
-                                          horizontal: kDefaultPadding),
-                                  child: ChatRoomMessage(
+                                itemBuilder: (context, index) {
+                                  bool displayPhoto = false;
+                                  bool displayName = false;
+                                  // order is reversed
+                                  // displayPhoto
+                                  if (index != 0) {
+                                    if (snapshot.data?.docs[index - 1]
+                                            ['idFrom'] !=
+                                        snapshot.data?.docs[index]['idFrom']) {
+                                      displayPhoto = true;
+                                    }
+                                  } else {
+                                    if (snapshot.data?.docs[index]['idFrom'] !=
+                                        widget.currentUserId) {
+                                      displayPhoto = true;
+                                    }
+                                  }
+                                  // displayName
+                                  if (index != snapshot.data!.docs.length - 1) {
+                                    if (snapshot.data?.docs[index + 1]
+                                            ['idFrom'] !=
+                                        snapshot.data?.docs[index]['idFrom']) {
+                                      displayName = true;
+                                    }
+                                  } else {
+                                    if (snapshot.data?.docs[index]['idFrom'] !=
+                                        widget.currentUserId) {
+                                      displayName = true;
+                                    }
+                                  }
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: kDefaultPadding),
+                                    child: ChatRoomMessage(
                                       userId: widget.currentUserId,
-                                      document: snapshot.data?.docs[index]),
-                                ),
+                                      document: snapshot.data?.docs[index],
+                                      displayPhoto: displayPhoto,
+                                      displayName: displayName,
+                                    ),
+                                  );
+                                },
                               );
                             }
                           } else {

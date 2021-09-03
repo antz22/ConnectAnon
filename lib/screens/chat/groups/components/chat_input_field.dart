@@ -110,19 +110,36 @@ class _ChatInputFieldState extends State<ChatInputField> {
               ),
             ),
             SizedBox(width: kDefaultPadding),
-            GestureDetector(
-              onTap: () async {
-                onSendMessage(_textEditingController.text);
-              },
-              child: _isEmpty
-                  ? SvgPicture.asset(
-                      'assets/svgs/send_unvalid.svg',
-                      height: 23.0,
-                    )
-                  : SvgPicture.asset(
-                      'assets/svgs/send_valid.svg',
-                      height: 23.0,
-                    ),
+            // onSendMessage(_textEditingController.text);
+            Container(
+              width: 28.0,
+              height: 28.0,
+              decoration: BoxDecoration(
+                // color: Colors.black,
+                shape: BoxShape.circle,
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () async {
+                    onSendMessage(_textEditingController.text);
+                  },
+                  customBorder: CircleBorder(),
+                  child: Container(
+                    width: 23.0,
+                    height: 23.0,
+                    child: _isEmpty
+                        ? SvgPicture.asset(
+                            'assets/svgs/send_unvalid.svg',
+                            height: 23.0,
+                          )
+                        : SvgPicture.asset(
+                            'assets/svgs/send_valid.svg',
+                            height: 23.0,
+                          ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

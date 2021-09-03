@@ -84,7 +84,7 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
                     hintText: 'Type here...',
                     hintStyle: TextStyle(
                       color: Color(0xFF9A9A9A),
-                      fontSize: 12.0,
+                      fontSize: 14.0,
                     ),
                     border: InputBorder.none,
                   ),
@@ -109,19 +109,63 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
               ),
             ),
             SizedBox(width: kDefaultPadding),
-            GestureDetector(
-              onTap: () async {
-                onSendMessage(_textEditingController.text);
-              },
-              child: _isEmpty
-                  ? SvgPicture.asset(
-                      'assets/svgs/send_unvalid.svg',
-                      height: 23.0,
-                    )
-                  : SvgPicture.asset(
-                      'assets/svgs/send_valid.svg',
-                      height: 23.0,
-                    ),
+            Container(
+              width: 28.0,
+              height: 28.0,
+              decoration: BoxDecoration(
+                // color: Colors.black,
+                shape: BoxShape.circle,
+              ),
+              child: Material(
+                color: Colors.transparent,
+                // child: InkResponse(
+                //   onTap: () {},
+                //   splashFactory: InkRipple.splashFactory,
+                //   radius: 40,
+                //   splashColor: Colors.black12,
+                //   highlightColor: Colors.transparent,
+                //   child: _isEmpty
+                //       ? SvgPicture.asset(
+                //           'assets/svgs/send_unvalid.svg',
+                //           height: 40.0,
+                //         )
+                //       : SvgPicture.asset(
+                //           'assets/svgs/send_valid.svg',
+                //           height: 40.0,
+                //         ),
+                // )
+                // child: IconButton(
+                //   onPressed: () {},
+                //   iconSize: 23.0,
+                //   constraints: BoxConstraints(maxHeight: 40.0),
+                //   icon: _isEmpty
+                //       ? SvgPicture.asset(
+                //           'assets/svgs/send_unvalid.svg',
+                //         )
+                //       : SvgPicture.asset(
+                //           'assets/svgs/send_valid.svg',
+                //         ),
+                // )
+                child: InkWell(
+                  onTap: () async {
+                    onSendMessage(_textEditingController.text);
+                  },
+                  customBorder: CircleBorder(),
+                  child: Container(
+                    width: 23.0,
+                    height: 23.0,
+                    child: _isEmpty
+                        ? SvgPicture.asset(
+                            'assets/svgs/send_unvalid.svg',
+                            height: 23.0,
+                          )
+                        : SvgPicture.asset(
+                            'assets/svgs/send_valid.svg',
+                            height: 23.0,
+                          ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

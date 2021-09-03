@@ -51,6 +51,7 @@ class AuthenticationService {
           bool isBanned = userData['isBanned'];
           String bannedSince = userData['bannedSince'];
           String status = userData['status'];
+          print(alias + photoUrl + bannedSince + status);
           if (isBanned) {
             DateTime lastDateTime =
                 DateTime.fromMillisecondsSinceEpoch(int.parse(bannedSince));
@@ -77,6 +78,7 @@ class AuthenticationService {
               await prefs.setString('status', status);
             }
           } else {
+            await prefs.setBool('isBanned', false);
             await prefs.setString('alias', alias);
             await prefs.setString('photoUrl', photoUrl);
             await prefs.setString('status', status);

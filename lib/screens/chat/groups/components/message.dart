@@ -10,11 +10,13 @@ class Message extends StatefulWidget {
     required this.userId,
     required this.document,
     required this.photoUrl,
+    required this.displayPhoto,
   }) : super(key: key);
 
   final String userId;
   final DocumentSnapshot? document;
   final String photoUrl;
+  final bool displayPhoto;
 
   @override
   _MessageState createState() => _MessageState();
@@ -28,7 +30,7 @@ class _MessageState extends State<Message> {
 
   Future<bool> _checkIsSender() async {
     isSender = widget.document?.get('idFrom') == widget.userId ? true : false;
-    return widget.document?.get('idFrom') == widget.userId ? true : false;
+    return isSender;
   }
 
   String _getMessageTime() {
@@ -52,13 +54,15 @@ class _MessageState extends State<Message> {
             children: [
               isSender
                   ? SizedBox.shrink()
-                  : Container(
-                      margin: EdgeInsets.only(right: 0.5 * kDefaultPadding),
-                      child: CustomAvatar(
-                        photoUrl: widget.photoUrl,
-                        size: 13.0,
-                      ),
-                    ),
+                  : widget.displayPhoto
+                      ? Container(
+                          margin: EdgeInsets.only(right: 0.5 * kDefaultPadding),
+                          child: CustomAvatar(
+                            photoUrl: widget.photoUrl,
+                            size: 13.0,
+                          ),
+                        )
+                      : SizedBox(width: 26.0 + 0.5 * kDefaultPadding),
               Column(
                 crossAxisAlignment: isSender
                     ? CrossAxisAlignment.end
