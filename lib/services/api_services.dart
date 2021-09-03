@@ -28,10 +28,19 @@ class APIServices {
     };
   }
 
-  Future<String> createGroup(
-      String currentUserId, List chattedWith, List blocked) async {
+  Future<String> createGroup(String currentUserId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? alias = await prefs.getString('alias');
+    String? photoUrl = await prefs.getString('photoUrl');
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
+    var userDocument = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(currentUserId.trim())
+        .get();
+    Map<String, dynamic>? userData = userDocument.data();
+    List<dynamic> chattedWith = userData?['chattedWith'];
+    List<dynamic> blocked = userData?['blocked'];
     var status;
     await users
         .where('status', isEqualTo: 'Peer')
@@ -56,12 +65,22 @@ class APIServices {
         String randomId = userIds[randomNum];
         print('random id: ' + randomId);
 
+        var randomUserDocument = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(randomId.trim())
+            .get();
+        Map<String, dynamic>? randomUserData = randomUserDocument.data();
+        String randomName = randomUserData!['alias'];
+        String randomPhotoUrl = randomUserData['photoUrl'];
+
         var groups = await FirebaseFirestore.instance.collection('Groups');
 
         String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
         groups.add({
           'members': [currentUserId, randomId],
+          'memberNames': [alias, randomName],
+          'memberPhotoUrls': [photoUrl, randomPhotoUrl],
           'lastMessage': 'New Conversation - Say Hi!',
           'lastTimestamp': timestamp,
           'lastUpdatedBy': currentUserId,
@@ -109,12 +128,26 @@ class APIServices {
       String peerId, bool availableUsers) async {
     var status;
 
+    var peerUserDocument = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(peerId.trim())
+        .get();
+    Map<String, dynamic>? peerUserData = peerUserDocument.data();
+    String peerName = peerUserData!['alias'];
+    String peerPhotoUrl = peerUserData['photoUrl'];
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? alias = await prefs.getString('alias');
+    String? photoUrl = await prefs.getString('photoUrl');
+
     var groups = await FirebaseFirestore.instance.collection('Groups');
 
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
     groups.add({
       'members': [peerId, volunteerId],
+      'memberNames': [peerName, alias],
+      'memberPhotoUrls': [peerPhotoUrl, photoUrl],
       'lastMessage': 'New Conversation - Hi!',
       'lastTimestamp': timestamp,
       'lastUpdatedBy': volunteerId,
@@ -182,8 +215,7 @@ class APIServices {
     return 'Success';
   }
 
-  Future<String> requestVolunteer(String currentUserId,
-      List volunteersChattedWith, List blocked, List requestedIds) async {
+  Future<String> requestVolunteer(String currentUserId) async {
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
     List<String> allIds = new List.from([]);
@@ -194,6 +226,9 @@ class APIServices {
     Map<String, dynamic>? userData = userDocument.data();
     String lastRequestedAt = userData?['lastRequestedAt'];
     int totalRequests = userData?['totalRequests'];
+    List<dynamic> volunteersChattedWith = userData?['volunteersChattedWith'];
+    List<dynamic> blocked = userData?['blocked'];
+    List<dynamic> requestedIds = userData?['requestedIds'];
     if (lastRequestedAt != '') {
       DateTime lastReportedTimeAt =
           DateTime.fromMillisecondsSinceEpoch(int.parse(lastRequestedAt));
@@ -356,6 +391,9 @@ class APIServices {
     Map<String, dynamic>? userData = userDocument.data();
     List<dynamic> volunteersChattedWith = userData?['specialChattedWith'];
     List<dynamic> blocked = userData?['blocked'];
+    String peerName = userData?['alias'];
+    String peerPhotoUrl = userData?['photoUrl'];
+
     var status;
     await users
         .where('status', isEqualTo: 'Chat Buddy')
@@ -427,8 +465,18 @@ class APIServices {
 
         String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
+        var randomUserDocument = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(randomId.trim())
+            .get();
+        Map<String, dynamic>? randomUserData = randomUserDocument.data();
+        String randomName = randomUserData!['alias'];
+        String randomPhotoUrl = randomUserData['photoUrl'];
+
         groups.add({
           'members': [peerId, randomId],
+          'memberNames': [peerName, randomName],
+          'memberPhotoUrls': [peerPhotoUrl, randomPhotoUrl],
           'lastMessage': 'New Conversation - Say Hi!',
           'lastTimestamp': timestamp,
           'lastUpdatedBy': peerId,
@@ -730,7 +778,8 @@ class APIServices {
       });
 
       FirebaseFirestore.instance.collection('Groups').doc(groupId).delete();
-      FirebaseFirestore.instance.collection('Messages').doc(groupId).delete();
+      // this won't work...
+      // FirebaseFirestore.instance.collection('Messages').doc(groupId).delete();
     } catch (e) {
       print(e);
       return e.toString();
@@ -752,7 +801,8 @@ class APIServices {
       });
 
       FirebaseFirestore.instance.collection('Groups').doc(groupId).delete();
-      FirebaseFirestore.instance.collection('Messages').doc(groupId).delete();
+      // this won't work...
+      // FirebaseFirestore.instance.collection('Messages').doc(groupId).delete();
     } catch (e) {
       print(e);
       return e.toString();

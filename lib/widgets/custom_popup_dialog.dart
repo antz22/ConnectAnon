@@ -103,16 +103,9 @@ class CustomPopupDialog {
                 break;
               case 'Request Volunteer':
                 String currentUserId = params['currentUserId'];
-                List<String> specialChattedWith = params['specialChattedWIth'];
-                List<String> blocked = params['blocked'];
-                List<String> requestedIds = params['requestedIds'];
-                String response =
-                    await context.read<APIServices>().requestVolunteer(
-                          currentUserId,
-                          specialChattedWith,
-                          blocked,
-                          requestedIds,
-                        );
+                String response = await context
+                    .read<APIServices>()
+                    .requestVolunteer(currentUserId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -236,13 +229,9 @@ class CustomPopupDialog {
                 break;
               case 'Request Volunteer':
                 String currentUserId = params['currentUserId'];
-                List<String> specialChattedWith = params['specialChattedWIth'];
-                List<String> blocked = params['blocked'];
-                List<String> requestedAt = params['requestedAt'];
                 String response = await context
                     .read<APIServices>()
-                    .requestVolunteer(currentUserId, specialChattedWith,
-                        blocked, requestedAt);
+                    .requestVolunteer(currentUserId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(

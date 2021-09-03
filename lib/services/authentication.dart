@@ -51,7 +51,6 @@ class AuthenticationService {
           bool isBanned = userData['isBanned'];
           String bannedSince = userData['bannedSince'];
           String status = userData['status'];
-          print(alias + photoUrl + bannedSince + status);
           if (isBanned) {
             DateTime lastDateTime =
                 DateTime.fromMillisecondsSinceEpoch(int.parse(bannedSince));

@@ -37,8 +37,6 @@ This app was created using the Flutter framework developed by Google, using the 
 - firebase plan - put in credit card (this is only a dev project so it should be fine)
 
 
-- ANIMATIONS
-  - these will step up your app to be potentially usable.
 - keyboard slow animation
 
 - admin notifications - chat room creation, reports, chat buddies
@@ -51,6 +49,7 @@ This app was created using the Flutter framework developed by Google, using the 
     creating group
     random id needs to be within volunteers
     fix referrals
+    apiservices.dart...
 - array contains any for group convos? for the 'members' field, then you can sort by time as well. but have to convert it to a streambuilder instead of futurebuilder
 - scrolling and stuff
 
@@ -88,6 +87,10 @@ This app was created using the Flutter framework developed by Google, using the 
 
 - what if someone requests the same chat buddy multiple times?
     just be ware of duplicate requests, delete the other one. it should rarely happen
+
+- ANIMATIONS
+  - these will step up your app to be potentially usable.
+  - don't think it's gonna work. frontend and backend are completely separated.
 
 # Potential Features
 

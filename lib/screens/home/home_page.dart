@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage>
   String currentUserId = '';
   String? status = '';
   String? photoUrl = '';
+  String? alias = '';
 
   List<Widget> tabs = new List.from([]);
 
@@ -46,16 +47,25 @@ class _HomePageState extends State<HomePage>
     currentUserId = await prefs.getString('id')!;
     status = await prefs.getString('status');
     photoUrl = await prefs.getString('photoUrl');
+    alias = await prefs.getString('alias');
     if (status == 'Chat Buddy') {
       tabs = [
-        ConversationsScreen(currentUserId: currentUserId, status: status),
+        ConversationsScreen(
+            currentUserId: currentUserId, status: status, photoUrl: photoUrl),
         RequestsScreen(currentUserId: currentUserId, photoUrl: photoUrl),
-        ChatRoomsScreen(currentUserId: currentUserId),
+        ChatRoomsScreen(
+            currentUserId: currentUserId,
+            photoUrl: photoUrl ?? '',
+            alias: alias ?? ''),
       ];
     } else {
       tabs = [
-        ConversationsScreen(currentUserId: currentUserId, status: status),
-        ChatRoomsScreen(currentUserId: currentUserId),
+        ConversationsScreen(
+            currentUserId: currentUserId, status: status, photoUrl: photoUrl),
+        ChatRoomsScreen(
+            currentUserId: currentUserId,
+            photoUrl: photoUrl ?? '',
+            alias: alias ?? ''),
       ];
     }
   }

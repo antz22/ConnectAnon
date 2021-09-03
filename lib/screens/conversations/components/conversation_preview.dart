@@ -12,6 +12,8 @@ class ConversationPreview extends StatelessWidget {
     required this.peerId,
     required this.peerName,
     required this.peerPhotoUrl,
+    required this.lastMessage,
+    required this.lastTimestamp,
   }) : super(key: key);
 
   final String? groupChatId;
@@ -19,62 +21,50 @@ class ConversationPreview extends StatelessWidget {
   final String peerId;
   final String peerName;
   final String peerPhotoUrl;
+  final String lastMessage;
+  final String lastTimestamp;
 
   @override
   Widget build(BuildContext context) {
     if (groupChatId != null) {
-      return StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('Groups')
-              .doc(groupChatId?.trim())
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (snapshot.hasData) {
-              Map<String, dynamic> data =
-                  snapshot.data!.data() as Map<String, dynamic>;
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomAvatar(photoUrl: peerPhotoUrl, size: 28.0),
-                  SizedBox(width: 0.9 * kDefaultPadding),
-                  Container(
-                    height: 53.0,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          peerName,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Text(
-                          data['lastMessage'],
-                          style: TextStyle(
-                            color: Color(0xFF535353),
-                            fontSize: 15.0,
-                          ),
-                        ),
-                      ],
-                    ),
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomAvatar(photoUrl: peerPhotoUrl, size: 28.0),
+          SizedBox(width: 0.9 * kDefaultPadding),
+          Container(
+            height: 53.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  peerName,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w700,
                   ),
-                  Spacer(),
-                  Text(
-                    _buildLastTimestamp(data['lastTimestamp']),
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      color: Color(0xFF959595),
-                    ),
+                ),
+                Text(
+                  lastMessage,
+                  style: TextStyle(
+                    color: Color(0xFF535353),
+                    fontSize: 15.0,
                   ),
-                ],
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          });
+                ),
+              ],
+            ),
+          ),
+          Spacer(),
+          Text(
+            _buildLastTimestamp(lastTimestamp),
+            style: TextStyle(
+              fontSize: 15.0,
+              color: Color(0xFF959595),
+            ),
+          ),
+        ],
+      );
     } else {
       return SizedBox.shrink();
     }
