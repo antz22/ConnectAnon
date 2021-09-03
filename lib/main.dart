@@ -1,4 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/screens/landing_page/landing_page.dart';
 import 'package:connect_anon/screens/sign_in/sign_in_page.dart';
 import 'package:connect_anon/services/api_services.dart';
 import 'package:connect_anon/services/authentication.dart';
@@ -13,10 +14,10 @@ import 'screens/home/home_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    // statusBarBrightness: Brightness.dark,
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //   statusBarColor: Colors.transparent,
+  //   statusBarBrightness: Brightness.dark,
+  // ));
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
@@ -61,7 +62,7 @@ class AuthenticationWrapper extends StatelessWidget {
     // } else {
     //   return LandingPage();
     // }
-    return SignInPage();
+    return LandingPage();
     // return UpdateUserInfoPage(user: firebaseUser!);
   }
 }

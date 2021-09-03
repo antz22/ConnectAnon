@@ -148,7 +148,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                             } else {
                               listMessage.addAll(snapshot.data!.docs);
                               return ListView.builder(
-                                padding: EdgeInsets.only(bottom: 5.0),
+                                padding:
+                                    EdgeInsets.only(top: 15.0, bottom: 5.0),
+                                controller: _scrollController,
                                 reverse: true,
                                 itemCount: snapshot.data?.docs.length,
                                 itemBuilder: (context, index) {

@@ -1,3 +1,4 @@
+import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/account_creation/update_user_info.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/services/authentication.dart';
@@ -25,7 +26,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: _isSigningIn
           ? CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
             )
           : OutlinedButton(
               style: ButtonStyle(

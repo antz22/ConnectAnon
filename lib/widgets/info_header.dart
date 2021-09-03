@@ -30,7 +30,7 @@ class InfoHeader extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
-            blurRadius: 5.0,
+            blurRadius: atTop ? 0.0 : 5.0,
             color: atTop
                 ? Theme.of(context).scaffoldBackgroundColor
                 : Colors.grey.shade200,

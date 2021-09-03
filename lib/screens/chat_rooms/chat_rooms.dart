@@ -105,7 +105,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                                   chatRoom['memberNames'];
                               List<dynamic> memberPhotoUrls =
                                   chatRoom['memberPhotoUrls'];
-                              return GestureDetector(
+                              return InkWell(
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -124,12 +124,10 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                                     ),
                                   );
                                 },
-                                behavior: HitTestBehavior.opaque,
                                 child: Container(
-                                  margin: EdgeInsets.only(
-                                    bottom: 0.8 * kDefaultPadding,
-                                    left: 0.9 * kDefaultPadding,
-                                    right: 0.9 * kDefaultPadding,
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 0.4 * kDefaultPadding,
+                                    horizontal: 0.9 * kDefaultPadding,
                                   ),
                                   child: ChatRoomPreview(
                                     chatRoomId: chatRoomId,
@@ -149,6 +147,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                         }
                       },
                     ),
+                    SizedBox(height: kDefaultPadding),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

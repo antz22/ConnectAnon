@@ -105,145 +105,181 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                     docs[index]['peerPhotoUrl'];
                                 bool availableUsers =
                                     docs[index]['availableUsers'];
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.9 * kDefaultPadding,
-                                      vertical: 0.4 * kDefaultPadding),
-                                  child: Row(
-                                    children: [
-                                      CustomAvatar(
-                                          photoUrl: peerPhotoUrl, size: 20.0),
-                                      SizedBox(width: 0.9 * kDefaultPadding),
-                                      Expanded(
-                                        child: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProfileScreen(
-                                                  isMe: false,
-                                                  id: peerId,
-                                                  isReviewing: true,
+                                return
+                                    // Padding(
+                                    //   padding: EdgeInsets.symmetric(
+                                    //       horizontal: 0.9 * kDefaultPadding,
+                                    //       vertical: 0.4 * kDefaultPadding),
+                                    Row(
+                                  children: [
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfileScreen(
+                                                isMe: false,
+                                                id: peerId,
+                                                isReviewing: true,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              left: 0.9 * kDefaultPadding,
+                                              top: 0.4 * kDefaultPadding,
+                                              bottom: 0.4 * kDefaultPadding),
+                                          child: Row(
+                                            children: [
+                                              CustomAvatar(
+                                                  photoUrl: peerPhotoUrl,
+                                                  size: 20.0),
+                                              SizedBox(
+                                                  width: 0.9 * kDefaultPadding),
+                                              Expanded(
+                                                child: Container(
+                                                  height: 53.0,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        peerName,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                          fontSize: 18.0,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        _buildTimeAgo(
+                                                            timestamp),
+                                                        style: TextStyle(
+                                                          color:
+                                                              Color(0xFF535353),
+                                                          fontSize: 15.0,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            );
-                                          },
-                                          child: Container(
-                                            height: 53.0,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  peerName,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: 18.0,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  _buildTimeAgo(timestamp),
-                                                  style: TextStyle(
-                                                    color: Color(0xFF535353),
-                                                    fontSize: 15.0,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 0.9 * kDefaultPadding),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                        child: Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                            onTap: () async {
-                                              String response = await context
-                                                  .read<APIServices>()
-                                                  .declineRequest(requestId);
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          right: 0.9 * kDefaultPadding,
+                                          top: 0.4 * kDefaultPadding,
+                                          bottom: 0.4 * kDefaultPadding),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                              width: 0.9 * kDefaultPadding),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                            ),
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  String response =
+                                                      await context
+                                                          .read<APIServices>()
+                                                          .declineRequest(
+                                                              requestId);
 
-                                              if (response == 'Success') {
-                                                CustomSnackbar.buildInfoMessage(
-                                                    context,
-                                                    'Success',
-                                                    'Request declined.');
-                                              } else {
-                                                CustomSnackbar.buildWarningMessage(
-                                                    context,
-                                                    'Error',
-                                                    'Error declining request');
-                                              }
-                                            },
-                                            child: Container(
-                                              height: 40.0,
-                                              width: 40.0,
-                                              child: Center(
-                                                child: Icon(
-                                                    Icons.cancel_outlined,
-                                                    color: Colors.white,
-                                                    size: 30.0),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 0.8 * kDefaultPadding),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: kPrimaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                        child: Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                            onTap: () async {
-                                              String response = await context
-                                                  .read<APIServices>()
-                                                  .grantPeerRequest(
-                                                      volunteerId,
-                                                      requestId,
-                                                      peerId,
-                                                      availableUsers);
-                                              if (response == 'Success') {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => HomePage(
-                                                        message:
-                                                            'Request accepted.',
-                                                        messageStatus:
-                                                            'Success'),
+                                                  if (response == 'Success') {
+                                                    CustomSnackbar
+                                                        .buildInfoMessage(
+                                                            context,
+                                                            'Success',
+                                                            'Request declined.');
+                                                  } else {
+                                                    CustomSnackbar
+                                                        .buildWarningMessage(
+                                                            context,
+                                                            'Error',
+                                                            'Error declining request');
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 40.0,
+                                                  width: 40.0,
+                                                  child: Center(
+                                                    child: Icon(
+                                                        Icons.cancel_outlined,
+                                                        color: Colors.white,
+                                                        size: 30.0),
                                                   ),
-                                                );
-                                              }
-                                            },
-                                            child: Container(
-                                              height: 40.0,
-                                              width: 40.0,
-                                              child: Center(
-                                                child: Icon(Icons.check,
-                                                    color: Colors.white,
-                                                    size: 30.0),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                          SizedBox(
+                                              width: 0.8 * kDefaultPadding),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: kPrimaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                            ),
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  String response =
+                                                      await context
+                                                          .read<APIServices>()
+                                                          .grantPeerRequest(
+                                                              volunteerId,
+                                                              requestId,
+                                                              peerId,
+                                                              availableUsers);
+                                                  if (response == 'Success') {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            HomePage(
+                                                                message:
+                                                                    'Request accepted.',
+                                                                messageStatus:
+                                                                    'Success'),
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 40.0,
+                                                  width: 40.0,
+                                                  child: Center(
+                                                    child: Icon(Icons.check,
+                                                        color: Colors.white,
+                                                        size: 30.0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 );
                               },
                             );

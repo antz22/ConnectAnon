@@ -117,7 +117,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                             String peerName = group['memberNames'][peerIndex];
                             String peerPhotoUrl =
                                 group['memberPhotoUrls'][peerIndex];
-                            return GestureDetector(
+                            return InkWell(
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -132,12 +132,10 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                   ),
                                 );
                               },
-                              behavior: HitTestBehavior.opaque,
                               child: Container(
-                                margin: EdgeInsets.only(
-                                  bottom: 0.8 * kDefaultPadding,
-                                  left: 0.9 * kDefaultPadding,
-                                  right: 0.9 * kDefaultPadding,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: 0.4 * kDefaultPadding,
+                                  horizontal: 0.9 * kDefaultPadding,
                                 ),
                                 child: ConversationPreview(
                                   groupChatId: groupChatId,
@@ -157,6 +155,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                       }
                     },
                   ),
+                  SizedBox(height: kDefaultPadding),
                   widget.status != 'Chat Buddy'
                       ? ElevatedButton(
                           onPressed: () async {
