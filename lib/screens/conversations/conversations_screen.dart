@@ -168,11 +168,14 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                           onPressed: () async {
                             var response = await context
                                 .read<APIServices>()
-                                .createSpecialGroup(
+                                .requestVolunteer(
                                     currentUserId, specialChattedWith, blocked);
                             if (response != 'Success') {
                               CustomSnackbar.buildWarningMessage(
                                   context, 'Error', response);
+                            } else {
+                              CustomSnackbar.buildInfoMessage(context,
+                                  'Success', 'A volunteer has been requested');
                             }
                           },
                           child: Text('Connect to chat buddy'),

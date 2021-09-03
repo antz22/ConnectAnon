@@ -336,7 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     }
                                   },
                                   child: Text(
-                                      'Chat Buddy - Refer to other volunteer'),
+                                      '(Chat Buddy) Refer to other volunteer'),
                                 )
                               : SizedBox.shrink(),
                         ],

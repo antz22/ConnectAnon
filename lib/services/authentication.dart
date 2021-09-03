@@ -135,6 +135,8 @@ class AuthenticationService {
           'status': 'Peer',
           'reports': 0,
           'lastReportedAt': '',
+          'lastRequestedAt': '',
+          'totalRequests': 0,
           'bannedSince': '',
           'isBanned': false,
         });

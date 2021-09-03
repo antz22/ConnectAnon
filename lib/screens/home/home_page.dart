@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/chat_rooms/chat_rooms.dart';
 import 'package:connect_anon/screens/conversations/conversations_screen.dart';
+import 'package:connect_anon/screens/requests/requests_screen.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -35,6 +37,7 @@ class _HomePageState extends State<HomePage>
   int _selectedIndex = 0;
   String currentUserId = '';
   String? status = '';
+  String? photoUrl = '';
 
   List<Widget> tabs = new List.from([]);
 
@@ -42,10 +45,19 @@ class _HomePageState extends State<HomePage>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     currentUserId = await prefs.getString('id')!;
     status = await prefs.getString('status');
-    tabs = [
-      ConversationsScreen(currentUserId: currentUserId, status: status),
-      ChatRoomsScreen(currentUserId: currentUserId),
-    ];
+    photoUrl = await prefs.getString('photoUrl');
+    if (status == 'Chat Buddy') {
+      tabs = [
+        ConversationsScreen(currentUserId: currentUserId, status: status),
+        RequestsScreen(currentUserId: currentUserId, photoUrl: photoUrl),
+        ChatRoomsScreen(currentUserId: currentUserId),
+      ];
+    } else {
+      tabs = [
+        ConversationsScreen(currentUserId: currentUserId, status: status),
+        ChatRoomsScreen(currentUserId: currentUserId),
+      ];
+    }
   }
 
   void registerNotification() {
@@ -155,6 +167,49 @@ class _HomePageState extends State<HomePage>
   }
 
   BottomNavigationBar buildBottomNavigationBar() {
+    List<BottomNavigationBarItem> items = status == 'Chat Buddy'
+        ? [
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/svgs/chat.svg',
+                  color: _selectedIndex == 0
+                      ? kPrimaryColor
+                      : Colors.grey.shade400),
+              label: "Messages",
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/svgs/request.svg',
+                color:
+                    _selectedIndex == 1 ? kPrimaryColor : Colors.grey.shade400,
+              ),
+              label: "Requests",
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/svgs/chat_room.svg',
+                color:
+                    _selectedIndex == 2 ? kPrimaryColor : Colors.grey.shade400,
+              ),
+              label: "Chat Rooms",
+            ),
+          ]
+        : [
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset('assets/svgs/chat.svg',
+                  color: _selectedIndex == 0
+                      ? kPrimaryColor
+                      : Colors.grey.shade400),
+              label: "Messages",
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/svgs/chat_room.svg',
+                color:
+                    _selectedIndex == 1 ? kPrimaryColor : Colors.grey.shade400,
+              ),
+              label: "Chat Rooms",
+            ),
+          ];
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       unselectedIconTheme: IconThemeData(
@@ -179,20 +234,7 @@ class _HomePageState extends State<HomePage>
           _selectedIndex = value;
         });
       },
-      items: [
-        BottomNavigationBarItem(
-          icon: _selectedIndex == 0
-              ? SvgPicture.asset('assets/svgs/chat_selected.svg')
-              : SvgPicture.asset('assets/svgs/chat_unselected.svg'),
-          label: "Messages",
-        ),
-        BottomNavigationBarItem(
-          icon: _selectedIndex == 1
-              ? SvgPicture.asset('assets/svgs/chat_room_selected.svg')
-              : SvgPicture.asset('assets/svgs/chat_room_unselected.svg'),
-          label: "Chat Rooms",
-        ),
-      ],
+      items: items,
     );
   }
 }

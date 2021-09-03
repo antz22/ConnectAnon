@@ -41,18 +41,24 @@ This app was created using the Flutter framework developed by Google, using the 
 3 ANIMATIONS
   - these will step up your app to be potentially usable.
 
-- implement lastReported (banned if reports % 3 == 0), banSeen, isBanned, lastConnected
 - admin notifications - chat room creation, reports, chat buddies
-- dealing with requests for chat buddies
-- referring somebody to another volunteer
+- requesting a volunteer - and also based on their current status
 - upon joining, joining general chat room and volunteer support if volunteer
+
+- chat preview name purple if chat buddy, streambuilder on chats screen
+- what if someone requests the same chat buddy multiple times?
+
+- big refactoring
+    creating group
+    random id needs to be within volunteers
+- array contains any for group convos? for the 'members' field, then you can sort by time as well. but have to convert it to a streambuilder instead of futurebuilder
+- scrolling and stuff
 
 - change 'chat buddy name'
 - think about other schools
 - null errors!!
 
 - manual review
-    1. Chat Buddy requests
     2. Reports
     3. Chat Room creation requests
 

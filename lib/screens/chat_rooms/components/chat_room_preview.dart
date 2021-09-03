@@ -32,8 +32,8 @@ class ChatRoomPreview extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset('assets/svgs/chat_room_selected.svg',
-                    height: 46.0),
+                SvgPicture.asset('assets/svgs/chat_room.svg',
+                    height: 46.0, color: kPrimaryColor),
                 SizedBox(width: 0.9 * kDefaultPadding),
                 Container(
                   height: 53.0,
