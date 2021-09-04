@@ -1,5 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/services/chat_services.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,7 +34,7 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
     if (content.trim() != '') {
       _textEditingController.clear();
 
-      String response = await context.read<APIServices>().sendChatRoomMessage(
+      String response = await context.read<ChatServices>().sendChatRoomMessage(
           content, id, widget.alias, widget.photoUrl, widget.chatRoomId);
 
       if (response == 'Success') {

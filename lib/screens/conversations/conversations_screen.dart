@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/chat/groups/chat_screen.dart';
 import 'package:connect_anon/screens/conversations/components/conversation_preview.dart';
-import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/services/user_services.dart';
 import 'package:connect_anon/widgets/custom_popup_dialog.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:connect_anon/widgets/info_header.dart';
@@ -160,7 +160,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                       ? ElevatedButton(
                           onPressed: () async {
                             var response = await context
-                                .read<APIServices>()
+                                .read<UserServices>()
                                 .createGroup(currentUserId);
                             if (response != 'Success') {
                               CustomSnackbar.buildWarningMessage(

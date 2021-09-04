@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/screens/profile/profile_screen.dart';
-import 'package:connect_anon/services/api_services.dart';
+import 'package:connect_anon/services/user_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:connect_anon/widgets/info_header.dart';
@@ -199,7 +199,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                 onTap: () async {
                                                   String response =
                                                       await context
-                                                          .read<APIServices>()
+                                                          .read<UserServices>()
                                                           .declineRequest(
                                                               requestId);
 
@@ -244,7 +244,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                 onTap: () async {
                                                   String response =
                                                       await context
-                                                          .read<APIServices>()
+                                                          .read<UserServices>()
                                                           .grantPeerRequest(
                                                               volunteerId,
                                                               requestId,

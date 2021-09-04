@@ -34,22 +34,32 @@ This app was created using the Flutter framework developed by Google, using the 
 
 ## TODO
 
-IMPORTANT
-- firebase plan - put in credit card (this is only a dev project so it should be fine)
-- admin notifications - chat room creation, reports, chat buddies
+PRIORITY
+- firebase production
+    Hosting
+    Security rules
+    Firestore
+    App store
+    Testing
+    Android Play Store
+    Apple App Store
 - current status
-- factory, from json
 - big refactoring
     creating group
     random id needs to be within volunteers
     fix referrals
     apiservices.dart...
 - null errors!!
+- figure out sign in through google or through email
+    landing page...
+
+IMPORTANT
+- factory, from json
+- admin notifications - chat room creation, reports, chat buddies
+- firebase plan - put in credit card (this is only a dev project so it should be fine)
 - manual review
     Reports
     Chat Room creation requests
-- firebase production
-- figure out sign in through google or through email
 
 
 MINOR
