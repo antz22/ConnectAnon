@@ -3,11 +3,13 @@ import 'package:connect_anon/screens/landing_page/landing_page.dart';
 import 'package:connect_anon/screens/sign_in/sign_in_page.dart';
 import 'package:connect_anon/services/authentication.dart';
 import 'package:connect_anon/services/firestore_services.dart';
+import 'package:connect_anon/services/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/home/home_page.dart';
 
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         Provider<AuthenticationService>(
             create: (_) => AuthenticationService(FirebaseAuth.instance)),
         Provider<FirestoreServices>(create: (_) => FirestoreServices()),
+        Provider<UserProvider>(create: (_) => UserProvider()),
         StreamProvider(
           create: (context) =>
               context.read<AuthenticationService>().authStateChanges,
@@ -57,12 +60,27 @@ class AuthenticationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = Provider.of<User?>(context, listen: true);
 
-    // if (firebaseUser != null) {
-    //   return HomePage();
-    // } else {
-    //   return LandingPage();
-    // }
-    return LandingPage();
+    if (firebaseUser != null) {
+      return FutureBuilder(
+        future: initUser(context),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return HomePage();
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      );
+    } else {
+      return LandingPage();
+    }
+    // return LandingPage();
     // return UpdateUserInfoPage(user: firebaseUser!);
+  }
+
+  Future<bool> initUser(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Provider.of<UserProvider>(context, listen: false).initUser(prefs);
+    return true;
   }
 }

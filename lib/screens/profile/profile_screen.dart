@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/models/profile.dart';
 import 'package:connect_anon/screens/profile/components/bold_text.dart';
 import 'package:connect_anon/screens/report/report_screen.dart';
 import 'package:connect_anon/services/firestore_services.dart';
+import 'package:connect_anon/services/user_provider.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_popup_dialog.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
@@ -36,25 +38,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? status = '';
   String? currentUserId = '';
 
-  Future<Map<String, dynamic>> _retrieveUserData() async {
-    Map<String, dynamic> userData =
-        await context.read<FirestoreServices>().getUserData(widget.id);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    status = await prefs.getString('status');
-    currentUserId = await prefs.getString('id');
-    return userData;
+  Future<Profile> _retrieveProfile(context) async {
+    Profile profile =
+        await context.read<FirestoreServices>().getProfile(widget.id);
+    status = context.read<UserProvider>().status;
+    currentUserId = context.read<UserProvider>().id;
+    return profile;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: _retrieveUserData(),
-        builder: (BuildContext context,
-            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        future: _retrieveProfile(context),
+        builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
           if (snapshot.hasData) {
-            var userData = snapshot.data!;
-            bool hasReport = snapshot.data!['reports'] != 0 ? true : false;
+            var profile = snapshot.data!;
+            bool hasReport = profile.reports != 0 ? true : false;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -118,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ],
                             ),
                             child: CustomAvatar(
-                                photoUrl: userData['photoUrl'], size: 80.0),
+                                photoUrl: profile.photoUrl, size: 80.0),
                           ),
                           // Positioned(
                           //   child: GestureDetector(
@@ -153,21 +153,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 Text(
-                  userData['alias'],
+                  profile.alias,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 22.0,
                   ),
                 ),
                 Text(
-                  userData['school'],
+                  profile.school,
                   style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.grey.shade700,
                   ),
                 ),
                 SizedBox(height: 0.05 * MediaQuery.of(context).size.height),
-                BoldText(text: userData['status']),
+                BoldText(text: profile.status),
                 SubText(text: 'status'),
                 SizedBox(height: 0.05 * MediaQuery.of(context).size.height),
                 Row(
@@ -181,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           right: hasReport ? 0 : 1.3 * kDefaultPadding),
                       child: Column(
                         children: [
-                          BoldText(text: userData['peerChats'].toString()),
+                          BoldText(text: profile.peerChats.toString()),
                           SubText(text: 'Peer chats'),
                         ],
                       ),
@@ -195,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Column(
                                   children: [
                                     BoldText(
-                                      text: userData['reports'].toString(),
+                                      text: profile.reports.toString(),
                                       color: Colors.red,
                                     ),
                                     SubText(text: '  Reports '),
@@ -211,7 +211,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           left: hasReport ? 0 : 1.3 * kDefaultPadding),
                       child: Column(
                         children: [
-                          BoldText(text: userData['chatRooms'].toString()),
+                          BoldText(text: profile.chatRooms.toString()),
                           SubText(text: 'Chat Rooms'),
                         ],
                       ),
@@ -335,7 +335,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               status == 'Chat Buddy'
                                   ? _buildReferralButton(context)
-                                  : userData['isBanned']
+                                  : profile.isBanned
                                       ? Container(
                                           margin: EdgeInsets.only(
                                               top: kDefaultPadding),

@@ -1,8 +1,10 @@
+import 'package:connect_anon/services/user_provider.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
@@ -74,12 +76,14 @@ class AuthenticationService {
               await prefs.setString('alias', alias);
               await prefs.setString('photoUrl', photoUrl);
               await prefs.setString('status', status);
+              Provider.of<UserProvider>(context, listen: false).initUser(prefs);
             }
           } else {
             await prefs.setBool('isBanned', false);
             await prefs.setString('alias', alias);
             await prefs.setString('photoUrl', photoUrl);
             await prefs.setString('status', status);
+            Provider.of<UserProvider>(context, listen: false).initUser(prefs);
           }
         }
       } on FirebaseAuthException catch (e) {
@@ -145,6 +149,7 @@ class AuthenticationService {
         await prefs.setString('alias', alias);
         await prefs.setString('photoUrl', photoUrl);
         await prefs.setString('status', 'Peer');
+        await prefs.setBool('isBanned', false);
         return 'Success';
       } else {
         return 'You already have an account, signing in now';

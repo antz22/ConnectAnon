@@ -1,5 +1,6 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/services/firestore_services.dart';
+import 'package:connect_anon/services/user_provider.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -28,8 +29,7 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
   bool _isEmpty = true;
 
   void onSendMessage(String content) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? id = await prefs.getString('id');
+    String? id = context.read<UserProvider>().id;
 
     if (content.trim() != '') {
       _textEditingController.clear();

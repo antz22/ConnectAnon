@@ -1,34 +1,19 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_anon/models/profile.dart';
+import 'package:connect_anon/services/user_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // All services for both peers and volunteers
 class FirestoreServices {
-  Future<Map<String, dynamic>> getUserData(userId) async {
+  Future<Profile> getProfile(userId) async {
     var userDocument = await FirebaseFirestore.instance
         .collection('Users')
         .doc(userId.trim())
         .get();
-    Map<String, dynamic> userData = userDocument.data()!;
-    String alias = userData['alias'];
-    String status = userData['status'];
-    String school = userData['school'];
-    String photoUrl = userData['photoUrl'];
-    int peerChats = userData['chattedWith'].length;
-    int chatRooms = userData['chatRooms'].length;
-    int reports = userData['reports'];
-    bool isBanned = userData['isBanned'];
-    return {
-      'alias': alias,
-      'status': status,
-      'school': school,
-      'photoUrl': photoUrl,
-      'peerChats': peerChats,
-      'chatRooms': chatRooms,
-      'reports': reports,
-      'isBanned': isBanned,
-    };
+    Profile profile = Profile.fromFirestore(userDocument);
+    return profile;
   }
 
   Future<String> reportUser(currentUserId, peerId, topic, description) async {
@@ -164,7 +149,7 @@ class FirestoreServices {
   Future<String> leaveChatRoom(currentUserId, chatRoomId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? currentUserName = await prefs.getString('alias');
-    String? currentUserPhotoUrl = await prefs.getString('alias');
+    String? currentUserPhotoUrl = await prefs.getString('photoUrl');
 
     FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
       'chatRooms': FieldValue.arrayRemove([chatRoomId]),

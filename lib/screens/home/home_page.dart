@@ -4,6 +4,7 @@ import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/chat_rooms/chat_rooms.dart';
 import 'package:connect_anon/screens/conversations/conversations_screen.dart';
 import 'package:connect_anon/screens/requests/requests_screen.dart';
+import 'package:connect_anon/services/user_provider.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -42,11 +44,11 @@ class _HomePageState extends State<HomePage>
   List<Widget> tabs = new List.from([]);
 
   Future<void> _retrieveId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    currentUserId = await prefs.getString('id')!;
-    status = await prefs.getString('status');
-    photoUrl = await prefs.getString('photoUrl');
-    alias = await prefs.getString('alias');
+    UserProvider user = context.read<UserProvider>();
+    currentUserId = user.id!;
+    status = user.status;
+    photoUrl = user.photoUrl;
+    alias = user.alias;
     if (status == 'Chat Buddy') {
       tabs = [
         ConversationsScreen(

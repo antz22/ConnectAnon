@@ -2,6 +2,7 @@ import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/account_creation/update_user_info.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/services/authentication.dart';
+import 'package:connect_anon/services/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
@@ -48,8 +49,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                       context: context,
                     );
 
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                bool? isBanned = await prefs.getBool('isBanned');
+                bool? isBanned = context.read<UserProvider>().isBanned;
                 if (!isBanned!) {
                   setState(() {
                     _isSigningIn = false;

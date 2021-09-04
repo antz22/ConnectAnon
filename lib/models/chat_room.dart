@@ -30,9 +30,9 @@ class ChatRoom {
       description: data['description'] ?? '',
       lastMessage: data['lastMessage'] ?? '',
       lastTimestamp: data['lastTimestamp'] ?? '',
-      members: data['members'],
-      memberNames: data['memberNames'],
-      memberPhotoUrls: data['memberPhotoUrls'],
+      members: data['members'] ?? [],
+      memberNames: data['memberNames'] ?? [],
+      memberPhotoUrls: data['memberPhotoUrls'] ?? [],
     );
   }
 }
