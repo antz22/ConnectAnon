@@ -1,4 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/models/chat_room.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
@@ -10,22 +11,12 @@ import 'package:provider/provider.dart';
 class ChatRoomInfoScreen extends StatefulWidget {
   const ChatRoomInfoScreen({
     Key? key,
-    required this.roomId,
-    required this.roomName,
-    required this.description,
-    required this.members,
-    required this.memberNames,
-    required this.memberPhotoUrls,
     required this.currentUserId,
+    required this.chatRoom,
   }) : super(key: key);
 
-  final String roomId;
-  final String roomName;
-  final String description;
-  final List<dynamic> members;
-  final List<dynamic> memberNames;
-  final List<dynamic> memberPhotoUrls;
   final String currentUserId;
+  final ChatRoom chatRoom;
 
   @override
   _ChatRoomInfoScreenState createState() => _ChatRoomInfoScreenState();
@@ -44,7 +35,7 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
               color: Colors.white,
             ),
             SizedBox(width: 0.3 * kDefaultPadding),
-            Text(' ${widget.roomName}'),
+            Text(' ${widget.chatRoom.name}'),
           ],
         ),
       ),
@@ -55,7 +46,7 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              widget.description,
+              widget.chatRoom.description,
               style: TextStyle(
                 fontSize: 17.0,
               ),
@@ -71,17 +62,17 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
             SizedBox(height: kDefaultPadding),
             ListView.separated(
               shrinkWrap: true,
-              itemCount: widget.memberNames.length,
+              itemCount: widget.chatRoom.memberNames.length,
               itemBuilder: (BuildContext context, int index) {
                 return Row(
                   children: [
                     CustomAvatar(
-                      photoUrl: widget.memberPhotoUrls[index],
+                      photoUrl: widget.chatRoom.memberPhotoUrls[index],
                       size: 15.0,
                     ),
                     SizedBox(width: 0.7 * kDefaultPadding),
                     Text(
-                      widget.memberNames[index],
+                      widget.chatRoom.memberNames[index],
                       style: TextStyle(
                         fontSize: 17.0,
                         fontWeight: FontWeight.w600,
@@ -107,12 +98,12 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
   }
 
   ElevatedButton _buildActionButton(BuildContext context) {
-    if (widget.members.contains(widget.currentUserId)) {
+    if (widget.chatRoom.members.contains(widget.currentUserId)) {
       return ElevatedButton(
         onPressed: () async {
           await context
               .read<FirestoreServices>()
-              .leaveChatRoom(widget.currentUserId, widget.roomId);
+              .leaveChatRoom(widget.currentUserId, widget.chatRoom.id);
 
           Navigator.pushReplacement(
             context,
@@ -136,7 +127,7 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
         onPressed: () async {
           String response = await context
               .read<FirestoreServices>()
-              .joinChatRoom(widget.currentUserId, widget.roomId);
+              .joinChatRoom(widget.currentUserId, widget.chatRoom.id);
 
           if (response == 'Success') {
             Navigator.pushReplacement(

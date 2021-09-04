@@ -1,6 +1,8 @@
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/models/chat_room.dart';
+import 'package:connect_anon/models/chat_room_message.dart';
 import 'package:connect_anon/screens/chat/rooms/components/chat_room_input_field.dart';
-import 'package:connect_anon/screens/chat/rooms/components/chat_room_message.dart';
+import 'package:connect_anon/screens/chat/rooms/components/room_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect_anon/screens/chat_room_info/chat_room_info_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,26 +11,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ChatRoomScreen extends StatefulWidget {
   ChatRoomScreen({
     Key? key,
-    required this.chatRoomId,
     required this.currentUserId,
-    required this.roomName,
     required this.alias,
     required this.photoUrl,
-    required this.members,
-    required this.memberNames,
-    required this.memberPhotoUrls,
-    required this.description,
+    required this.chatRoom,
   }) : super(key: key);
 
-  final String chatRoomId;
   final String currentUserId;
-  final String roomName;
+  final ChatRoom chatRoom;
   final String alias;
   final String photoUrl;
-  final List<dynamic> members;
-  final List<dynamic> memberNames;
-  final List<dynamic> memberPhotoUrls;
-  final String description;
 
   @override
   _ChatRoomScreenState createState() => _ChatRoomScreenState();
@@ -75,17 +67,13 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               },
             ),
             SizedBox(width: 0.75 * kDefaultPadding),
-            // CircleAvatar(
-            //   backgroundImage: AssetImage('assets/images/profile3.jpg'),
-            //   radius: 17.0,
-            // ),
             SvgPicture.asset(
               'assets/svgs/hashtag.svg',
               height: 17.0,
             ),
             SizedBox(width: 0.75 * kDefaultPadding),
             Text(
-              widget.roomName,
+              widget.chatRoom.name,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18.0,
@@ -102,13 +90,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ChatRoomInfoScreen(
-                    roomId: widget.chatRoomId,
-                    roomName: widget.roomName,
-                    members: widget.members,
-                    memberNames: widget.memberNames,
-                    memberPhotoUrls: widget.memberPhotoUrls,
-                    description: widget.description,
                     currentUserId: widget.currentUserId,
+                    chatRoom: widget.chatRoom,
                   ),
                 ),
               );
@@ -123,11 +106,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           child: Column(
             children: [
               Expanded(
-                child: widget.chatRoomId.isNotEmpty
+                child: widget.chatRoom.id.isNotEmpty
                     ? StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('ChatRoomMessages')
-                            .doc(widget.chatRoomId.trim())
+                            .doc(widget.chatRoom.id.trim())
                             .collection('messages')
                             .orderBy('timestamp', descending: true)
                             .limit(_limit)
@@ -146,39 +129,44 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                 ),
                               );
                             } else {
-                              listMessage.addAll(snapshot.data!.docs);
+                              // listMessage.addAll(snapshot.data!.docs);
+
+                              List<ChatRoomMessage> messages = snapshot
+                                  .data!.docs
+                                  .map((doc) =>
+                                      ChatRoomMessage.fromFirestore(doc))
+                                  .toList();
+
                               return ListView.builder(
                                 padding:
                                     EdgeInsets.only(top: 15.0, bottom: 5.0),
                                 controller: _scrollController,
                                 reverse: true,
-                                itemCount: snapshot.data?.docs.length,
+                                itemCount: messages.length,
                                 itemBuilder: (context, index) {
                                   bool displayPhoto = false;
                                   bool displayName = false;
                                   // order is reversed
                                   // displayPhoto
                                   if (index != 0) {
-                                    if (snapshot.data?.docs[index - 1]
-                                            ['idFrom'] !=
-                                        snapshot.data?.docs[index]['idFrom']) {
+                                    if (messages[index - 1].idFrom !=
+                                        messages[index].idFrom) {
                                       displayPhoto = true;
                                     }
                                   } else {
-                                    if (snapshot.data?.docs[index]['idFrom'] !=
+                                    if (messages[index].idFrom !=
                                         widget.currentUserId) {
                                       displayPhoto = true;
                                     }
                                   }
                                   // displayName
-                                  if (index != snapshot.data!.docs.length - 1) {
-                                    if (snapshot.data?.docs[index + 1]
-                                            ['idFrom'] !=
-                                        snapshot.data?.docs[index]['idFrom']) {
+                                  if (index != messages.length - 1) {
+                                    if (messages[index + 1].idFrom !=
+                                        messages[index].idFrom) {
                                       displayName = true;
                                     }
                                   } else {
-                                    if (snapshot.data?.docs[index]['idFrom'] !=
+                                    if (messages[index].idFrom !=
                                         widget.currentUserId) {
                                       displayName = true;
                                     }
@@ -186,9 +174,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                   return Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: kDefaultPadding),
-                                    child: ChatRoomMessage(
+                                    child: RoomMessage(
                                       userId: widget.currentUserId,
-                                      document: snapshot.data?.docs[index],
+                                      message: messages[index],
                                       displayPhoto: displayPhoto,
                                       displayName: displayName,
                                     ),
@@ -214,7 +202,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                       ),
               ),
               ChatRoomInputField(
-                chatRoomId: widget.chatRoomId,
+                chatRoomId: widget.chatRoom.id,
                 alias: widget.alias,
                 photoUrl: widget.photoUrl,
               ),

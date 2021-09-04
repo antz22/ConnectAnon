@@ -1,4 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/models/chat_room.dart';
 import 'package:connect_anon/screens/chat_room_info/chat_room_info_screen.dart';
 import 'package:connect_anon/widgets/chat_rooms_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,8 +53,10 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
-                  var docs = snapshot.data!.docs;
-                  if (docs.length == 0) {
+                  List<ChatRoom> chatRooms = snapshot.data!.docs
+                      .map((doc) => ChatRoom.fromFirestore(doc))
+                      .toList();
+                  if (chatRooms.length == 0) {
                     return Container(
                       margin: EdgeInsets.only(
                         top: kDefaultPadding,
@@ -71,18 +74,16 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
                   } else {
                     return ListView.separated(
                       shrinkWrap: true,
-                      itemCount: docs.length,
+                      itemCount: chatRooms.length,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-                        Map<String, dynamic> chatRoom =
-                            docs[index].data() as Map<String, dynamic>;
-                        String chatRoomId = docs[index].id;
+                        ChatRoom chatRoom = chatRooms[index];
                         return Container(
                           margin: EdgeInsets.only(
                             top: 0.5 * kDefaultPadding,
                             left: 1.3 * kDefaultPadding,
                             right: 1.3 * kDefaultPadding,
-                            bottom: index == docs.length - 1
+                            bottom: index == chatRooms.length - 1
                                 ? 1.3 * kDefaultPadding
                                 : 0.0,
                           ),
@@ -90,7 +91,7 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '# ' + chatRoom['name'],
+                                '# ' + chatRoom.name,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18.0,
@@ -103,14 +104,8 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ChatRoomInfoScreen(
-                                        roomId: chatRoomId,
-                                        roomName: chatRoom['name'],
-                                        description: chatRoom['description'],
-                                        members: chatRoom['members'],
-                                        memberNames: chatRoom['memberNames'],
-                                        memberPhotoUrls:
-                                            chatRoom['memberPhotoUrls'],
                                         currentUserId: widget.currentUserId,
+                                        chatRoom: chatRoom,
                                       ),
                                     ),
                                   );

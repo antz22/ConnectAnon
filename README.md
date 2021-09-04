@@ -41,6 +41,7 @@ PRIORITY
     random id needs to be within volunteers
     fix referrals
 - factory, from json
+    also fix component and model names lol
 - null errors!!
 - figure out sign in through google or through email
     landing page...
@@ -61,10 +62,12 @@ IMPORTANT
     Chat Room creation requests
 
 
+
 MINOR
 - keyboard slow animation
 - unsplash API production - how to download stuff?
 - clean up and abstract!
+- volunteer request page - grade, gender, username, whether or not they've been talked to before
 
 
 POTENTIAL

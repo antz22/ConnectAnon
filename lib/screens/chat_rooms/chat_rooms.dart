@@ -1,4 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/models/chat_room.dart';
 import 'package:connect_anon/screens/chat/rooms/chat_room_screen.dart';
 import 'package:connect_anon/screens/create_chat_room/create_chat_room.dart';
 import 'package:connect_anon/screens/join_chat_room/join_chat_room.dart';
@@ -86,43 +87,28 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasData) {
-                          var chatRooms = snapshot.data!.docs;
+                          List<ChatRoom> chatRooms = snapshot.data!.docs
+                              .map((doc) => ChatRoom.fromFirestore(doc))
+                              .toList();
 
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: chatRooms.length,
                             itemBuilder: (BuildContext context, int index) {
-                              String chatRoomId = chatRooms[index].id;
-                              Map<String, dynamic> chatRoom = chatRooms[index]
-                                  .data() as Map<String, dynamic>;
-                              String roomName = chatRoom['name'];
-                              String description = chatRoom['description'];
-                              String lastMessage = chatRoom['lastMessage'];
-                              String lastTimestamp = chatRoom['lastTimestamp'];
-                              List<dynamic> members = chatRoom['members'];
-                              List<dynamic> memberNames =
-                                  chatRoom['memberNames'];
-                              List<dynamic> memberPhotoUrls =
-                                  chatRoom['memberPhotoUrls'];
+                              ChatRoom chatRoom = chatRooms[index];
                               return InkWell(
                                 onTap: () {
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ChatRoomScreen(
-                                        chatRoomId: chatRoomId,
-                                        currentUserId: widget.currentUserId,
-                                        roomName: roomName,
-                                        alias: widget.alias,
-                                        photoUrl: widget.photoUrl,
-                                        members: members,
-                                        memberNames: memberNames,
-                                        memberPhotoUrls: memberPhotoUrls,
-                                        description: description,
-                                      ),
-                                    ),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ChatRoomScreen(
+                                          currentUserId: widget.currentUserId,
+                                          alias: widget.alias,
+                                          photoUrl: widget.photoUrl,
+                                          chatRoom: chatRoom,
+                                        ),
+                                      ));
                                 },
                                 child: Container(
                                   margin: EdgeInsets.symmetric(
@@ -130,11 +116,8 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                                     horizontal: 0.9 * kDefaultPadding,
                                   ),
                                   child: ChatRoomPreview(
-                                    chatRoomId: chatRoomId,
                                     currentUserId: widget.currentUserId,
-                                    roomName: roomName,
-                                    lastMessage: lastMessage,
-                                    lastTimestamp: lastTimestamp,
+                                    chatRoom: chatRoom,
                                   ),
                                 ),
                               );

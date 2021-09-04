@@ -34,12 +34,14 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String? status = '';
+  String? currentUserId = '';
 
   Future<Map<String, dynamic>> _retrieveUserData() async {
     Map<String, dynamic> userData =
         await context.read<FirestoreServices>().getUserData(widget.id);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     status = await prefs.getString('status');
+    currentUserId = await prefs.getString('id');
     return userData;
   }
 
@@ -230,9 +232,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       MediaQuery.of(context).size.height),
                               ElevatedButton(
                                 onPressed: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  String? currentUserId = prefs.getString('id');
                                   Map<String, dynamic> params = {
                                     'currentUserId': currentUserId,
                                     'peerId': widget.id,
@@ -272,11 +271,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   TextButton(
                                     onPressed: () async {
-                                      SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-                                      String? currentUserId =
-                                          prefs.getString('id');
-
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -296,10 +290,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   SizedBox(width: kDefaultPadding),
                                   TextButton(
                                     onPressed: () async {
-                                      SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-                                      String? currentUserId =
-                                          prefs.getString('id');
                                       Map<String, dynamic> params = {
                                         'currentUserId': currentUserId,
                                         'peerId': widget.id,
@@ -380,6 +370,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         var response =
             await context.read<FirestoreServices>().referNewVolunteer(
                   widget.id,
+                  currentUserId ?? '',
                 );
         if (response != 'Success') {
           CustomSnackbar.buildWarningMessage(context, 'Error', response);

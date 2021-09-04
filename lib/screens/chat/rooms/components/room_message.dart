@@ -1,20 +1,21 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_anon/models/chat_room_message.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ChatRoomMessage extends StatefulWidget {
-  ChatRoomMessage({
+class RoomMessage extends StatefulWidget {
+  RoomMessage({
     Key? key,
     required this.userId,
-    required this.document,
+    required this.message,
     required this.displayPhoto,
     required this.displayName,
   }) : super(key: key);
 
   final String userId;
-  final DocumentSnapshot? document;
+  final ChatRoomMessage message;
   final bool displayPhoto;
   final bool displayName;
 
@@ -22,7 +23,7 @@ class ChatRoomMessage extends StatefulWidget {
   _ChatRoomMessageState createState() => _ChatRoomMessageState();
 }
 
-class _ChatRoomMessageState extends State<ChatRoomMessage> {
+class _ChatRoomMessageState extends State<RoomMessage> {
   final double _maxWidth = 280.0;
 
   bool isSender = false;
@@ -31,15 +32,15 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
   String photoUrlFrom = '';
 
   Future<bool> _checkSender() async {
-    isSender = widget.document?.get('idFrom') == widget.userId ? true : false;
-    senderName = widget.document?.get('nameFrom');
-    photoUrlFrom = widget.document?.get('photoUrlFrom');
+    isSender = widget.message.idFrom == widget.userId ? true : false;
+    senderName = widget.message.nameFrom;
+    photoUrlFrom = widget.message.photoUrlFrom;
     return isSender;
   }
 
   String _getMessageTime() {
     var date = DateTime.fromMicrosecondsSinceEpoch(
-        int.parse(widget.document!['timestamp']) * 1000);
+        int.parse(widget.message.timestamp) * 1000);
     var format = new DateFormat('h:mm a');
     String time = format.format(date);
     return time;
@@ -89,7 +90,7 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
                   color: kPrimaryColor.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(20)),
               child: Text(
-                widget.document?['content'],
+                widget.message.content,
                 style: TextStyle(
                   fontSize: 14.5,
                 ),
@@ -118,7 +119,7 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
                   ? Container(
                       margin: EdgeInsets.only(bottom: 5.0, left: 6.0),
                       child: Text(
-                        widget.document?['nameFrom'],
+                        widget.message.nameFrom,
                         style: TextStyle(
                           fontSize: 11.5,
                           color: Colors.grey.shade600,
@@ -147,7 +148,7 @@ class _ChatRoomMessageState extends State<ChatRoomMessage> {
                       color: kTertiaryColor,
                       borderRadius: BorderRadius.circular(20)),
                   child: Text(
-                    widget.document?['content'],
+                    widget.message.content,
                     style: TextStyle(
                       fontSize: 14.5,
                     ),

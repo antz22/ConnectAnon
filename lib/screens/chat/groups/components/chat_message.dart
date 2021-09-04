@@ -1,20 +1,21 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connect_anon/models/message.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class Message extends StatefulWidget {
-  Message({
+class ChatMessage extends StatefulWidget {
+  ChatMessage({
     Key? key,
     required this.userId,
-    required this.document,
+    required this.message,
     required this.photoUrl,
     required this.displayPhoto,
   }) : super(key: key);
 
   final String userId;
-  final DocumentSnapshot? document;
+  final Message message;
   final String photoUrl;
   final bool displayPhoto;
 
@@ -22,20 +23,20 @@ class Message extends StatefulWidget {
   _MessageState createState() => _MessageState();
 }
 
-class _MessageState extends State<Message> {
+class _MessageState extends State<ChatMessage> {
   final double _maxWidth = 280.0;
 
   bool isSender = false;
   bool _pressed = false;
 
   Future<bool> _checkIsSender() async {
-    isSender = widget.document?.get('idFrom') == widget.userId ? true : false;
+    isSender = widget.message.idFrom == widget.userId ? true : false;
     return isSender;
   }
 
   String _getMessageTime() {
     var date = DateTime.fromMicrosecondsSinceEpoch(
-        int.parse(widget.document!['timestamp']) * 1000);
+        int.parse(widget.message.timestamp) * 1000);
     var format = new DateFormat('h:mm a');
     String time = format.format(date);
     return time;
@@ -90,7 +91,7 @@ class _MessageState extends State<Message> {
                               : kTertiaryColor,
                           borderRadius: BorderRadius.circular(20)),
                       child: Text(
-                        widget.document?['content'],
+                        widget.message.content,
                         style: TextStyle(
                           fontSize: 14.5,
                         ),

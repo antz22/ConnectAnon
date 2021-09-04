@@ -1,6 +1,7 @@
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/models/message.dart';
 import 'package:connect_anon/screens/chat/groups/components/chat_input_field.dart';
-import 'package:connect_anon/screens/chat/groups/components/message.dart';
+import 'package:connect_anon/screens/chat/groups/components/chat_message.dart';
 import 'package:connect_anon/screens/profile/profile_screen.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -145,7 +146,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               );
                             } else {
-                              listMessage.addAll(snapshot.data!.docs);
+                              List<Message> messages = snapshot.data!.docs
+                                  .map((doc) => Message.fromFirestore(doc))
+                                  .toList();
+
                               return ListView.builder(
                                 padding:
                                     EdgeInsets.only(top: 15.0, bottom: 5.0),
@@ -156,23 +160,20 @@ class _ChatScreenState extends State<ChatScreen> {
                                   bool displayPhoto = false;
                                   // order is reversed
                                   if (index != 0) {
-                                    if (snapshot.data?.docs[index - 1]
-                                            ['idFrom'] !=
-                                        peerId) {
+                                    if (messages[index - 1].idFrom != peerId) {
                                       displayPhoto = true;
                                     }
                                   } else {
-                                    if (snapshot.data?.docs[index]['idFrom'] ==
-                                        peerId) {
+                                    if (messages[index].idFrom == peerId) {
                                       displayPhoto = true;
                                     }
                                   }
                                   return Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: kDefaultPadding),
-                                    child: Message(
+                                    child: ChatMessage(
                                       userId: currentUserId,
-                                      document: snapshot.data?.docs[index],
+                                      message: messages[index],
                                       photoUrl: peerPhotoUrl,
                                       displayPhoto: displayPhoto,
                                     ),

@@ -354,10 +354,10 @@ class FirestoreServices {
       });
 
       if (userIds.isEmpty) {
-        // status = 'No more available users';
+        status = 'No more available users';
       } else {
         Random rng = new Random();
-        int randomNum = rng.nextInt(allIds.length);
+        int randomNum = rng.nextInt(userIds.length);
         String randomId = userIds[randomNum];
         print('random id: ' + randomId);
 
@@ -404,7 +404,7 @@ class FirestoreServices {
 
   // ************ VOLUNTEER SERVICES ***************** //
 
-  Future<String> referNewVolunteer(String peerId) async {
+  Future<String> referNewVolunteer(String peerId, String volunteerId) async {
     // EDIT THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
@@ -427,59 +427,14 @@ class FirestoreServices {
       snapshot.docs.forEach((DocumentSnapshot doc) {
         allIds.add(doc.id);
         String id = doc.id;
-        if (id != peerId) {
-          if (!volunteersChattedWith.contains(id)) {
-            if (!blocked.contains(id)) {
-              userIds.add(id);
-            }
-          }
+        // won't be considering volunteers chatted with
+        if (id != volunteerId && !blocked.contains(id)) {
+          userIds.add(id);
         }
       });
 
       if (userIds.isEmpty) {
-        // status = 'No more available users';
-        // Probably have to do something different here
-
-        // Random rng = new Random();
-        // int randomNum = rng.nextInt(allIds.length);
-        // String randomId = allIds[randomNum];
-        // print('random id: ' + randomId);
-
-        // var groups = await FirebaseFirestore.instance.collection('Groups');
-
-        // String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-
-        // groups.add({
-        //   'members': [peerId, randomId],
-        //   'lastMessage': 'New Conversation - Say Hi!',
-        //   'lastTimestamp': timestamp,
-        //   'lastUpdatedBy': peerId,
-        //   'createdAt': timestamp,
-        //   'createdBy': peerId,
-        //   'type': 'Peer-Volunteer',
-        // }).then((doc) {
-        //   String groupId = doc.id;
-
-        //   FirebaseFirestore.instance.collection('Users').doc(peerId).update({
-        //     'groups': FieldValue.arrayUnion([groupId]),
-        //     // renew the volunteers if they've already talked to all of them
-        //     'specialChattedWith': [randomId],
-        //   });
-
-        //   FirebaseFirestore.instance.collection('Users').doc(randomId).update({
-        //     'groups': FieldValue.arrayUnion([groupId]),
-        //     'specialChattedWith': FieldValue.arrayUnion([peerId]),
-        //   });
-
-        //   status = 'Success';
-        //   return 'Success';
-        // }).catchError((err) {
-        //   print('Error creating group: $err');
-        //   print(err.runtimeType);
-        //   status = err;
-        //   return err;
-        // });
-        status = 'Error';
+        status = 'Error: no more available users';
       } else {
         Random rng = new Random();
         int randomNum = rng.nextInt(userIds.length);

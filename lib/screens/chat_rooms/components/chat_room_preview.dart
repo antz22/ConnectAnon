@@ -1,4 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/models/chat_room.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -6,22 +7,16 @@ import 'package:timeago/timeago.dart' as timeago;
 class ChatRoomPreview extends StatelessWidget {
   ChatRoomPreview({
     Key? key,
-    required this.chatRoomId,
     required this.currentUserId,
-    required this.roomName,
-    required this.lastMessage,
-    required this.lastTimestamp,
+    required this.chatRoom,
   }) : super(key: key);
 
-  final String? chatRoomId;
   final String currentUserId;
-  final String roomName;
-  final String lastMessage;
-  final String lastTimestamp;
+  final ChatRoom chatRoom;
 
   @override
   Widget build(BuildContext context) {
-    if (chatRoomId != null) {
+    if (chatRoom.id != null) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,14 +30,14 @@ class ChatRoomPreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$roomName',
+                  chatRoom.name,
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
-                  lastMessage,
+                  chatRoom.lastMessage,
                   style: TextStyle(
                     color: Color(0xFF535353),
                     fontSize: 15.0,
@@ -53,7 +48,7 @@ class ChatRoomPreview extends StatelessWidget {
           ),
           Spacer(),
           Text(
-            _buildLastTimestamp(lastTimestamp),
+            _buildLastTimestamp(chatRoom.lastTimestamp),
             style: TextStyle(
               fontSize: 15.0,
               color: Color(0xFF959595),
