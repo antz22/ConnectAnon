@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/profile.dart';
+import 'package:connect_anon/screens/change_volunteer_status/change_volunteer_status.dart';
 import 'package:connect_anon/screens/profile/components/bold_text.dart';
 import 'package:connect_anon/screens/report/report_screen.dart';
 import 'package:connect_anon/services/firestore_services.dart';
@@ -12,7 +13,6 @@ import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/sub_text.dart';
 
@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? status = '';
   String? currentUserId = '';
 
-  Future<Profile> _retrieveProfile(context) async {
+  Future<Profile> _retrieveProfile() async {
     Profile profile =
         await context.read<FirestoreServices>().getProfile(widget.id);
     status = context.read<UserProvider>().status;
@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: _retrieveProfile(context),
+        future: _retrieveProfile(),
         builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
           if (snapshot.hasData) {
             var profile = snapshot.data!;
@@ -219,7 +219,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 widget.isMe
-                    ? SizedBox.shrink()
+                    ? status == 'Chat Buddy'
+                        ? _buildChangeStatusButton(
+                            context, profile.isAccepting!)
+                        : SizedBox.shrink()
                     : widget.isReviewing
                         ? Container(
                             margin: EdgeInsets.only(top: 2 * kDefaultPadding),
@@ -361,6 +364,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
       ),
+    );
+  }
+
+  Container _buildChangeStatusButton(BuildContext context, bool isAccepting) {
+    return Container(
+      margin: EdgeInsets.only(top: 2 * kDefaultPadding),
+      child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangeVolunteerStatus(
+                    volunteerId: widget.id, isAccepting: isAccepting),
+              ),
+            );
+          },
+          child: Text('Change request status')),
     );
   }
 

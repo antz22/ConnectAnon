@@ -9,6 +9,7 @@ class Profile {
   final int chatRooms;
   final int reports;
   final bool isBanned;
+  final bool? isAccepting;
 
   Profile({
     required this.alias,
@@ -19,6 +20,7 @@ class Profile {
     required this.chatRooms,
     required this.reports,
     required this.isBanned,
+    this.isAccepting,
   });
 
   factory Profile.fromFirestore(DocumentSnapshot doc) {
@@ -32,6 +34,8 @@ class Profile {
       chatRooms: data['chatRooms'].length,
       reports: data['reports'] ?? 0,
       isBanned: data['isBanned'] ?? false,
+      // only check if status of user is chat buddy
+      isAccepting: data['status'] == 'Chat Buddy' ? data['isAccepting'] : null,
     );
   }
 }

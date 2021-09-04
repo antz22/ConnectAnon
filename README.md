@@ -35,13 +35,6 @@ This app was created using the Flutter framework developed by Google, using the 
 ## TODO
 
 PRIORITY
-- current status
-- big refactoring
-    when userIds is empty
-    random id needs to be within volunteers
-    fix referrals
-- factory, from json
-    also fix component and model names lol
 - null errors!!
 - figure out sign in through google or through email
     landing page...
@@ -68,6 +61,7 @@ MINOR
 - unsplash API production - how to download stuff?
 - clean up and abstract!
 - volunteer request page - grade, gender, username, whether or not they've been talked to before
+- also fix component and model names lol
 
 
 POTENTIAL
@@ -81,6 +75,11 @@ POTENTIAL
 - peer preferences?
 
 - add an if check sayign that if users is over like 50 then dont check thorugh each one?
+
+PROBLEMS
+- there will probably be duplicate conversations somewhere, a person will get someone they've already talked to.
+- volunteers might get duplicate requests. will rarely happen though, hopefully.
+- messages (chat room messages and messages) can't be programmatically.
 
 # Questions
 
@@ -97,6 +96,10 @@ POTENTIAL
     simply added more fields to the Group and ChatRooms collections so you wouldn't have to query the user doc each time
     also sorts it based on last timestamp
     doesn't have to query the group separately on the preview components
+
+- when userIds is empty / the user has already talked to all the peers or all the volunteers
+    their history will be reset, so in the future they might get duplicate conversations.
+    COULD make a 'currentlyChattingWith' field to account for convos not archived, but not right now.
 
 # Potential Features
 

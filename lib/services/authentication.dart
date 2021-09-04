@@ -136,6 +136,7 @@ class AuthenticationService {
           'blocked': [],
           'chatRooms': [],
           'school': 'MHS',
+          // peer: status, 'Chat Buddy'
           'status': 'Peer',
           'reports': 0,
           'lastReportedAt': '',
@@ -144,6 +145,7 @@ class AuthenticationService {
           'totalRequests': 0,
           'bannedSince': '',
           'isBanned': false,
+          // (peer only) isAccepting: (bool)
         });
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('alias', alias);

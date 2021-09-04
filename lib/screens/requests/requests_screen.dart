@@ -105,12 +105,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                     docs[index]['peerPhotoUrl'];
                                 bool availableUsers =
                                     docs[index]['availableUsers'];
-                                return
-                                    // Padding(
-                                    //   padding: EdgeInsets.symmetric(
-                                    //       horizontal: 0.9 * kDefaultPadding,
-                                    //       vertical: 0.4 * kDefaultPadding),
-                                    Row(
+                                return Row(
                                   children: [
                                     Expanded(
                                       child: InkWell(

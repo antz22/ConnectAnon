@@ -16,49 +16,45 @@ class ChatRoomPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (chatRoom.id != null) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SvgPicture.asset('assets/svgs/chat_room.svg',
-              height: 46.0, color: kPrimaryColor),
-          SizedBox(width: 0.9 * kDefaultPadding),
-          Container(
-            height: 53.0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  chatRoom.name,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w700,
-                  ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SvgPicture.asset('assets/svgs/chat_room.svg',
+            height: 46.0, color: kPrimaryColor),
+        SizedBox(width: 0.9 * kDefaultPadding),
+        Container(
+          height: 53.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                chatRoom.name,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w700,
                 ),
-                Text(
-                  chatRoom.lastMessage,
-                  style: TextStyle(
-                    color: Color(0xFF535353),
-                    fontSize: 15.0,
-                  ),
+              ),
+              Text(
+                chatRoom.lastMessage,
+                style: TextStyle(
+                  color: Color(0xFF535353),
+                  fontSize: 15.0,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Spacer(),
-          Text(
-            _buildLastTimestamp(chatRoom.lastTimestamp),
-            style: TextStyle(
-              fontSize: 15.0,
-              color: Color(0xFF959595),
-            ),
+        ),
+        Spacer(),
+        Text(
+          _buildLastTimestamp(chatRoom.lastTimestamp),
+          style: TextStyle(
+            fontSize: 15.0,
+            color: Color(0xFF959595),
           ),
-        ],
-      );
-    } else {
-      return SizedBox.shrink();
-    }
+        ),
+      ],
+    );
   }
 
   String _buildLastTimestamp(String lastTimestamp) {
