@@ -1,6 +1,6 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
-import 'package:connect_anon/services/user_services.dart';
+import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:connect_anon/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +95,7 @@ class _ReportScreenState extends State<ReportScreen> {
               ElevatedButton(
                 onPressed: () async {
                   String response =
-                      await context.read<UserServices>().reportUser(
+                      await context.read<FirestoreServices>().reportUser(
                             widget.currentUserId,
                             widget.peerId,
                             value,

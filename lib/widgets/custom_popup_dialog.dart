@@ -1,6 +1,6 @@
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/services/authentication.dart';
-import 'package:connect_anon/services/user_services.dart';
+import 'package:connect_anon/services/firestore_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +55,7 @@ class CustomPopupDialog {
                 String peerId = params['peerId'];
                 String groupChatId = params['groupChatId'];
                 String response = await context
-                    .read<UserServices>()
+                    .read<FirestoreServices>()
                     .archiveConversation(currentUserId, peerId, groupChatId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
@@ -80,7 +80,7 @@ class CustomPopupDialog {
                 String peerId = params['peerId'];
                 String groupChatId = params['groupChatId'];
                 String response = await context
-                    .read<UserServices>()
+                    .read<FirestoreServices>()
                     .blockUser(currentUserId, peerId, groupChatId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
@@ -104,7 +104,7 @@ class CustomPopupDialog {
               case 'Request Volunteer':
                 String currentUserId = params['currentUserId'];
                 String response = await context
-                    .read<UserServices>()
+                    .read<FirestoreServices>()
                     .requestVolunteer(currentUserId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
@@ -180,7 +180,7 @@ class CustomPopupDialog {
                 String peerId = params['peerId'];
                 String groupChatId = params['groupChatId'];
                 String response = await context
-                    .read<UserServices>()
+                    .read<FirestoreServices>()
                     .archiveConversation(currentUserId, peerId, groupChatId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
@@ -206,7 +206,7 @@ class CustomPopupDialog {
                 String peerId = params['peerId'];
                 String groupChatId = params['groupChatId'];
                 String response = await context
-                    .read<UserServices>()
+                    .read<FirestoreServices>()
                     .blockUser(currentUserId, peerId, groupChatId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
@@ -230,7 +230,7 @@ class CustomPopupDialog {
               case 'Request Volunteer':
                 String currentUserId = params['currentUserId'];
                 String response = await context
-                    .read<UserServices>()
+                    .read<FirestoreServices>()
                     .requestVolunteer(currentUserId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(

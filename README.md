@@ -35,6 +35,15 @@ This app was created using the Flutter framework developed by Google, using the 
 ## TODO
 
 PRIORITY
+- current status
+- big refactoring
+    when userIds is empty
+    random id needs to be within volunteers
+    fix referrals
+- factory, from json
+- null errors!!
+- figure out sign in through google or through email
+    landing page...
 - firebase production
     Hosting
     Security rules
@@ -43,18 +52,8 @@ PRIORITY
     Testing
     Android Play Store
     Apple App Store
-- current status
-- big refactoring
-    creating group
-    random id needs to be within volunteers
-    fix referrals
-    apiservices.dart...
-- null errors!!
-- figure out sign in through google or through email
-    landing page...
 
 IMPORTANT
-- factory, from json
 - admin notifications - chat room creation, reports, chat buddies
 - firebase plan - put in credit card (this is only a dev project so it should be fine)
 - manual review

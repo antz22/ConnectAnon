@@ -1,5 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/services/chat_services.dart';
+import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -35,7 +35,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
       _textEditingController.clear();
 
       String response = await context
-          .read<ChatServices>()
+          .read<FirestoreServices>()
           .sendPeerMessage(content, id, widget.peerId, groupChatId);
 
       if (response == 'Success') {

@@ -1,5 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/services/user_services.dart';
+import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/widgets/chat_rooms_header.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:connect_anon/widgets/custom_textfield.dart';
@@ -64,7 +64,7 @@ class _CreateChatRoomScreenState extends State<CreateChatRoomScreen> {
                     ElevatedButton(
                       onPressed: () async {
                         String response = await context
-                            .read<UserServices>()
+                            .read<FirestoreServices>()
                             .createChatRoom(
                                 widget.currentUserId,
                                 roomNameController.text,

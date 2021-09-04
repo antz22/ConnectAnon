@@ -2,8 +2,7 @@ import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/landing_page/landing_page.dart';
 import 'package:connect_anon/screens/sign_in/sign_in_page.dart';
 import 'package:connect_anon/services/authentication.dart';
-import 'package:connect_anon/services/chat_services.dart';
-import 'package:connect_anon/services/user_services.dart';
+import 'package:connect_anon/services/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,8 +31,7 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<AuthenticationService>(
             create: (_) => AuthenticationService(FirebaseAuth.instance)),
-        Provider<ChatServices>(create: (_) => ChatServices()),
-        Provider<UserServices>(create: (_) => UserServices()),
+        Provider<FirestoreServices>(create: (_) => FirestoreServices()),
         StreamProvider(
           create: (context) =>
               context.read<AuthenticationService>().authStateChanges,

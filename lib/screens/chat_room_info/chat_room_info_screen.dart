@@ -1,6 +1,6 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
-import 'package:connect_anon/services/user_services.dart';
+import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +111,7 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
       return ElevatedButton(
         onPressed: () async {
           await context
-              .read<UserServices>()
+              .read<FirestoreServices>()
               .leaveChatRoom(widget.currentUserId, widget.roomId);
 
           Navigator.pushReplacement(
@@ -135,7 +135,7 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
       return ElevatedButton(
         onPressed: () async {
           String response = await context
-              .read<UserServices>()
+              .read<FirestoreServices>()
               .joinChatRoom(widget.currentUserId, widget.roomId);
 
           if (response == 'Success') {
