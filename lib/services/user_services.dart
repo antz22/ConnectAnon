@@ -47,86 +47,49 @@ class UserServices {
       DateTime currentDateTime = DateTime.now();
       var difference =
           currentDateTime.difference(lastReportedTimeAt).inMilliseconds;
-      // it's been over an 1 hour
-      if (difference > 3600000) {
-        var peerDocument = await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(peerId.trim())
-            .get();
-        Map<String, dynamic> peerData = peerDocument.data()!;
-
-        if (peerData['reports'] + 1 % 3 == 0 && peerData['banned'] == false) {
-          FirebaseFirestore.instance.collection('Users').doc(peerId).update({
-            'isBanned': true,
-            'bannedSince': timestamp,
-            'reports': FieldValue.increment(1),
-          });
-        } else {
-          FirebaseFirestore.instance.collection('Users').doc(peerId).update({
-            'reports': FieldValue.increment(1),
-          });
-        }
-
-        await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(currentUserId.trim())
-            .update({
-          'lastReportedAt': timestamp,
-        });
-
-        var reports = await FirebaseFirestore.instance.collection('Reports');
-
-        await reports.add({
-          'reportedBy': currentUserId,
-          'reportedOn': peerId,
-          'timestamp': timestamp,
-          'reviewed': false,
-          'topic': topic,
-          'description': description,
-        }).catchError((error) => error);
-
-        return 'Success';
-      } else {
+      // it's been less than an 1 hour
+      if (difference <= 3600000) {
         return 'Error';
       }
-      // user hasn't reported anyone before
-    } else {
-      var peerDocument = await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(peerId.trim())
-          .get();
-      Map<String, dynamic> peerData = peerDocument.data()!;
-      if (peerData['reports'] + 1 % 3 == 0 && peerData['banned'] == false) {
-        FirebaseFirestore.instance.collection('Users').doc(peerId).update({
-          'isBanned': true,
-          'bannedSince': timestamp,
-          'reports': FieldValue.increment(1),
-        });
-      } else {
-        FirebaseFirestore.instance.collection('Users').doc(peerId).update({
-          'reports': FieldValue.increment(1),
-        });
-      }
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(currentUserId.trim())
-          .update({
-        'lastReportedAt': timestamp,
-      });
-
-      var reports = await FirebaseFirestore.instance.collection('Reports');
-
-      await reports.add({
-        'reportedBy': currentUserId,
-        'reportedOn': peerId,
-        'timestamp': timestamp,
-        'reviewed': false,
-        'topic': topic,
-        'description': description,
-      }).catchError((error) => error);
-
-      return 'Success';
     }
+    // user hasn't reported anyone before
+    var peerDocument = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(peerId.trim())
+        .get();
+    Map<String, dynamic> peerData = peerDocument.data()!;
+
+    if (peerData['reports'] + 1 % 3 == 0 && peerData['banned'] == false) {
+      FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+        'isBanned': true,
+        'bannedSince': timestamp,
+        'reports': FieldValue.increment(1),
+      });
+    } else {
+      FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+        'reports': FieldValue.increment(1),
+      });
+    }
+
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(currentUserId.trim())
+        .update({
+      'lastReportedAt': timestamp,
+    });
+
+    var reports = await FirebaseFirestore.instance.collection('Reports');
+
+    await reports.add({
+      'reportedBy': currentUserId,
+      'reportedOn': peerId,
+      'timestamp': timestamp,
+      'reviewed': false,
+      'topic': topic,
+      'description': description,
+    }).catchError((error) => error);
+
+    return 'Success';
   }
 
   Future<String> blockUser(currentUserId, peerId, groupId) async {
@@ -366,97 +329,33 @@ class UserServices {
       DateTime currentDateTime = DateTime.now();
       var difference =
           currentDateTime.difference(lastReportedTimeAt).inMilliseconds;
-      // it's been over an 1 hour
-      if (difference > 3600000 || totalRequests % 3 != 0) {
-        await users
-            .where('status', isEqualTo: 'Chat Buddy')
-            .get()
-            .then((QuerySnapshot snapshot) async {
-          snapshot.docs.forEach((DocumentSnapshot doc) {
-            allIds.add(doc.id);
-            String id = doc.id;
-            if (id != currentUserId &&
-                !volunteersChattedWith.contains(id) &&
-                !blocked.contains(id) &&
-                !requestedIds.contains(id)) {
-              userIds.add(id);
-            }
-          });
-
-          // if (userIds.isEmpty) {
-          // status = 'No more available users';
-          Random rng = new Random();
-          int randomNum = rng.nextInt(allIds.length);
-          String randomId = userIds[randomNum];
-          print('random id: ' + randomId);
-
-          var requests =
-              await FirebaseFirestore.instance.collection('Requests');
-
-          String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          String? photoUrl = await prefs.getString('photoUrl');
-          String? currentUserName = await prefs.getString('alias');
-
-          requests.add({
-            'peer': currentUserId,
-            'peerPhotoUrl': photoUrl,
-            'volunteer': randomId,
-            'peerName': currentUserName,
-            'timestamp': timestamp,
-            'availableUsers': userIds.isEmpty,
-          }).then((doc) async {
-            await FirebaseFirestore.instance
-                .collection('Users')
-                .doc(currentUserId)
-                .update({
-              'lastRequestedAt': timestamp,
-              'totalRequests': FieldValue.increment(1),
-              'requestedIds': FieldValue.arrayUnion([randomId]),
-            });
-            status = 'Success';
-            return 'Success';
-          }).catchError((err) {
-            print('Error processing request: $err');
-            status = err;
-            return err;
-          });
-          status = 'Success';
-          // } else {
-          // }
-        }).catchError((err) {
-          print('Error processing request: $err');
-          status = err;
-          return err;
-        });
-        return status;
-      } else {
+      // it's been less than an 1 hour, has reported % 3 times
+      // if (difference <= 3600000 || totalRequests % 3 == 0) {
+      if (difference <= 3600000 && totalRequests % 3 == 0) {
         return 'Volunteer Request cool down (1 hour)';
       }
-    } else {
-      var status;
-      await users
-          .where('status', isEqualTo: 'Chat Buddy')
-          .get()
-          .then((QuerySnapshot snapshot) async {
-        snapshot.docs.forEach((DocumentSnapshot doc) {
-          allIds.add(doc.id);
-          String id = doc.id;
-          if (id != currentUserId) {
-            if (!volunteersChattedWith.contains(id)) {
-              if (!blocked.contains(id)) {
-                if (!requestedIds.contains(id)) {
-                  userIds.add(id);
-                }
+    }
+    await users
+        .where('status', isEqualTo: 'Chat Buddy')
+        .get()
+        .then((QuerySnapshot snapshot) async {
+      snapshot.docs.forEach((DocumentSnapshot doc) {
+        allIds.add(doc.id);
+        String id = doc.id;
+        if (id != currentUserId) {
+          if (!volunteersChattedWith.contains(id)) {
+            if (!blocked.contains(id)) {
+              if (!requestedIds.contains(id)) {
+                userIds.add(id);
               }
             }
           }
-        });
+        }
+      });
 
-        // if (userIds.isEmpty) {
+      if (userIds.isEmpty) {
         // status = 'No more available users';
-        print(userIds);
+      } else {
         Random rng = new Random();
         int randomNum = rng.nextInt(allIds.length);
         String randomId = userIds[randomNum];
@@ -494,18 +393,17 @@ class UserServices {
           return err;
         });
         status = 'Success';
-        // } else {
-        // }
-      }).catchError((err) {
-        print('Error processing request: $err');
-        status = err;
-        return err;
-      });
-      return status;
-    }
+      }
+    }).catchError((err) {
+      print('Error processing request: $err');
+      status = err;
+      return err;
+    });
+    return status;
   }
 
   // ************ VOLUNTEER SERVICES ***************** //
+
   Future<String> referNewVolunteer(String peerId) async {
     // EDIT THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     var users = await FirebaseFirestore.instance.collection('Users');
