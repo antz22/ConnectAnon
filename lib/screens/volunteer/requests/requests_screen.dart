@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/models/request.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/screens/profile/profile_screen.dart';
 import 'package:connect_anon/services/firestore_services.dart';
@@ -89,8 +90,11 @@ class _RequestsScreenState extends State<RequestsScreen> {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          var docs = snapshot.data!.docs;
-                          if (docs.length == 0) {
+                          List<Request> requests = snapshot.data!.docs
+                              .map((doc) => Request.fromFirestore(doc))
+                              .toList();
+
+                          if (requests.length == 0) {
                             return Container(
                               margin:
                                   const EdgeInsets.only(top: kDefaultPadding),
@@ -101,17 +105,9 @@ class _RequestsScreenState extends State<RequestsScreen> {
                             return ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: docs.length,
+                              itemCount: requests.length,
                               itemBuilder: (BuildContext context, int index) {
-                                String requestId = docs[index].id;
-                                String peerId = docs[index]['peer'];
-                                String volunteerId = docs[index]['volunteer'];
-                                String peerName = docs[index]['peerName'];
-                                String timestamp = docs[index]['timestamp'];
-                                String peerPhotoUrl =
-                                    docs[index]['peerPhotoUrl'];
-                                bool availableUsers =
-                                    docs[index]['availableUsers'];
+                                Request request = requests[index];
                                 return Row(
                                   children: [
                                     Expanded(
@@ -123,7 +119,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                               builder: (context) =>
                                                   ProfileScreen(
                                                 isMe: false,
-                                                id: peerId,
+                                                id: request.peer,
                                                 isReviewing: true,
                                               ),
                                             ),
@@ -137,7 +133,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                           child: Row(
                                             children: [
                                               CustomAvatar(
-                                                  photoUrl: peerPhotoUrl,
+                                                  photoUrl:
+                                                      request.peerPhotoUrl,
                                                   size: 20.0),
                                               const SizedBox(
                                                   width: 0.9 * kDefaultPadding),
@@ -153,7 +150,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        peerName,
+                                                        request.peerName,
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: TextStyle(
@@ -164,7 +161,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                       ),
                                                       Text(
                                                         _buildTimeAgo(
-                                                            timestamp),
+                                                            request.timestamp),
                                                         style: TextStyle(
                                                           color:
                                                               Color(0xFF535353),
@@ -202,7 +199,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                   String response = await context
                                                       .read<FirestoreServices>()
                                                       .declineRequest(
-                                                          requestId);
+                                                          request.id);
 
                                                   if (response == 'Success') {
                                                     CustomSnackbar
@@ -246,10 +243,12 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                   String response = await context
                                                       .read<FirestoreServices>()
                                                       .grantPeerRequest(
-                                                          volunteerId,
-                                                          requestId,
-                                                          peerId,
-                                                          availableUsers);
+                                                        request.volunteerId,
+                                                        request.id,
+                                                        request.peer,
+                                                        request.keepHistory,
+                                                        request.addHistory,
+                                                      );
                                                   if (response == 'Success') {
                                                     Navigator.push(
                                                       context,

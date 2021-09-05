@@ -35,7 +35,8 @@ This app was created using the Flutter framework developed by Google, using the 
 ## TODO
 
 ### Priority
-- null errors!!
+- unsplash API production - how to download stuff?
+- display name ? keeping anonymity? any contracts or agreements to make?
 - figure out sign in through google or through email
     landing page...
 - play store production
@@ -63,11 +64,9 @@ This app was created using the Flutter framework developed by Google, using the 
 ### Minor
 
 - keyboard slow animation
-- unsplash API production - how to download stuff?
-- clean up and abstract!
-- dispose scroll controllers and controllers
 - volunteer request page - grade, gender, username, whether or not they've been talked to before
-- also fix component and model names lol
+- null errors!!
+- notify when history is being refreshed?
 
 
 ### Future / Potential
@@ -126,6 +125,7 @@ If we had enough money...
 - Performance optimizations:
     always dispose your controllers (both animation controllers and text editing controllers) (and other ones too)
     use const for EdgeInsets and SizedBoxes -- they won't be rebuilt
+- fieldvalue.arrayUnion only does unique values lol
 
 ## Resources
 
