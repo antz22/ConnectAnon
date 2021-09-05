@@ -58,15 +58,24 @@ class _ChatScreenMessageState extends State<ChatScreenMessage>
               isSender
                   ? const SizedBox.shrink()
                   : widget.displayPhoto
-                      ? Container(
-                          margin: EdgeInsets.only(
-                            right: 0.5 * kDefaultPadding,
-                            bottom: _pressed ? 0.8 * kDefaultPadding : 0.0,
-                          ),
-                          child: CustomAvatar(
-                            photoUrl: widget.photoUrl,
-                            size: 13.0,
-                          ),
+                      ? Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                right: 0.5 * kDefaultPadding,
+                              ),
+                              child: CustomAvatar(
+                                photoUrl: widget.photoUrl,
+                                size: 13.0,
+                              ),
+                            ),
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              curve: Curves.fastOutSlowIn,
+                              height: _height,
+                              child: SizedBox(),
+                            ),
+                          ],
                         )
                       : const SizedBox(width: 26.0 + 0.5 * kDefaultPadding),
               Column(

@@ -114,14 +114,21 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage>
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           widget.displayPhoto
-              ? Container(
-                  margin: EdgeInsets.only(
-                    bottom: _pressed ? kDefaultPadding : 0.0,
-                  ),
-                  child: CustomAvatar(
-                    photoUrl: photoUrlFrom,
-                    size: 14.0,
-                  ),
+              ? Column(
+                  children: [
+                    Container(
+                      child: CustomAvatar(
+                        photoUrl: photoUrlFrom,
+                        size: 14.0,
+                      ),
+                    ),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 150),
+                      curve: Curves.fastOutSlowIn,
+                      height: _height,
+                      child: SizedBox(),
+                    ),
+                  ],
                 )
               : const SizedBox(width: 28.0),
           const SizedBox(width: 0.5 * kDefaultPadding),
