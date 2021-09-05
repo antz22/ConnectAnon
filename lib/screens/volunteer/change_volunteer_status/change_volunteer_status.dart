@@ -39,14 +39,14 @@ class _ChangeVolunteerStatusState extends State<ChangeVolunteerStatus> {
             widget.isAccepting
                 ? Text('You are currently accepting requests.')
                 : Text('You are currently NOT accepting requests.'),
-            SizedBox(height: 2.5 * kDefaultPadding),
+            const SizedBox(height: 2.5 * kDefaultPadding),
             Text(
               'Change your status to accept peer requests (accepting) or to mark yourself as busy (not accepting).',
               style: TextStyle(
                 fontSize: 17.0,
               ),
             ),
-            SizedBox(height: 2.5 * kDefaultPadding),
+            const SizedBox(height: 2.5 * kDefaultPadding),
             Text(
               'Request Status:',
               style: TextStyle(
@@ -75,21 +75,21 @@ class _ChangeVolunteerStatusState extends State<ChangeVolunteerStatus> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 2.5 * kDefaultPadding),
+            const SizedBox(height: 2.5 * kDefaultPadding),
             Text(
               'Accepting requests: allow peers to request you anonymously, having priority to get requests',
               style: TextStyle(
                 fontSize: 15.0,
               ),
             ),
-            SizedBox(height: 1.5 * kDefaultPadding),
+            const SizedBox(height: 1.5 * kDefaultPadding),
             Text(
               'Not accepting requests: mark yourself as not accepting requests, having lower priority for getting requests (still might have some requests)',
               style: TextStyle(
                 fontSize: 15.0,
               ),
             ),
-            SizedBox(height: 2.5 * kDefaultPadding),
+            const SizedBox(height: 2.5 * kDefaultPadding),
             ElevatedButton(
               onPressed: () async {
                 String response = await context

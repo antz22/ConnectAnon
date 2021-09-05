@@ -36,11 +36,17 @@ class _ReportScreenState extends State<ReportScreen> {
   final reportDescriptionController = TextEditingController();
 
   @override
+  void dispose() {
+    reportDescriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('File a Report')),
       body: Padding(
-        padding: EdgeInsets.all(kDefaultPadding),
+        padding: const EdgeInsets.all(kDefaultPadding),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
@@ -53,7 +59,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 0.3 * kDefaultPadding),
+              const SizedBox(height: 0.3 * kDefaultPadding),
               DropdownButton(
                 value: value,
                 underline: Container(
@@ -75,7 +81,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   );
                 }).toList(),
               ),
-              SizedBox(height: 2.0 * kDefaultPadding),
+              const SizedBox(height: 2.0 * kDefaultPadding),
               Text(
                 'Describe the situation.',
                 style: TextStyle(
@@ -83,15 +89,15 @@ class _ReportScreenState extends State<ReportScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 1.2 * kDefaultPadding),
+              const SizedBox(height: 1.2 * kDefaultPadding),
               CustomTextField(
                 controller: reportDescriptionController,
                 hintText: 'I felt threatened because...',
                 textarea: true,
               ),
-              SizedBox(height: 2.0 * kDefaultPadding),
+              const SizedBox(height: 2.0 * kDefaultPadding),
               Text('Note: you can file 1 report per hour.'),
-              SizedBox(height: 2.0 * kDefaultPadding),
+              const SizedBox(height: 2.0 * kDefaultPadding),
               ElevatedButton(
                 onPressed: () async {
                   String response =

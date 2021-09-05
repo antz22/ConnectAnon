@@ -1,14 +1,14 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/message.dart';
 import 'package:connect_anon/screens/chat/conversations/components/chat_input_field.dart';
-import 'package:connect_anon/screens/chat/conversations/components/chat_message.dart';
+import 'package:connect_anon/screens/chat/conversations/components/chat_screen_message.dart';
 import 'package:connect_anon/screens/profile/profile_screen.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen({
+  const ChatScreen({
     Key? key,
     required this.groupChatId,
     required this.currentUserId,
@@ -93,9 +93,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 Navigator.pop(context);
               },
             ),
-            SizedBox(width: 0.75 * kDefaultPadding),
+            const SizedBox(width: 0.75 * kDefaultPadding),
             CustomAvatar(photoUrl: peerPhotoUrl, size: 17.0),
-            SizedBox(width: 0.75 * kDefaultPadding),
+            const SizedBox(width: 0.75 * kDefaultPadding),
             Text(
               peerName,
               style: TextStyle(
@@ -119,7 +119,7 @@ class _ChatScreenState extends State<ChatScreen> {
               );
             },
           ),
-          SizedBox(width: 0.9 * kDefaultPadding),
+          const SizedBox(width: 0.9 * kDefaultPadding),
         ],
       ),
       body: GestureDetector(
@@ -175,7 +175,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     }
                                   }
                                   return Padding(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: kDefaultPadding),
                                     child: ChatScreenMessage(
                                       userId: currentUserId,

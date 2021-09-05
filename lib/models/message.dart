@@ -6,7 +6,7 @@ class Message {
   final String timestamp;
   final String content;
 
-  Message({
+  const Message({
     required this.idFrom,
     required this.idTo,
     required this.timestamp,

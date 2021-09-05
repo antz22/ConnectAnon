@@ -74,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               Row(
                                 children: [
-                                  SizedBox(width: kDefaultPadding),
+                                  const SizedBox(width: kDefaultPadding),
                                   IconButton(
                                     onPressed: () => Navigator.pop(context),
                                     icon: Icon(Icons.arrow_back,
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ],
                             ),
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                     Container(
                       width: 85.0,
                       margin: EdgeInsets.only(
@@ -222,10 +222,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ? status == 'Chat Buddy'
                         ? _buildChangeStatusButton(
                             context, profile.isAccepting!)
-                        : SizedBox.shrink()
+                        : const SizedBox.shrink()
                     : widget.isReviewing
                         ? Container(
-                            margin: EdgeInsets.only(top: 2 * kDefaultPadding),
+                            margin:
+                                const EdgeInsets.only(top: 2 * kDefaultPadding),
                             child: _buildReferralButton(context),
                           )
                         : Column(
@@ -290,7 +291,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: kDefaultPadding),
+                                  const SizedBox(width: kDefaultPadding),
                                   TextButton(
                                     onPressed: () async {
                                       Map<String, dynamic> params = {
@@ -347,14 +348,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Icon(Icons.info),
-                                              SizedBox(
+                                              const SizedBox(
                                                   width: 0.5 * kDefaultPadding),
                                               Text(
                                                   'NOTE: This user has been temporarily banned'),
                                             ],
                                           ),
                                         )
-                                      : SizedBox.shrink(),
+                                      : const SizedBox.shrink(),
                             ],
                           )
               ],
@@ -369,7 +370,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Container _buildChangeStatusButton(BuildContext context, bool isAccepting) {
     return Container(
-      margin: EdgeInsets.only(top: 2 * kDefaultPadding),
+      margin: const EdgeInsets.only(top: 2 * kDefaultPadding),
       child: ElevatedButton(
           onPressed: () {
             Navigator.push(

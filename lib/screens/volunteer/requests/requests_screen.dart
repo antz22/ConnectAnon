@@ -92,7 +92,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                           var docs = snapshot.data!.docs;
                           if (docs.length == 0) {
                             return Container(
-                              margin: EdgeInsets.only(top: kDefaultPadding),
+                              margin:
+                                  const EdgeInsets.only(top: kDefaultPadding),
                               child: Text(
                                   'You don\'t have any requests at the moment :)'),
                             );
@@ -129,7 +130,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                           );
                                         },
                                         child: Container(
-                                          padding: EdgeInsets.only(
+                                          padding: const EdgeInsets.only(
                                               left: 0.9 * kDefaultPadding,
                                               top: 0.4 * kDefaultPadding,
                                               bottom: 0.4 * kDefaultPadding),
@@ -138,7 +139,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                               CustomAvatar(
                                                   photoUrl: peerPhotoUrl,
                                                   size: 20.0),
-                                              SizedBox(
+                                              const SizedBox(
                                                   width: 0.9 * kDefaultPadding),
                                               Expanded(
                                                 child: Container(
@@ -180,13 +181,13 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                       ),
                                     ),
                                     Container(
-                                      padding: EdgeInsets.only(
+                                      padding: const EdgeInsets.only(
                                           right: 0.9 * kDefaultPadding,
                                           top: 0.4 * kDefaultPadding,
                                           bottom: 0.4 * kDefaultPadding),
                                       child: Row(
                                         children: [
-                                          SizedBox(
+                                          const SizedBox(
                                               width: 0.9 * kDefaultPadding),
                                           Container(
                                             decoration: BoxDecoration(
@@ -230,7 +231,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                               width: 0.8 * kDefaultPadding),
                                           Container(
                                             decoration: BoxDecoration(

@@ -25,7 +25,7 @@ class ChatRoomsHeader extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  SizedBox(width: kDefaultPadding),
+                  const SizedBox(width: kDefaultPadding),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
                     icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -40,7 +40,7 @@ class ChatRoomsHeader extends StatelessWidget {
                 height: 80.0,
                 color: Colors.white,
               ),
-              SizedBox(height: kDefaultPadding),
+              const SizedBox(height: kDefaultPadding),
               Text(
                 title,
                 style: TextStyle(

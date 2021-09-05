@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ConversationPreview extends StatelessWidget {
-  ConversationPreview({
+  const ConversationPreview({
     Key? key,
     required this.groupChatId,
     required this.currentUserId,
@@ -30,7 +30,7 @@ class ConversationPreview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomAvatar(photoUrl: peerPhotoUrl, size: 28.0),
-          SizedBox(width: 0.9 * kDefaultPadding),
+          const SizedBox(width: 0.9 * kDefaultPadding),
           Container(
             height: 53.0,
             child: Column(
@@ -65,7 +65,7 @@ class ConversationPreview extends StatelessWidget {
         ],
       );
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 

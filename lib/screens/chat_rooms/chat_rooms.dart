@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'components/chat_room_preview.dart';
 
 class ChatRoomsScreen extends StatefulWidget {
-  ChatRoomsScreen({
+  const ChatRoomsScreen({
     Key? key,
     required this.currentUserId,
     required this.photoUrl,
@@ -117,7 +117,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                                       ));
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                     vertical: 0.4 * kDefaultPadding,
                                     horizontal: 0.9 * kDefaultPadding,
                                   ),
@@ -136,7 +136,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                         }
                       },
                     ),
-                    SizedBox(height: kDefaultPadding),
+                    const SizedBox(height: kDefaultPadding),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -157,7 +157,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                                 MaterialStateProperty.all<Color>(kPrimaryColor),
                           ),
                         ),
-                        SizedBox(width: kDefaultPadding),
+                        const SizedBox(width: kDefaultPadding),
                         ElevatedButton(
                           onPressed: () async {
                             Navigator.push(
@@ -177,7 +177,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: kDefaultPadding),
+                    const SizedBox(height: kDefaultPadding),
                   ],
                 ),
               ),

@@ -20,7 +20,7 @@ class InfoHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 0.9 * kDefaultPadding,
         right: 0.9 * kDefaultPadding,
         top: 0.7 * kDefaultPadding,

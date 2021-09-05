@@ -9,7 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class GoogleSignInButton extends StatefulWidget {
-  GoogleSignInButton({required this.action});
+  const GoogleSignInButton({required this.action});
 
   final String action;
 

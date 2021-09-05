@@ -11,7 +11,7 @@ class AccountOptionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.all(2 * kDefaultPadding),
+        margin: const EdgeInsets.all(2 * kDefaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

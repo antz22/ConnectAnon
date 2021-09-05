@@ -10,7 +10,7 @@ class ChatRoom {
   final List<dynamic> memberNames;
   final List<dynamic> memberPhotoUrls;
 
-  ChatRoom({
+  const ChatRoom({
     required this.id,
     required this.name,
     required this.description,

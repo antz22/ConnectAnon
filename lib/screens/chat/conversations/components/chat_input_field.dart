@@ -7,8 +7,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class ChatInputField extends StatefulWidget {
-  ChatInputField({Key? key, required this.groupChatId, required this.peerId})
-      : super(key: key);
+  const ChatInputField({
+    Key? key,
+    required this.groupChatId,
+    required this.peerId,
+  }) : super(key: key);
 
   final String groupChatId;
   final String peerId;
@@ -49,9 +52,15 @@ class _ChatInputFieldState extends State<ChatInputField> {
   }
 
   @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 0.8 * kDefaultPadding,
       ),
       decoration: BoxDecoration(
@@ -69,10 +78,10 @@ class _ChatInputFieldState extends State<ChatInputField> {
           children: [
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                   vertical: 0.5 * kDefaultPadding,
                 ),
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 0.8 * kDefaultPadding,
                 ),
                 decoration: BoxDecoration(
@@ -115,7 +124,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              margin: EdgeInsets.only(right: 0.2 * kDefaultPadding),
+              margin: const EdgeInsets.only(right: 0.2 * kDefaultPadding),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -124,7 +133,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   },
                   customBorder: CircleBorder(),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: _isEmpty
                         ? SvgPicture.asset('assets/svgs/send_unvalid.svg')
                         : SvgPicture.asset('assets/svgs/send_valid.svg'),

@@ -8,7 +8,7 @@ class ChatRoomMessage {
   final String timestamp;
   final String content;
 
-  ChatRoomMessage({
+  const ChatRoomMessage({
     required this.idFrom,
     required this.idTo,
     required this.nameFrom,

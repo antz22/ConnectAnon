@@ -27,9 +27,9 @@ class LandingPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 35.0),
+            padding: const EdgeInsets.symmetric(horizontal: 35.0),
             child: Text(
               'Talk with random classmates to make new friends and have spicy conversations',
               textAlign: TextAlign.center,
@@ -40,7 +40,7 @@ class LandingPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height / 12),
+          const SizedBox(height: MediaQuery.of(context).size.height / 12),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -69,7 +69,7 @@ class LandingPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           GestureDetector(
             onTap: () {
               Navigator.push(

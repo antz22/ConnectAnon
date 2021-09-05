@@ -22,6 +22,13 @@ class _RequestChatRoomScreenState extends State<RequestChatRoomScreen> {
   final roomDescController = TextEditingController();
 
   @override
+  void dispose() {
+    roomNameController.dispose();
+    roomDescController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -36,25 +43,25 @@ class _RequestChatRoomScreenState extends State<RequestChatRoomScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 2 * kDefaultPadding),
+                  const SizedBox(height: 2 * kDefaultPadding),
                   Text(
                     'Feel free to propose ideas for chat rooms that warrant discussion among peers! Requests will be reviewed, and if accepted, will be open to peers to join.',
                     style: TextStyle(
                       fontSize: 15.0,
                     ),
                   ),
-                  SizedBox(height: 1.3 * kDefaultPadding),
+                  const SizedBox(height: 1.3 * kDefaultPadding),
                   CustomTextField(
                     hintText: 'Chat Room Name',
                     controller: roomNameController,
                   ),
-                  SizedBox(height: 1.3 * kDefaultPadding),
+                  const SizedBox(height: 1.3 * kDefaultPadding),
                   CustomTextField(
                     controller: roomDescController,
                     hintText: 'Brief description of chat room',
                     textarea: true,
                   ),
-                  SizedBox(height: 2 * kDefaultPadding),
+                  const SizedBox(height: 2 * kDefaultPadding),
                   Row(
                     children: [
                       TextButton(

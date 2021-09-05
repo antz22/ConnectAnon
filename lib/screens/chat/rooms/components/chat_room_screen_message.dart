@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ChatRoomScreenMessage extends StatefulWidget {
-  ChatRoomScreenMessage({
+  const ChatRoomScreenMessage({
     Key? key,
     required this.userId,
     required this.message,
@@ -51,7 +51,7 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
       future: _checkSender(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         return Padding(
-          padding: EdgeInsets.only(bottom: 0.3 * kDefaultPadding),
+          padding: const EdgeInsets.only(bottom: 0.3 * kDefaultPadding),
           child: Column(
             crossAxisAlignment:
                 isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -81,7 +81,7 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
             },
             child: Container(
               constraints: BoxConstraints(maxWidth: _maxWidth),
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 0.75 * kDefaultPadding,
                 vertical: 0.5 * kDefaultPadding,
               ),
@@ -96,7 +96,7 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
               ),
             ),
           ),
-          _pressed ? _buildMessageTime() : SizedBox.shrink(),
+          _pressed ? _buildMessageTime() : const SizedBox.shrink(),
         ],
       );
     } else {
@@ -109,14 +109,14 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
                   photoUrl: photoUrlFrom,
                   size: 14.0,
                 )
-              : SizedBox(width: 28.0),
-          SizedBox(width: 0.5 * kDefaultPadding),
+              : const SizedBox(width: 28.0),
+          const SizedBox(width: 0.5 * kDefaultPadding),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               widget.displayName
                   ? Container(
-                      margin: EdgeInsets.only(bottom: 5.0, left: 10.0),
+                      margin: const EdgeInsets.only(bottom: 5.0, left: 10.0),
                       child: Text(
                         widget.message.nameFrom,
                         style: TextStyle(
@@ -126,7 +126,7 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
                         ),
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -139,7 +139,7 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
                 },
                 child: Container(
                   constraints: BoxConstraints(maxWidth: _maxWidth),
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 0.75 * kDefaultPadding,
                     vertical: 0.5 * kDefaultPadding,
                   ),
@@ -154,7 +154,7 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
                   ),
                 ),
               ),
-              _pressed ? _buildMessageTime() : SizedBox.shrink(),
+              _pressed ? _buildMessageTime() : const SizedBox.shrink(),
             ],
           ),
         ],

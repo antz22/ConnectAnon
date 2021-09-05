@@ -2,14 +2,14 @@ import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/chat_room.dart';
 import 'package:connect_anon/models/chat_room_message.dart';
 import 'package:connect_anon/screens/chat/rooms/components/chat_room_input_field.dart';
-import 'package:connect_anon/screens/chat/rooms/components/room_message.dart';
+import 'package:connect_anon/screens/chat/rooms/components/chat_room_screen_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connect_anon/screens/chat_room_info/chat_room_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ChatRoomScreen extends StatefulWidget {
-  ChatRoomScreen({
+  const ChatRoomScreen({
     Key? key,
     required this.currentUserId,
     required this.alias,
@@ -72,12 +72,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                 Navigator.pop(context);
               },
             ),
-            SizedBox(width: 0.75 * kDefaultPadding),
+            const SizedBox(width: 0.75 * kDefaultPadding),
             SvgPicture.asset(
               'assets/svgs/hashtag.svg',
               height: 17.0,
             ),
-            SizedBox(width: 0.75 * kDefaultPadding),
+            const SizedBox(width: 0.75 * kDefaultPadding),
             Text(
               widget.chatRoom.name,
               style: TextStyle(
@@ -103,7 +103,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               );
             },
           ),
-          SizedBox(width: 0.9 * kDefaultPadding),
+          const SizedBox(width: 0.9 * kDefaultPadding),
         ],
       ),
       body: GestureDetector(
@@ -176,7 +176,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                     }
                                   }
                                   return Padding(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: kDefaultPadding),
                                     child: ChatRoomScreenMessage(
                                       userId: widget.currentUserId,

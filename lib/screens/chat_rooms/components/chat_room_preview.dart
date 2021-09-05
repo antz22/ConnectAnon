@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ChatRoomPreview extends StatelessWidget {
-  ChatRoomPreview({
+  const ChatRoomPreview({
     Key? key,
     required this.currentUserId,
     required this.chatRoom,
@@ -21,7 +21,7 @@ class ChatRoomPreview extends StatelessWidget {
       children: [
         SvgPicture.asset('assets/svgs/chat_room.svg',
             height: 46.0, color: kPrimaryColor),
-        SizedBox(width: 0.9 * kDefaultPadding),
+        const SizedBox(width: 0.9 * kDefaultPadding),
         Container(
           height: 53.0,
           child: Column(

@@ -123,6 +123,9 @@ If we had enough money...
 - SystemUIOverlayStyle thing helps with android statusbar transparency
 - IndexedStack and Mixin thing helps wiht not rebuilding the futurebuilder with bottomnavigation
 - Provider.of(context) without the listen: false will not work.
+- Performance optimizations:
+    always dispose your controllers (both animation controllers and text editing controllers) (and other ones too)
+    use const for EdgeInsets and SizedBoxes -- they won't be rebuilt
 
 ## Resources
 

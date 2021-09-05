@@ -72,7 +72,7 @@ class _SetProfilePicState extends State<SetProfilePic> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5.0),
+                    const SizedBox(height: 5.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -84,7 +84,7 @@ class _SetProfilePicState extends State<SetProfilePic> {
                             username: data[index]['user']['username']),
                       ],
                     ),
-                    SizedBox(height: 5.0),
+                    const SizedBox(height: 5.0),
                   ],
                 );
               },

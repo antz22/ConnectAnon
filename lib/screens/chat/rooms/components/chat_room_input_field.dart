@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class ChatRoomInputField extends StatefulWidget {
-  ChatRoomInputField({
+  const ChatRoomInputField({
     Key? key,
     required this.chatRoomId,
     required this.alias,
@@ -50,9 +50,15 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
   }
 
   @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 0.8 * kDefaultPadding,
       ),
       decoration: BoxDecoration(
@@ -70,10 +76,10 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
           children: [
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                   vertical: 0.5 * kDefaultPadding,
                 ),
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 0.8 * kDefaultPadding,
                 ),
                 decoration: BoxDecoration(
@@ -124,7 +130,7 @@ class _ChatRoomInputFieldState extends State<ChatRoomInputField> {
                   },
                   customBorder: CircleBorder(),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: _isEmpty
                         ? SvgPicture.asset('assets/svgs/send_unvalid.svg')
                         : SvgPicture.asset('assets/svgs/send_valid.svg'),

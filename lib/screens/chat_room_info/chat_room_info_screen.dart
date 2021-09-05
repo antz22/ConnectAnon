@@ -34,13 +34,13 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
               height: 17.0,
               color: Colors.white,
             ),
-            SizedBox(width: 0.3 * kDefaultPadding),
+            const SizedBox(width: 0.3 * kDefaultPadding),
             Text(' ${widget.chatRoom.name}'),
           ],
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(kDefaultPadding),
+        padding: const EdgeInsets.all(kDefaultPadding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +51,7 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
                 fontSize: 17.0,
               ),
             ),
-            SizedBox(height: 3 * kDefaultPadding),
+            const SizedBox(height: 3 * kDefaultPadding),
             Text(
               'Members',
               style: TextStyle(
@@ -59,7 +59,7 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: kDefaultPadding),
+            const SizedBox(height: kDefaultPadding),
             ListView.separated(
               shrinkWrap: true,
               itemCount: widget.chatRoom.memberNames.length,
@@ -70,7 +70,7 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
                       photoUrl: widget.chatRoom.memberPhotoUrls[index],
                       size: 15.0,
                     ),
-                    SizedBox(width: 0.7 * kDefaultPadding),
+                    const SizedBox(width: 0.7 * kDefaultPadding),
                     Text(
                       widget.chatRoom.memberNames[index],
                       style: TextStyle(
@@ -84,12 +84,12 @@ class _ChatRoomInfoScreenState extends State<ChatRoomInfoScreen> {
               separatorBuilder: (context, index) {
                 return Column(
                   children: [
-                    SizedBox(height: kDefaultPadding),
+                    const SizedBox(height: kDefaultPadding),
                   ],
                 );
               },
             ),
-            SizedBox(height: 3 * kDefaultPadding),
+            const SizedBox(height: 3 * kDefaultPadding),
             _buildActionButton(context),
           ],
         ),

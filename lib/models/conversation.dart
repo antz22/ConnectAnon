@@ -15,7 +15,7 @@ class Conversation {
   // createdBy: String (id)
   // type: String (Peer-Peer, Peer-Volunteer)
 
-  Conversation({
+  const Conversation({
     required this.id,
     required this.name,
     required this.description,

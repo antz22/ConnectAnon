@@ -64,7 +64,7 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
                       .toList();
                   if (chatRooms.length == 0) {
                     return Container(
-                      margin: EdgeInsets.only(
+                      margin: const EdgeInsets.only(
                         top: kDefaultPadding,
                         left: 1.3 * kDefaultPadding,
                         right: 1.3 * kDefaultPadding,
@@ -103,7 +103,7 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
                                   fontSize: 18.0,
                                 ),
                               ),
-                              SizedBox(width: kDefaultPadding),
+                              const SizedBox(width: kDefaultPadding),
                               IconButton(
                                 onPressed: () {
                                   Navigator.push(
@@ -125,9 +125,9 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
                       separatorBuilder: (context, index) {
                         return Column(
                           children: [
-                            SizedBox(height: 0.3 * kDefaultPadding),
+                            const SizedBox(height: 0.3 * kDefaultPadding),
                             Divider(),
-                            SizedBox(height: 0.3 * kDefaultPadding),
+                            const SizedBox(height: 0.3 * kDefaultPadding),
                           ],
                         );
                       },

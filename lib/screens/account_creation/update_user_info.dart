@@ -38,6 +38,12 @@ class _UpdateUserInfoPageState extends State<UpdateUserInfoPage> {
   }
 
   @override
+  void dispose() {
+    aliasController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +70,7 @@ class _UpdateUserInfoPageState extends State<UpdateUserInfoPage> {
                   child: CustomAvatar(photoUrl: photoUrl, size: 80.0),
                 ),
                 photoUrl.isEmpty
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : Positioned(
                         child: GestureDetector(
                           onTap: () {
@@ -75,7 +81,7 @@ class _UpdateUserInfoPageState extends State<UpdateUserInfoPage> {
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.all(2.5),
+                            padding: const EdgeInsets.all(2.5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5.0),
                               color: kPrimaryColor,
@@ -93,7 +99,7 @@ class _UpdateUserInfoPageState extends State<UpdateUserInfoPage> {
               ],
             ),
             artistName.isEmpty
-                ? SizedBox.shrink()
+                ? const SizedBox.shrink()
                 : Column(
                     children: [
                       SizedBox(height: 0.8 * kDefaultPadding),
@@ -101,9 +107,9 @@ class _UpdateUserInfoPageState extends State<UpdateUserInfoPage> {
                           name: artistName, username: artistUsername),
                     ],
                   ),
-            SizedBox(height: 1.2 * kDefaultPadding),
+            const SizedBox(height: 1.2 * kDefaultPadding),
             Text('Set optional profile picture using Unsplash images'),
-            SizedBox(height: 0.8 * kDefaultPadding),
+            const SizedBox(height: 0.8 * kDefaultPadding),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -126,7 +132,7 @@ class _UpdateUserInfoPageState extends State<UpdateUserInfoPage> {
                   },
                   child: Text('Random'),
                 ),
-                SizedBox(width: 2 * kDefaultPadding),
+                const SizedBox(width: 2 * kDefaultPadding),
                 ElevatedButton(
                     onPressed: () async {
                       newImage = await Navigator.push(
@@ -161,7 +167,7 @@ class _UpdateUserInfoPageState extends State<UpdateUserInfoPage> {
                 ),
               ),
             ),
-            SizedBox(height: kDefaultPadding),
+            const SizedBox(height: kDefaultPadding),
             ElevatedButton(
               onPressed: () async {
                 Map<String, dynamic> params = {

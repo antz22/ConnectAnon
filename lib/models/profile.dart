@@ -11,7 +11,7 @@ class Profile {
   final bool isBanned;
   final bool? isAccepting;
 
-  Profile({
+  const Profile({
     required this.alias,
     required this.status,
     required this.school,

@@ -32,9 +32,9 @@ class _SignInPageState extends State<SignInPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 35.0),
+            padding: const EdgeInsets.symmetric(horizontal: 35.0),
             child: Text(
               'Talk with random classmates to make new friends and have spicy conversations',
               textAlign: TextAlign.center,

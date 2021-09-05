@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ConversationsScreen extends StatefulWidget {
-  ConversationsScreen({
+  const ConversationsScreen({
     Key? key,
     required this.currentUserId,
     required this.status,
@@ -139,7 +139,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                   );
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                     vertical: 0.4 * kDefaultPadding,
                                     horizontal: 0.9 * kDefaultPadding,
                                   ),
@@ -161,7 +161,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                         }
                       },
                     ),
-                    SizedBox(height: kDefaultPadding),
+                    const SizedBox(height: kDefaultPadding),
                     widget.status != 'Chat Buddy'
                         ? ElevatedButton(
                             onPressed: () async {
@@ -179,7 +179,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                   kPrimaryColor),
                             ),
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                     widget.status != 'Chat Buddy'
                         ? ElevatedButton(
                             onPressed: () async {
@@ -211,7 +211,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                   kPrimaryColor),
                             ),
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                   ],
                 ),
               ),
