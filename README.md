@@ -58,6 +58,8 @@ This app was created using the Flutter framework developed by Google, using the 
 - manual review
     Reports
     Chat Room creation requests
+- restrict peerchats and volunteer chats. pricey operations.
+- comment and delete comments
 
 
 

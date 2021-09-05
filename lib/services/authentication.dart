@@ -141,8 +141,10 @@ class AuthenticationService {
           'reports': 0,
           'lastReportedAt': '',
           'lastRequestedAt': '',
+          'lastPeerConnectedAt': '',
           'requestedIds': [],
           'totalRequests': 0,
+          'peerConnects': 0,
           'bannedSince': '',
           'isBanned': false,
           // (peer only) isAccepting: (bool)

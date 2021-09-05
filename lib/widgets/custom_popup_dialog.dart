@@ -125,6 +125,30 @@ class CustomPopupDialog {
                   );
                 }
                 break;
+              case 'Create Group':
+                String currentUserId = params['currentUserId'];
+                String response = await context
+                    .read<FirestoreServices>()
+                    .createGroup(currentUserId);
+                if (response == 'Success') {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(
+                        message: 'New conversation with anonymous peer created',
+                        messageStatus: 'Success',
+                      ),
+                    ),
+                  );
+                } else {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return HomePage(message: response);
+                      },
+                    ),
+                  );
+                }
+                break;
             }
           },
           child: Text('Confirm'),
@@ -237,6 +261,30 @@ class CustomPopupDialog {
                     MaterialPageRoute(
                       builder: (context) => HomePage(
                         message: 'A volunteer has been requested.',
+                        messageStatus: 'Success',
+                      ),
+                    ),
+                  );
+                } else {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return HomePage(message: response);
+                      },
+                    ),
+                  );
+                }
+                break;
+              case 'Create Group':
+                String currentUserId = params['currentUserId'];
+                String response = await context
+                    .read<FirestoreServices>()
+                    .createGroup(currentUserId);
+                if (response == 'Success') {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(
+                        message: 'New conversation with anonymous peer created',
                         messageStatus: 'Success',
                       ),
                     ),

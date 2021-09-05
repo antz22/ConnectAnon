@@ -165,12 +165,33 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                     widget.status != 'Chat Buddy'
                         ? ElevatedButton(
                             onPressed: () async {
-                              var response = await context
-                                  .read<FirestoreServices>()
-                                  .createGroup(currentUserId);
-                              if (response != 'Success') {
-                                CustomSnackbar.buildWarningMessage(
-                                    context, 'Error', response);
+                              // var response = await context
+                              //     .read<FirestoreServices>()
+                              //     .createGroup(currentUserId);
+                              // if (response != 'Success') {
+                              //   CustomSnackbar.buildWarningMessage(
+                              //       context, 'Error', response);
+                              // }
+                              Map<String, dynamic> params = {
+                                'currentUserId': currentUserId
+                              };
+                              String title = 'Confirm';
+                              String content =
+                                  'You can only connect with 2 new peers per hour, so use this wisely! Continue?';
+                              String purpose = 'Create Group';
+
+                              if (Platform.isAndroid) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => CustomPopupDialog
+                                        .buildMaterialPopupDialog(context,
+                                            params, title, content, purpose));
+                              } else {
+                                showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) => CustomPopupDialog
+                                        .buildCupertinoPopupDialog(context,
+                                            params, title, content, purpose));
                               }
                             },
                             child: Text('Connect to anonymous peer'),

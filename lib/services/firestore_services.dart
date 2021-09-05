@@ -214,7 +214,21 @@ class FirestoreServices {
     Map<String, dynamic>? userData = userDocument.data();
     List<dynamic> chattedWith = userData?['chattedWith'];
     List<dynamic> blocked = userData?['blocked'];
+    String lastPeerConnectedAt = userData?['lastPeerConnectedAt'];
+    int peerConnects = userData?['peerConnects'];
     var status;
+    if (lastPeerConnectedAt != '') {
+      DateTime lastPeerConnectedTimeAt =
+          DateTime.fromMillisecondsSinceEpoch(int.parse(lastPeerConnectedAt));
+      DateTime currentDateTime = DateTime.now();
+      var difference =
+          currentDateTime.difference(lastPeerConnectedTimeAt).inMilliseconds;
+      // it's been less than an 1 hour, has reported % 3 times
+      // if (difference <= 3600000 || totalRequests % 3 == 0) {
+      if (difference <= 3600000 && peerConnects % 2 == 0) {
+        return 'Peer Connect cool down (1 hour)';
+      }
+    }
     await users
         .where('status', isEqualTo: 'Peer')
         .get()
@@ -276,13 +290,16 @@ class FirestoreServices {
           'groups': FieldValue.arrayUnion([groupId]),
           'chattedWith':
               keepHistory ? FieldValue.arrayUnion([randomId]) : [randomId],
-          'lastConnected': DateTime.now().millisecondsSinceEpoch.toString(),
+          'lastPeerConnectedAt':
+              DateTime.now().millisecondsSinceEpoch.toString(),
+          'peerConnects': FieldValue.increment(1),
         });
 
         FirebaseFirestore.instance.collection('Users').doc(randomId).update({
           'groups': FieldValue.arrayUnion([groupId]),
           'chattedWith': FieldValue.arrayUnion([currentUserId]),
-          'lastConnected': DateTime.now().millisecondsSinceEpoch.toString(),
+          'lastPeerConnectedAt':
+              DateTime.now().millisecondsSinceEpoch.toString(),
         });
 
         status = 'Success';
@@ -324,7 +341,7 @@ class FirestoreServices {
       DateTime currentDateTime = DateTime.now();
       var difference =
           currentDateTime.difference(lastReportedTimeAt).inMilliseconds;
-      // it's been less than an 1 hour, has reported % 3 times
+      // it's been less than an 1 hour, has requested % 3 times
       // if (difference <= 3600000 || totalRequests % 3 == 0) {
       if (difference <= 3600000 && totalRequests % 3 == 0) {
         return 'Volunteer Request cool down (1 hour)';
@@ -524,7 +541,7 @@ class FirestoreServices {
             // refresh history if nobody left
             'specialChattedWith':
                 keepHistory ? FieldValue.arrayUnion([randomId]) : [randomId],
-            'lastConnected': timestamp,
+            // 'lastConnected': timestamp,
           });
         } else {
           FirebaseFirestore.instance.collection('Users').doc(peerId).update({
@@ -536,7 +553,7 @@ class FirestoreServices {
         FirebaseFirestore.instance.collection('Users').doc(randomId).update({
           'groups': FieldValue.arrayUnion([groupId]),
           'specialChattedWith': FieldValue.arrayUnion([peerId]),
-          'lastConnected': timestamp,
+          // 'lastConnected': timestamp,
         });
 
         status = 'Success';
@@ -596,7 +613,7 @@ class FirestoreServices {
           'specialChattedWith': keepHistory
               ? FieldValue.arrayUnion([volunteerId])
               : [volunteerId],
-          'lastConnected': timestamp,
+          // 'lastConnected': timestamp,
           'requestedIds': FieldValue.arrayRemove([volunteerId]),
         });
         FirebaseFirestore.instance.collection('Users').doc(volunteerId).update({
@@ -607,7 +624,7 @@ class FirestoreServices {
       } else {
         FirebaseFirestore.instance.collection('Users').doc(peerId).update({
           'groups': FieldValue.arrayUnion([groupId]),
-          'lastConnected': timestamp,
+          // 'lastConnected': timestamp,
           'requestedIds': FieldValue.arrayRemove([volunteerId]),
         });
         FirebaseFirestore.instance.collection('Users').doc(volunteerId).update({
