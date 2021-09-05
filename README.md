@@ -34,10 +34,12 @@ This app was created using the Flutter framework developed by Google, using the 
 
 ## TODO
 
-PRIORITY
+### Priority
 - null errors!!
 - figure out sign in through google or through email
     landing page...
+- play store production
+- apple testing
 - firebase production
     Hosting
     Security rules
@@ -46,8 +48,10 @@ PRIORITY
     Testing
     Android Play Store
     Apple App Store
+- releasing the code? (any sensitive information?)
 
-IMPORTANT
+### Important
+
 - admin notifications - chat room creation, reports, chat buddies
 - firebase plan - put in credit card (this is only a dev project so it should be fine)
 - manual review
@@ -56,7 +60,8 @@ IMPORTANT
 
 
 
-MINOR
+### Minor
+
 - keyboard slow animation
 - unsplash API production - how to download stuff?
 - clean up and abstract!
@@ -65,7 +70,8 @@ MINOR
 - also fix component and model names lol
 
 
-POTENTIAL
+### Future / Potential
+
 - dark mode...
 - upon joining, joining general chat room and volunteer support if volunteer
 - chat preview name purple if chat buddy
@@ -77,7 +83,7 @@ POTENTIAL
 
 - add an if check sayign that if users is over like 50 then dont check thorugh each one?
 
-PROBLEMS
+### Problems
 - there will probably be duplicate conversations somewhere, a person will get someone they've already talked to.
 - volunteers might get duplicate requests. will rarely happen though, hopefully.
 - messages (chat room messages and messages) can't be programmatically.
@@ -116,6 +122,7 @@ If we had enough money...
 
 - SystemUIOverlayStyle thing helps with android statusbar transparency
 - IndexedStack and Mixin thing helps wiht not rebuilding the futurebuilder with bottomnavigation
+- Provider.of(context) without the listen: false will not work.
 
 ## Resources
 

@@ -116,11 +116,11 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
             children: [
               widget.displayName
                   ? Container(
-                      margin: EdgeInsets.only(bottom: 5.0, left: 6.0),
+                      margin: EdgeInsets.only(bottom: 5.0, left: 10.0),
                       child: Text(
                         widget.message.nameFrom,
                         style: TextStyle(
-                          fontSize: 11.5,
+                          fontSize: 12.0,
                           color: Colors.grey.shade600,
                           fontWeight: FontWeight.w300,
                         ),
