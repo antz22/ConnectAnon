@@ -40,7 +40,7 @@ class LandingPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: MediaQuery.of(context).size.height / 12),
+          SizedBox(height: MediaQuery.of(context).size.height / 12),
           GestureDetector(
             onTap: () {
               Navigator.push(

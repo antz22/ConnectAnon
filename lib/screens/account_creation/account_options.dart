@@ -18,7 +18,7 @@ class AccountOptionsPage extends StatelessWidget {
             PageHeader(
               text: 'Would you like to finish setting up your account?',
             ),
-            SizedBox(height: 2 * kDefaultPadding),
+            const SizedBox(height: 2 * kDefaultPadding),
             Text(
               'Create an Account',
               style: TextStyle(
@@ -26,7 +26,7 @@ class AccountOptionsPage extends StatelessWidget {
                 fontSize: 21.0,
               ),
             ),
-            SizedBox(height: kDefaultPadding),
+            const SizedBox(height: kDefaultPadding),
             TextBlob(
               text:
                   'Finish setting up your account with an alias so you can access past conversations and participate in and create chat rooms.',
@@ -39,7 +39,7 @@ class AccountOptionsPage extends StatelessWidget {
                 fontSize: 21.0,
               ),
             ),
-            SizedBox(height: kDefaultPadding),
+            const SizedBox(height: kDefaultPadding),
             TextBlob(
               text:
                   'Create a conversation to chat with anyone from your school and view chat rooms without registering. Your conversations will disappear and you won\'t be able to text in chat rooms.',

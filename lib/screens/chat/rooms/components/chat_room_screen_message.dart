@@ -22,9 +22,11 @@ class ChatRoomScreenMessage extends StatefulWidget {
   _ChatRoomScreenMessageState createState() => _ChatRoomScreenMessageState();
 }
 
-class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
+class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage>
+    with TickerProviderStateMixin {
   final double _maxWidth = 280.0;
 
+  double _height = 0.0;
   bool isSender = false;
   bool _pressed = false;
   String senderName = '';
@@ -74,8 +76,10 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
               setState(() {
                 if (_pressed == true) {
                   _pressed = false;
+                  _height = 0.0;
                 } else {
                   _pressed = true;
+                  _height = 20.0;
                 }
               });
             },
@@ -96,7 +100,12 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
               ),
             ),
           ),
-          _pressed ? _buildMessageTime() : const SizedBox.shrink(),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            curve: Curves.fastOutSlowIn,
+            height: _height,
+            child: _buildMessageTime(),
+          ),
         ],
       );
     } else {
@@ -105,9 +114,14 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           widget.displayPhoto
-              ? CustomAvatar(
-                  photoUrl: photoUrlFrom,
-                  size: 14.0,
+              ? Container(
+                  margin: EdgeInsets.only(
+                    bottom: _pressed ? kDefaultPadding : 0.0,
+                  ),
+                  child: CustomAvatar(
+                    photoUrl: photoUrlFrom,
+                    size: 14.0,
+                  ),
                 )
               : const SizedBox(width: 28.0),
           const SizedBox(width: 0.5 * kDefaultPadding),
@@ -132,8 +146,10 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
                   setState(() {
                     if (_pressed == true) {
                       _pressed = false;
+                      _height = 0.0;
                     } else {
                       _pressed = true;
+                      _height = 20.0;
                     }
                   });
                 },
@@ -154,7 +170,12 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
                   ),
                 ),
               ),
-              _pressed ? _buildMessageTime() : const SizedBox.shrink(),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                curve: Curves.fastOutSlowIn,
+                height: _height,
+                child: _buildMessageTime(),
+              ),
             ],
           ),
         ],
@@ -163,23 +184,17 @@ class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
   }
 
   Widget _buildMessageTime() {
-    return Column(
-      crossAxisAlignment:
-          isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: isSender
-              ? EdgeInsets.only(right: 5.0, top: 5.0)
-              : EdgeInsets.only(left: 5.0, top: 5.0),
-          child: Text(
-            _getMessageTime(),
-            style: TextStyle(
-              fontSize: 13.0,
-              color: Colors.grey.shade600,
-            ),
-          ),
+    return Container(
+      margin: isSender
+          ? EdgeInsets.only(right: 5.0, top: 5.0)
+          : EdgeInsets.only(left: 5.0, top: 5.0),
+      child: Text(
+        _getMessageTime(),
+        style: TextStyle(
+          fontSize: 13.0,
+          color: Colors.grey.shade600,
         ),
-      ],
+      ),
     );
   }
 }
