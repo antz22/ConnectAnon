@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/screens/set_profile_pic/set_profile_pic.dart';
+import 'package:connect_anon/screens/account_creation/set_profile_pic.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_popup_dialog.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';

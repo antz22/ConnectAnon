@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     _retrieveId();
-    registerNotification();
+    // registerNotification();
     // configLocalNotification();
     if (widget.message != '') {
       if (widget.messageStatus == '') {

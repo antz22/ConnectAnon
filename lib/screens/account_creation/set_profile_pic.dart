@@ -22,7 +22,7 @@ class _SetProfilePicState extends State<SetProfilePic> {
     // make random photos instead of nature
     String clientId = 'BmuCli3sV_4br-PeAFKMktHlpQvZvS2ig0Tdowitgiw';
     String url =
-        'https://api.unsplash.com/photos/random?count=30&client_id=$clientId';
+        'https://api.unsplash.com/photos/random?count=25&client_id=$clientId';
     var getdata = await http.get(Uri.parse(url));
     setState(() {
       data = json.decode(getdata.body);
@@ -37,7 +37,7 @@ class _SetProfilePicState extends State<SetProfilePic> {
       body: FutureBuilder(
         future: getimages(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.data != null) {
+          if (snapshot.hasData) {
             return ListView.builder(
               itemCount: data.length,
               itemBuilder: (BuildContext context, int index) {
@@ -90,7 +90,7 @@ class _SetProfilePicState extends State<SetProfilePic> {
               },
             );
           } else {
-            return Center(child: Text('Error retrieving Unsplash images'));
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),
