@@ -1,7 +1,7 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/chat_room.dart';
 import 'package:connect_anon/screens/chat/rooms/chat_room_screen.dart';
-import 'package:connect_anon/screens/create_chat_room/create_chat_room.dart';
+import 'package:connect_anon/screens/request_chat_room/request_chat_room.dart';
 import 'package:connect_anon/screens/join_chat_room/join_chat_room.dart';
 import 'package:connect_anon/widgets/info_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,7 +32,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
 
   final ScrollController _scrollController = ScrollController();
 
-  scrollListener() {
+  _scrollListener() {
     if (_scrollController.position.pixels == 0) {
       setState(() {
         atTop = true;
@@ -53,8 +53,14 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
 
   @override
   void initState() {
-    _scrollController.addListener(scrollListener);
+    _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
   }
 
   @override
@@ -157,13 +163,13 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CreateChatRoomScreen(
+                                builder: (context) => RequestChatRoomScreen(
                                   currentUserId: widget.currentUserId,
                                 ),
                               ),
                             );
                           },
-                          child: Text('Create chat room'),
+                          child: Text('Request chat room'),
                           style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all<Color>(kPrimaryColor),

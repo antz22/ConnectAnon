@@ -51,6 +51,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   }
 
   @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -129,8 +135,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                 ),
                               );
                             } else {
-                              // listMessage.addAll(snapshot.data!.docs);
-
                               List<ChatRoomMessage> messages = snapshot
                                   .data!.docs
                                   .map((doc) =>
@@ -174,7 +178,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                   return Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: kDefaultPadding),
-                                    child: RoomMessage(
+                                    child: ChatRoomScreenMessage(
                                       userId: widget.currentUserId,
                                       message: messages[index],
                                       displayPhoto: displayPhoto,

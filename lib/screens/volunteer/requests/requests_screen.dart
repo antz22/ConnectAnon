@@ -31,7 +31,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
 
   final ScrollController _scrollController = ScrollController();
 
-  scrollListener() {
+  _scrollListener() {
     if (_scrollController.position.pixels == 0) {
       setState(() {
         atTop = true;
@@ -52,8 +52,14 @@ class _RequestsScreenState extends State<RequestsScreen> {
 
   @override
   void initState() {
-    _scrollController.addListener(scrollListener);
+    _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
   }
 
   @override

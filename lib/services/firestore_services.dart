@@ -55,7 +55,7 @@ class FirestoreServices {
       });
     }
 
-    await FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('Users')
         .doc(currentUserId.trim())
         .update({
@@ -163,7 +163,8 @@ class FirestoreServices {
   }
 
   Future<String> createChatRoom(currentUserId, name, description) async {
-    var chatRooms = await FirebaseFirestore.instance.collection('ChatRooms');
+    var chatRooms =
+        await FirebaseFirestore.instance.collection('ChatRoomRequests');
     var status = '';
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
@@ -412,7 +413,6 @@ class FirestoreServices {
   }
 
   Future<String> referNewVolunteer(String peerId, String volunteerId) async {
-    // EDIT THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     var users = await FirebaseFirestore.instance.collection('Users');
     List<String> userIds = new List.from([]);
     List<String> allIds = new List.from([]);

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/profile.dart';
-import 'package:connect_anon/screens/change_volunteer_status/change_volunteer_status.dart';
+import 'package:connect_anon/screens/volunteer/change_volunteer_status/change_volunteer_status.dart';
 import 'package:connect_anon/screens/profile/components/bold_text.dart';
 import 'package:connect_anon/screens/report/report_screen.dart';
 import 'package:connect_anon/services/firestore_services.dart';

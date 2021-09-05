@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/conversation.dart';
-import 'package:connect_anon/screens/chat/groups/chat_screen.dart';
+import 'package:connect_anon/screens/chat/conversations/chat_screen.dart';
 import 'package:connect_anon/screens/conversations/components/conversation_preview.dart';
 import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/widgets/custom_popup_dialog.dart';
@@ -41,7 +41,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
 
   final ScrollController _scrollController = ScrollController();
 
-  scrollListener() {
+  _scrollListener() {
     if (_scrollController.position.pixels == 0) {
       setState(() {
         atTop = true;
@@ -62,8 +62,14 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
 
   @override
   void initState() {
-    _scrollController.addListener(scrollListener);
+    _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
   }
 
   @override

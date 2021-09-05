@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/chat_rooms/chat_rooms.dart';
 import 'package:connect_anon/screens/conversations/conversations_screen.dart';
-import 'package:connect_anon/screens/requests/requests_screen.dart';
+import 'package:connect_anon/screens/volunteer/requests/requests_screen.dart';
 import 'package:connect_anon/services/user_provider.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

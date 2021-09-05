@@ -21,7 +21,7 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
 
   final ScrollController _scrollController = ScrollController();
 
-  scrollListener() {
+  _scrollListener() {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
@@ -33,8 +33,14 @@ class _JoinChatRoomScreenState extends State<JoinChatRoomScreen> {
 
   @override
   void initState() {
-    _scrollController.addListener(scrollListener);
+    _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/message.dart';
-import 'package:connect_anon/screens/chat/groups/components/chat_input_field.dart';
-import 'package:connect_anon/screens/chat/groups/components/chat_message.dart';
+import 'package:connect_anon/screens/chat/conversations/components/chat_input_field.dart';
+import 'package:connect_anon/screens/chat/conversations/components/chat_message.dart';
 import 'package:connect_anon/screens/profile/profile_screen.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -69,6 +69,12 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
   }
 
   @override
@@ -171,7 +177,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   return Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: kDefaultPadding),
-                                    child: ChatMessage(
+                                    child: ChatScreenMessage(
                                       userId: currentUserId,
                                       message: messages[index],
                                       photoUrl: peerPhotoUrl,

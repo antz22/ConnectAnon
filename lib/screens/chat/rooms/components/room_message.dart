@@ -4,8 +4,8 @@ import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class RoomMessage extends StatefulWidget {
-  RoomMessage({
+class ChatRoomScreenMessage extends StatefulWidget {
+  ChatRoomScreenMessage({
     Key? key,
     required this.userId,
     required this.message,
@@ -19,10 +19,10 @@ class RoomMessage extends StatefulWidget {
   final bool displayName;
 
   @override
-  _ChatRoomMessageState createState() => _ChatRoomMessageState();
+  _ChatRoomScreenMessageState createState() => _ChatRoomScreenMessageState();
 }
 
-class _ChatRoomMessageState extends State<RoomMessage> {
+class _ChatRoomScreenMessageState extends State<ChatRoomScreenMessage> {
   final double _maxWidth = 280.0;
 
   bool isSender = false;

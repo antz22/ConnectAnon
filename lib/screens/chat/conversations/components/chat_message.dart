@@ -4,8 +4,8 @@ import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ChatMessage extends StatefulWidget {
-  ChatMessage({
+class ChatScreenMessage extends StatefulWidget {
+  ChatScreenMessage({
     Key? key,
     required this.userId,
     required this.message,
@@ -19,10 +19,10 @@ class ChatMessage extends StatefulWidget {
   final bool displayPhoto;
 
   @override
-  _MessageState createState() => _MessageState();
+  _ChatScreenMessageState createState() => _ChatScreenMessageState();
 }
 
-class _MessageState extends State<ChatMessage> {
+class _ChatScreenMessageState extends State<ChatScreenMessage> {
   final double _maxWidth = 280.0;
 
   bool isSender = false;

@@ -60,6 +60,7 @@ MINOR
 - keyboard slow animation
 - unsplash API production - how to download stuff?
 - clean up and abstract!
+- dispose scroll controllers and controllers
 - volunteer request page - grade, gender, username, whether or not they've been talked to before
 - also fix component and model names lol
 
