@@ -367,7 +367,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                   widget.isMe
                       ? Container(
-                          margin: const EdgeInsets.only(top: kDefaultPadding),
+                          margin:
+                              const EdgeInsets.only(top: 2 * kDefaultPadding),
                           child: TextButton(
                             onPressed: () async {
                               Map<String, dynamic> params = {};

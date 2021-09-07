@@ -151,15 +151,19 @@ class FirestoreServices {
     String? currentUserName = await prefs.getString('alias');
     String? currentUserPhotoUrl = await prefs.getString('photoUrl');
 
-    FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
-      'chatRooms': FieldValue.arrayRemove([chatRoomId]),
-    });
-
-    FirebaseFirestore.instance.collection('ChatRooms').doc(chatRoomId).update({
+    await FirebaseFirestore.instance
+        .collection('ChatRooms')
+        .doc(chatRoomId)
+        .update({
       'members': FieldValue.arrayRemove([currentUserId]),
       'memberNames': FieldValue.arrayRemove([currentUserName]),
       'memberPhotoUrls': FieldValue.arrayRemove([currentUserPhotoUrl]),
     });
+
+    FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
+      'chatRooms': FieldValue.arrayRemove([chatRoomId]),
+    });
+
     return 'Success';
   }
 
