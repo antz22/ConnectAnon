@@ -1,6 +1,7 @@
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/services/authentication.dart';
 import 'package:connect_anon/services/firestore_services.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -189,6 +190,10 @@ class CustomPopupDialog {
                       builder: (context) => HomePage(),
                     ),
                   );
+                } else if (response ==
+                    'Your email domain is not a part of mtsd') {
+                  CustomSnackbar.buildWarningMessage(context, 'Error',
+                      'The account you logged in with is not a part of mtsd.');
                 } else {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(

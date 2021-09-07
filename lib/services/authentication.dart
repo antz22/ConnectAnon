@@ -125,36 +125,41 @@ class AuthenticationService {
       Map<String, dynamic>? userData = document.data();
       if (userData == null) {
         // Update data to server if new user
-        FirebaseFirestore.instance.collection('Users').doc(user.uid).set({
-          'uid': user.uid,
-          'displayName': user.displayName,
-          'alias': alias,
-          'photoUrl': photoUrl,
-          'groups': [],
-          'chattedWith': [],
-          'specialChattedWith': [],
-          'blocked': [],
-          'chatRooms': [],
-          'school': 'MHS',
-          // peer: role, 'Chat Buddy'
-          'role': 'Peer',
-          'reports': 0,
-          'lastReportedAt': '',
-          'lastRequestedAt': '',
-          'lastPeerConnectedAt': '',
-          'requestedIds': [],
-          'totalRequests': 0,
-          'peerConnects': 0,
-          'bannedSince': '',
-          'isBanned': false,
-          // (peer only) isAccepting: (bool)
-        });
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('alias', alias);
-        await prefs.setString('photoUrl', photoUrl);
-        await prefs.setString('role', 'Peer');
-        await prefs.setBool('isBanned', false);
-        return 'Success';
+        try {
+          FirebaseFirestore.instance.collection('Users').doc(user.uid).set({
+            'uid': user.uid,
+            'displayName': user.displayName,
+            'alias': alias,
+            'photoUrl': photoUrl,
+            'groups': [],
+            'chattedWith': [],
+            'specialChattedWith': [],
+            'blocked': [],
+            'chatRooms': [],
+            'school': 'MHS',
+            // peer: role, 'Chat Buddy'
+            'role': 'Peer',
+            'reports': 0,
+            'lastReportedAt': '',
+            'lastRequestedAt': '',
+            'lastPeerConnectedAt': '',
+            'requestedIds': [],
+            'totalRequests': 0,
+            'peerConnects': 0,
+            'bannedSince': '',
+            'isBanned': false,
+            // (peer only) isAccepting: (bool)
+          });
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('alias', alias);
+          await prefs.setString('photoUrl', photoUrl);
+          await prefs.setString('role', 'Peer');
+          await prefs.setBool('isBanned', false);
+          return 'Success';
+        } catch (e) {
+          print(e.toString());
+          return 'Your email domain is not a part of mtsd';
+        }
       } else {
         return 'You already have an account, signing in now';
       }
