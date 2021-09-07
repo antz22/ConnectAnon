@@ -217,6 +217,7 @@ class FirestoreServices {
     List<dynamic> blocked = userData?['blocked'];
     String lastPeerConnectedAt = userData?['lastPeerConnectedAt'];
     int peerConnects = userData?['peerConnects'];
+    bool keepHistory = false;
     var status;
     if (lastPeerConnectedAt != '') {
       DateTime lastPeerConnectedTimeAt =
@@ -226,7 +227,7 @@ class FirestoreServices {
           currentDateTime.difference(lastPeerConnectedTimeAt).inMilliseconds;
       // it's been less than an 1 hour, has reported % 3 times
       // if (difference <= 3600000 || totalRequests % 3 == 0) {
-      if (difference <= 3600000 || peerConnects % 2 == 0) {
+      if (difference <= 3600000 && peerConnects % 1 != 0) {
         return 'Peer Connect cool down (1 hour)';
       }
     }
@@ -247,7 +248,6 @@ class FirestoreServices {
       Random rng = new Random();
       int randomNum;
       String randomId;
-      bool keepHistory = false;
 
       if (userIds.isEmpty) {
         // refresh history and stuff
@@ -318,7 +318,14 @@ class FirestoreServices {
       return err;
     });
 
-    return status;
+    if (status == 'Success' && keepHistory) {
+      return 'Success';
+    } else if (status == 'Success' && !keepHistory) {
+      // maybe make this instead just throw an error and not make the conversation - users should archive convos anyway.
+      return 'Clearing peer conversation history - no more new users left! You might get a duplicate conversation.';
+    } else {
+      return status;
+    }
   }
 
   Future<String> requestVolunteer(String currentUserId) async {

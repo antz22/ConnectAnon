@@ -36,8 +36,6 @@ This app was created using the Flutter framework developed by Google, using the 
 
 ### Priority
 - unsplash API production - how to download stuff?
-- notify when history reset
-- create an admin account? see (users?), ban? users, see and accept or reject chat room requests, see and review reports, add chat buddies, etc
 - display name ? keeping anonymity? any contracts or agreements to make?
 - figure out sign in through google or through email
     landing page...
@@ -52,6 +50,8 @@ This app was created using the Flutter framework developed by Google, using the 
     Android Play Store
     Apple App Store
 - releasing the code? (any sensitive information?) // open source it? (market it, reddit it, etc)
+- notify when history reset
+- maybe make this instead just throw an error and not make the conversation - users should archive convos anyway.
 
 ### Important
 
@@ -60,8 +60,8 @@ This app was created using the Flutter framework developed by Google, using the 
 - manual review
     Reports
     Chat Room creation requests
-- restrict peerchats and volunteer chats. pricey operations.
 - comment and delete comments
+- create an admin account? see (users?), ban? users, see and accept or reject chat room requests, see and review reports, add chat buddies, etc
 
 
 
