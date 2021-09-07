@@ -4,26 +4,26 @@ class AppUser {
   String? id;
   String? alias;
   String? photoUrl;
-  String? status;
+  String? role;
   bool? isBanned;
 
   AppUser({
     required this.id,
     required this.alias,
     required this.photoUrl,
-    required this.status,
+    required this.role,
     required this.isBanned,
   });
 }
 
 class UserProvider {
   AppUser user =
-      AppUser(alias: '', id: '', photoUrl: '', status: '', isBanned: false);
+      AppUser(alias: '', id: '', photoUrl: '', role: '', isBanned: false);
 
   String? get alias => user.alias;
   String? get id => user.id;
   String? get photoUrl => user.photoUrl;
-  String? get status => user.status;
+  String? get role => user.role;
   bool? get isBanned => user.isBanned;
 
   void set setId(String? id) {
@@ -38,8 +38,8 @@ class UserProvider {
     user.photoUrl = photoUrl;
   }
 
-  void set setStatus(String? status) {
-    user.status = status;
+  void set setRole(String? role) {
+    user.role = role;
   }
 
   void set setIsBanned(bool? isBanned) {
@@ -50,12 +50,12 @@ class UserProvider {
     String? id = await prefs.getString('id');
     String? alias = await prefs.getString('alias');
     String? photoUrl = await prefs.getString('photoUrl');
-    String? status = await prefs.getString('status');
+    String? role = await prefs.getString('role');
     bool? isBanned = await prefs.getBool('isBanned');
     this.setId = id;
     this.setAlias = alias;
     this.setPhotoUrl = photoUrl;
-    this.setStatus = status;
+    this.setRole = role;
     this.setIsBanned = isBanned;
   }
 }

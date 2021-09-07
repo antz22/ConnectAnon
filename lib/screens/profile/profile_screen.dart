@@ -35,13 +35,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String? status = '';
+  String? role = '';
   String? currentUserId = '';
 
   Future<Profile> _retrieveProfile() async {
     Profile profile =
         await context.read<FirestoreServices>().getProfile(widget.id);
-    status = context.read<UserProvider>().status;
+    role = context.read<UserProvider>().role;
     currentUserId = context.read<UserProvider>().id;
     return profile;
   }
@@ -167,8 +167,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 SizedBox(height: 0.05 * MediaQuery.of(context).size.height),
-                BoldText(text: profile.status),
-                SubText(text: 'status'),
+                BoldText(text: profile.role),
+                SubText(text: 'role'),
                 SizedBox(height: 0.05 * MediaQuery.of(context).size.height),
                 Row(
                   mainAxisAlignment: hasReport
@@ -219,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 widget.isMe
-                    ? status == 'Chat Buddy'
+                    ? role == 'Chat Buddy'
                         ? _buildChangeStatusButton(
                             context, profile.isAccepting!)
                         : const SizedBox.shrink()
@@ -337,7 +337,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ],
                               ),
-                              status == 'Chat Buddy'
+                              role == 'Chat Buddy'
                                   ? _buildReferralButton(context)
                                   : profile.isBanned
                                       ? Container(

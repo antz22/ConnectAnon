@@ -17,12 +17,12 @@ class ConversationsScreen extends StatefulWidget {
   const ConversationsScreen({
     Key? key,
     required this.currentUserId,
-    required this.status,
+    required this.role,
     required this.photoUrl,
   }) : super(key: key);
 
   final String currentUserId;
-  final String? status;
+  final String? role;
   final String? photoUrl;
 
   @override
@@ -162,16 +162,9 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                       },
                     ),
                     const SizedBox(height: kDefaultPadding),
-                    widget.status != 'Chat Buddy'
+                    widget.role != 'Chat Buddy'
                         ? ElevatedButton(
                             onPressed: () async {
-                              // var response = await context
-                              //     .read<FirestoreServices>()
-                              //     .createGroup(currentUserId);
-                              // if (response != 'Success') {
-                              //   CustomSnackbar.buildWarningMessage(
-                              //       context, 'Error', response);
-                              // }
                               Map<String, dynamic> params = {
                                 'currentUserId': currentUserId
                               };
@@ -201,7 +194,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                             ),
                           )
                         : const SizedBox.shrink(),
-                    widget.status != 'Chat Buddy'
+                    widget.role != 'Chat Buddy'
                         ? ElevatedButton(
                             onPressed: () async {
                               Map<String, dynamic> params = {

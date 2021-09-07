@@ -230,7 +230,7 @@ class FirestoreServices {
       }
     }
     await users
-        .where('status', isEqualTo: 'Peer')
+        .where('role', isEqualTo: 'Peer')
         .get()
         .then((QuerySnapshot snapshot) async {
       snapshot.docs.forEach((DocumentSnapshot doc) {
@@ -348,7 +348,7 @@ class FirestoreServices {
       }
     }
     await users
-        .where('status', isEqualTo: 'Chat Buddy')
+        .where('role', isEqualTo: 'Chat Buddy')
         .get()
         .then((QuerySnapshot snapshot) async {
       snapshot.docs.forEach((DocumentSnapshot doc) {
@@ -468,7 +468,7 @@ class FirestoreServices {
 
     var status;
     await users
-        .where('status', isEqualTo: 'Chat Buddy')
+        .where('role', isEqualTo: 'Chat Buddy')
         .get()
         .then((QuerySnapshot snapshot) async {
       snapshot.docs.forEach((DocumentSnapshot doc) {

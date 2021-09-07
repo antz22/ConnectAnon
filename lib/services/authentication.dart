@@ -51,7 +51,7 @@ class AuthenticationService {
           String photoUrl = userData['photoUrl'];
           bool isBanned = userData['isBanned'];
           String bannedSince = userData['bannedSince'];
-          String status = userData['status'];
+          String role = userData['role'];
           if (isBanned) {
             DateTime lastDateTime =
                 DateTime.fromMillisecondsSinceEpoch(int.parse(bannedSince));
@@ -75,14 +75,14 @@ class AuthenticationService {
               await prefs.setBool('isBanned', false);
               await prefs.setString('alias', alias);
               await prefs.setString('photoUrl', photoUrl);
-              await prefs.setString('status', status);
+              await prefs.setString('role', role);
               Provider.of<UserProvider>(context, listen: false).initUser(prefs);
             }
           } else {
             await prefs.setBool('isBanned', false);
             await prefs.setString('alias', alias);
             await prefs.setString('photoUrl', photoUrl);
-            await prefs.setString('status', status);
+            await prefs.setString('role', role);
             Provider.of<UserProvider>(context, listen: false).initUser(prefs);
           }
         }
@@ -136,8 +136,8 @@ class AuthenticationService {
           'blocked': [],
           'chatRooms': [],
           'school': 'MHS',
-          // peer: status, 'Chat Buddy'
-          'status': 'Peer',
+          // peer: role, 'Chat Buddy'
+          'role': 'Peer',
           'reports': 0,
           'lastReportedAt': '',
           'lastRequestedAt': '',
@@ -152,7 +152,7 @@ class AuthenticationService {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('alias', alias);
         await prefs.setString('photoUrl', photoUrl);
-        await prefs.setString('status', 'Peer');
+        await prefs.setString('role', 'Peer');
         await prefs.setBool('isBanned', false);
         return 'Success';
       } else {

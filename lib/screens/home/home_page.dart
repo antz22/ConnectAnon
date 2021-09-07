@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage>
 
   int _selectedIndex = 0;
   String currentUserId = '';
-  String? status = '';
+  String? role = '';
   String? photoUrl = '';
   String? alias = '';
 
@@ -45,13 +45,13 @@ class _HomePageState extends State<HomePage>
   Future<void> _retrieveId() async {
     UserProvider user = context.read<UserProvider>();
     currentUserId = user.id!;
-    status = user.status;
+    role = user.role;
     photoUrl = user.photoUrl;
     alias = user.alias;
-    if (status == 'Chat Buddy') {
+    if (role == 'Chat Buddy') {
       tabs = [
         ConversationsScreen(
-            currentUserId: currentUserId, status: status, photoUrl: photoUrl),
+            currentUserId: currentUserId, role: role, photoUrl: photoUrl),
         RequestsScreen(currentUserId: currentUserId, photoUrl: photoUrl),
         ChatRoomsScreen(
             currentUserId: currentUserId,
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage>
     } else {
       tabs = [
         ConversationsScreen(
-            currentUserId: currentUserId, status: status, photoUrl: photoUrl),
+            currentUserId: currentUserId, role: role, photoUrl: photoUrl),
         ChatRoomsScreen(
             currentUserId: currentUserId,
             photoUrl: photoUrl ?? '',
@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage>
   }
 
   BottomNavigationBar buildBottomNavigationBar() {
-    List<BottomNavigationBarItem> items = status == 'Chat Buddy'
+    List<BottomNavigationBarItem> items = role == 'Chat Buddy'
         ? [
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/svgs/chat.svg',
