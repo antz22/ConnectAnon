@@ -366,31 +366,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ],
                             ),
                   widget.isMe
-                      ? TextButton(
-                          onPressed: () async {
-                            Map<String, dynamic> params = {};
-                            String title = 'Sign Out';
-                            String content =
-                                'Are you sure you want to sign out?';
-                            String purpose = 'Sign Out';
+                      ? Container(
+                          margin: const EdgeInsets.only(top: kDefaultPadding),
+                          child: TextButton(
+                            onPressed: () async {
+                              Map<String, dynamic> params = {};
+                              String title = 'Sign Out';
+                              String content =
+                                  'Are you sure you want to sign out?';
+                              String purpose = 'Sign Out';
 
-                            if (Platform.isAndroid) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => CustomPopupDialog
-                                      .buildMaterialPopupDialog(context, params,
-                                          title, content, purpose));
-                            } else {
-                              showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) => CustomPopupDialog
-                                      .buildCupertinoPopupDialog(context,
-                                          params, title, content, purpose));
-                            }
-                          },
-                          child: Text(
-                            'Sign Out',
-                            style: TextStyle(color: kPrimaryColor),
+                              if (Platform.isAndroid) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => CustomPopupDialog
+                                        .buildMaterialPopupDialog(context,
+                                            params, title, content, purpose));
+                              } else {
+                                showCupertinoDialog(
+                                    context: context,
+                                    builder: (context) => CustomPopupDialog
+                                        .buildCupertinoPopupDialog(context,
+                                            params, title, content, purpose));
+                              }
+                            },
+                            child: Text(
+                              'Sign Out',
+                              style: TextStyle(color: kPrimaryColor),
+                            ),
                           ),
                         )
                       : SizedBox.shrink(),
