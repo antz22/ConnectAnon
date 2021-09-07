@@ -106,6 +106,8 @@ class FirestoreServices {
 
   Future<String> archiveConversation(currentUserId, peerId, groupId) async {
     try {
+      FirebaseFirestore.instance.collection('Groups').doc(groupId).delete();
+
       FirebaseFirestore.instance.collection('Users').doc(peerId).update({
         'groups': FieldValue.arrayRemove([groupId]),
         'chattedWith': FieldValue.arrayRemove([currentUserId]),
@@ -116,7 +118,6 @@ class FirestoreServices {
         'chattedWith': FieldValue.arrayRemove([peerId]),
       });
 
-      FirebaseFirestore.instance.collection('Groups').doc(groupId).delete();
       // this won't work...
       // FirebaseFirestore.instance.collection('Messages').doc(groupId).delete();
     } catch (e) {
@@ -235,6 +236,7 @@ class FirestoreServices {
         .then((QuerySnapshot snapshot) async {
       snapshot.docs.forEach((DocumentSnapshot doc) {
         String id = doc.id;
+        allIds.add(id);
         if (id != currentUserId &&
             !chattedWith.contains(id) &&
             !blocked.contains(id)) {
@@ -422,13 +424,13 @@ class FirestoreServices {
         return 'Success';
       }).catchError((err) {
         print('Error processing request: $err');
-        status = err;
-        return err;
+        status = err.toString();
+        return err.toString();
       });
       status = 'Success';
     }).catchError((err) {
       print('Error processing request: $err');
-      status = err;
+      status = err.toString();
       return err;
     });
     return status;

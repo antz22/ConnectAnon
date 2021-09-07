@@ -28,7 +28,7 @@ class Request {
       peer: data['peer'] ?? '',
       peerName: data['peerName'] ?? '',
       peerPhotoUrl: data['peerPhotoUrl'] ?? '',
-      volunteerId: data['volunteerId'] ?? '',
+      volunteerId: data['volunteer'] ?? '',
       timestamp: data['timestamp'] ?? '',
       keepHistory: data['keepHistory'] ?? false,
       addHistory: data['addHistory'] ?? false,

@@ -1,4 +1,5 @@
 import 'package:connect_anon/screens/home/home_page.dart';
+import 'package:connect_anon/screens/landing_page/landing_page.dart';
 import 'package:connect_anon/services/authentication.dart';
 import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
@@ -149,6 +150,18 @@ class CustomPopupDialog {
                     ),
                   );
                 }
+                break;
+              case 'Sign Out':
+                await context
+                    .read<AuthenticationService>()
+                    .signOut(context: context);
+
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LandingPage(),
+                  ),
+                );
                 break;
             }
           },
@@ -303,6 +316,18 @@ class CustomPopupDialog {
                     ),
                   );
                 }
+                break;
+              case 'Sign Out':
+                await context
+                    .read<AuthenticationService>()
+                    .signOut(context: context);
+
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LandingPage(),
+                  ),
+                );
                 break;
             }
           },
