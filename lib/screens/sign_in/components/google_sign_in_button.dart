@@ -48,27 +48,26 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                       context: context,
                     );
 
-                bool? isBanned = context.read<UserProvider>().isBanned;
-                if (!isBanned!) {
+                if (user != null) {
                   setState(() {
                     _isSigningIn = false;
                   });
-
-                  if (user != null) {
-                    if (widget.action == 'Sign in') {
+                  if (widget.action == 'Sign in') {
+                    bool? isBanned = context.read<UserProvider>().isBanned;
+                    if (!isBanned!) {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => HomePage(),
                         ),
                       );
-                    } else if (widget.action == 'Update user') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UpdateUserInfoPage(user: user),
-                        ),
-                      );
                     }
+                  } else if (widget.action == 'Update user') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateUserInfoPage(user: user),
+                      ),
+                    );
                   }
                 }
               },

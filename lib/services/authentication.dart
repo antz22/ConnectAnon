@@ -85,6 +85,8 @@ class AuthenticationService {
             await prefs.setString('role', role);
             Provider.of<UserProvider>(context, listen: false).initUser(prefs);
           }
+        } else {
+          await prefs.setBool('isBanned', false);
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {

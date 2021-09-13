@@ -15,7 +15,7 @@ class CustomAvatar extends StatelessWidget {
     return CircleAvatar(
       backgroundImage: photoUrl != ''
           ? NetworkImage(photoUrl)
-          : AssetImage('assets/images/default_profile_pic.png')
+          : AssetImage('assets/images/default_profile_pic_2.png')
               as ImageProvider,
       radius: size,
     );
