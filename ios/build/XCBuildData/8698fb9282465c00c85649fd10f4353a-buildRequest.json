@@ -1,0 +1,57 @@
+{
+  "buildCommand" : "prepareForIndexing",
+  "configuredTargets" : [
+    {
+      "guid" : "a6f6680237e0b3bb71eaf53752a3c4da88a783a885d8b0b3beb2e9f90bde3f49"
+    }
+  ],
+  "continueBuildingAfterErrors" : true,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "x86_64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "iphonesimulator",
+      "sdk" : "iphonesimulator14.5",
+      "sdkVariant" : "iphonesimulator",
+      "supportedArchitectures" : [
+        "x86_64"
+      ],
+      "targetArchitecture" : "x86_64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "",
+      "buildProductsPath" : "",
+      "derivedDataPath" : "/Users/dxie/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/dxie/Library/Developer/Xcode/DerivedData/Runner-ewbwreonarxzwtdiamkurimumizq/Index/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/dxie/Library/Developer/Xcode/DerivedData/Runner-ewbwreonarxzwtdiamkurimumizq/Index/PrecompiledHeaders",
+      "pchPath" : ""
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ASSETCATALOG_FILTER_FOR_DEVICE_MODEL" : "iPod9,1",
+          "ASSETCATALOG_FILTER_FOR_DEVICE_OS_VERSION" : "14.5",
+          "BUILD_ACTIVE_RESOURCES_ONLY" : "YES",
+          "ENABLE_PREVIEWS" : "NO",
+          "TARGET_DEVICE_IDENTIFIER" : "6D2ADCF3-6C66-471E-ADAC-B58E44D3BCC5",
+          "TARGET_DEVICE_MODEL" : "iPod9,1",
+          "TARGET_DEVICE_OS_VERSION" : "14.5",
+          "TARGET_DEVICE_PLATFORM_NAME" : "iphonesimulator"
+        }
+      }
+    }
+  },
+  "qos" : "default",
+  "schemeCommand" : "launch",
+  "shouldCollectMetrics" : false,
+  "showNonLoggedProgress" : true,
+  "useDryRun" : true,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}
