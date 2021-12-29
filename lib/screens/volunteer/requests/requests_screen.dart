@@ -4,6 +4,7 @@ import 'package:connect_anon/models/request.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/screens/profile/profile_screen.dart';
 import 'package:connect_anon/services/firestore_services.dart';
+import 'package:connect_anon/services/volunteer_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:connect_anon/widgets/info_header.dart';
@@ -197,7 +198,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                               child: InkWell(
                                                 onTap: () async {
                                                   String response = await context
-                                                      .read<FirestoreServices>()
+                                                      .read<VolunteerServices>()
                                                       .declineRequest(
                                                           request.id);
 
@@ -241,7 +242,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                               child: InkWell(
                                                 onTap: () async {
                                                   String response = await context
-                                                      .read<FirestoreServices>()
+                                                      .read<VolunteerServices>()
                                                       .grantPeerRequest(
                                                         request.volunteerId,
                                                         request.id,

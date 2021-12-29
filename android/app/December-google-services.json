@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "366079073585",
-    "project_id": "connect-anonymous",
-    "storage_bucket": "connect-anonymous.appspot.com"
+    "project_number": "225357550380",
+    "project_id": "anonymous-chat-app-dev",
+    "storage_bucket": "anonymous-chat-app-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:366079073585:android:2baf5c37cf6418e5652410",
+        "mobilesdk_app_id": "1:225357550380:android:c64ac930a7f132a756d289",
         "android_client_info": {
           "package_name": "com.antz.connect_anon"
         }
       },
       "oauth_client": [
         {
-          "client_id": "366079073585-q9tpn25dhgbs5gl5bge8o23h2s585hhm.apps.googleusercontent.com",
+          "client_id": "225357550380-jfv7tdal5dlktjj4obji2rikcl4uirbj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDHW0c7jL9uj-F56U5LS_yCzbCzjrR4C_c"
+          "current_key": "AIzaSyDZhNGDqzlHJki8VAl4XAnt8TXPEPsvcgQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "366079073585-q9tpn25dhgbs5gl5bge8o23h2s585hhm.apps.googleusercontent.com",
+              "client_id": "225357550380-jfv7tdal5dlktjj4obji2rikcl4uirbj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

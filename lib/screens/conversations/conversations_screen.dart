@@ -194,38 +194,38 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                             ),
                           )
                         : const SizedBox.shrink(),
-                    widget.role != 'Chat Buddy'
-                        ? ElevatedButton(
-                            onPressed: () async {
-                              Map<String, dynamic> params = {
-                                'currentUserId': currentUserId
-                              };
-                              String title = 'Confirm';
-                              String content =
-                                  'You can only request 3 volunteers per hour. Continue?';
-                              String purpose = 'Request Volunteer';
+                    // widget.role != 'Chat Buddy'
+                    //     ? ElevatedButton(
+                    //         onPressed: () async {
+                    //           Map<String, dynamic> params = {
+                    //             'currentUserId': currentUserId
+                    //           };
+                    //           String title = 'Confirm';
+                    //           String content =
+                    //               'You can only request 3 volunteers per hour. Continue?';
+                    //           String purpose = 'Request Volunteer';
 
-                              if (Platform.isAndroid) {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => CustomPopupDialog
-                                        .buildMaterialPopupDialog(context,
-                                            params, title, content, purpose));
-                              } else {
-                                showCupertinoDialog(
-                                    context: context,
-                                    builder: (context) => CustomPopupDialog
-                                        .buildCupertinoPopupDialog(context,
-                                            params, title, content, purpose));
-                              }
-                            },
-                            child: Text('Connect to chat buddy'),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  kPrimaryColor),
-                            ),
-                          )
-                        : const SizedBox.shrink(),
+                    //           if (Platform.isAndroid) {
+                    //             showDialog(
+                    //                 context: context,
+                    //                 builder: (context) => CustomPopupDialog
+                    //                     .buildMaterialPopupDialog(context,
+                    //                         params, title, content, purpose));
+                    //           } else {
+                    //             showCupertinoDialog(
+                    //                 context: context,
+                    //                 builder: (context) => CustomPopupDialog
+                    //                     .buildCupertinoPopupDialog(context,
+                    //                         params, title, content, purpose));
+                    //           }
+                    //         },
+                    //         child: Text('Connect to chat buddy'),
+                    //         style: ButtonStyle(
+                    //           backgroundColor: MaterialStateProperty.all<Color>(
+                    //               kPrimaryColor),
+                    //         ),
+                    //       )
+                    //     : const SizedBox.shrink(),
                   ],
                 ),
               ),

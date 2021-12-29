@@ -2,13 +2,12 @@ import 'dart:io';
 
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/profile.dart';
-import 'package:connect_anon/screens/landing_page/landing_page.dart';
 import 'package:connect_anon/screens/volunteer/change_volunteer_status/change_volunteer_status.dart';
 import 'package:connect_anon/screens/profile/components/bold_text.dart';
 import 'package:connect_anon/screens/report/report_screen.dart';
-import 'package:connect_anon/services/authentication.dart';
 import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/services/user_provider.dart';
+import 'package:connect_anon/services/volunteer_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_popup_dialog.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
@@ -430,7 +429,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ElevatedButton(
       onPressed: () async {
         var response =
-            await context.read<FirestoreServices>().referNewVolunteer(
+            await context.read<VolunteerServices>().referNewVolunteer(
                   widget.id,
                   currentUserId ?? '',
                 );

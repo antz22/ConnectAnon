@@ -4,6 +4,7 @@ import 'package:connect_anon/screens/landing_page/landing_page.dart';
 import 'package:connect_anon/services/authentication.dart';
 import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/services/user_provider.dart';
+import 'package:connect_anon/services/volunteer_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         Provider<AuthenticationService>(
             create: (_) => AuthenticationService(FirebaseAuth.instance)),
         Provider<FirestoreServices>(create: (_) => FirestoreServices()),
+        Provider<VolunteerServices>(create: (_) => VolunteerServices()),
         Provider<UserProvider>(create: (_) => UserProvider()),
         StreamProvider(
           create: (context) =>

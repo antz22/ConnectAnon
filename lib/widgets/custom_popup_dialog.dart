@@ -30,10 +30,11 @@ class CustomPopupDialog {
               case 'Update User Info':
                 String controllerText = params['controllerText'];
                 String photoUrl = params['photoUrl'];
+                String school = params['school'];
                 var user = params['user'];
                 var response = await context
                     .read<AuthenticationService>()
-                    .updateUserInfo(controllerText, user, photoUrl);
+                    .updateUserInfo(controllerText, user, photoUrl, school);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -42,6 +43,9 @@ class CustomPopupDialog {
                           messageStatus: 'Success'),
                     ),
                   );
+                } else if (response == 'Your email domain is not verified') {
+                  CustomSnackbar.buildWarningMessage(
+                      context, 'Error', 'Your email domain is not verified.');
                 } else {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -103,30 +107,30 @@ class CustomPopupDialog {
                   );
                 }
                 break;
-              case 'Request Volunteer':
-                String currentUserId = params['currentUserId'];
-                String response = await context
-                    .read<FirestoreServices>()
-                    .requestVolunteer(currentUserId);
-                if (response == 'Success') {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(
-                        message: 'A volunteer has been requested.',
-                        messageStatus: 'Success',
-                      ),
-                    ),
-                  );
-                } else {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return HomePage(message: response);
-                      },
-                    ),
-                  );
-                }
-                break;
+              // case 'Request Volunteer':
+              //   String currentUserId = params['currentUserId'];
+              //   String response = await context
+              //       .read<FirestoreServices>()
+              //       .requestVolunteer(currentUserId);
+              //   if (response == 'Success') {
+              //     Navigator.of(context).pushReplacement(
+              //       MaterialPageRoute(
+              //         builder: (context) => HomePage(
+              //           message: 'A volunteer has been requested.',
+              //           messageStatus: 'Success',
+              //         ),
+              //       ),
+              //     );
+              //   } else {
+              //     Navigator.of(context).pushReplacement(
+              //       MaterialPageRoute(
+              //         builder: (context) {
+              //           return HomePage(message: response);
+              //         },
+              //       ),
+              //     );
+              //   }
+              //   break;
               case 'Create Group':
                 String currentUserId = params['currentUserId'];
                 String response = await context
@@ -193,20 +197,23 @@ class CustomPopupDialog {
               case 'Update User Info':
                 String controllerText = params['controllerText'];
                 String photoUrl = params['photoUrl'];
+                String school = params['school'];
                 var user = params['user'];
                 var response = await context
                     .read<AuthenticationService>()
-                    .updateUserInfo(controllerText, user, photoUrl);
+                    .updateUserInfo(controllerText, user, photoUrl, school);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) => HomePage(
+                        message: 'Account Creation successful.',
+                        messageStatus: 'Success',
+                      ),
                     ),
                   );
-                } else if (response ==
-                    'Your email domain is not a part of mtsd') {
-                  CustomSnackbar.buildWarningMessage(context, 'Error',
-                      'The account you logged in with is not a part of mtsd.');
+                } else if (response == 'Your email domain is not verified') {
+                  CustomSnackbar.buildWarningMessage(
+                      context, 'Error', 'Your email domain is not verified.');
                 } else {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -269,30 +276,30 @@ class CustomPopupDialog {
                   );
                 }
                 break;
-              case 'Request Volunteer':
-                String currentUserId = params['currentUserId'];
-                String response = await context
-                    .read<FirestoreServices>()
-                    .requestVolunteer(currentUserId);
-                if (response == 'Success') {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(
-                        message: 'A volunteer has been requested.',
-                        messageStatus: 'Success',
-                      ),
-                    ),
-                  );
-                } else {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return HomePage(message: response);
-                      },
-                    ),
-                  );
-                }
-                break;
+              // case 'Request Volunteer':
+              //   String currentUserId = params['currentUserId'];
+              //   String response = await context
+              //       .read<FirestoreServices>()
+              //       .requestVolunteer(currentUserId);
+              //   if (response == 'Success') {
+              //     Navigator.of(context).pushReplacement(
+              //       MaterialPageRoute(
+              //         builder: (context) => HomePage(
+              //           message: 'A volunteer has been requested.',
+              //           messageStatus: 'Success',
+              //         ),
+              //       ),
+              //     );
+              //   } else {
+              //     Navigator.of(context).pushReplacement(
+              //       MaterialPageRoute(
+              //         builder: (context) {
+              //           return HomePage(message: response);
+              //         },
+              //       ),
+              //     );
+              //   }
+              //   break;
               case 'Create Group':
                 String currentUserId = params['currentUserId'];
                 String response = await context

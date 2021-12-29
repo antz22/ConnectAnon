@@ -118,7 +118,7 @@ class AuthenticationService {
   }
 
   Future<String> updateUserInfo(
-      String alias, User? user, String photoUrl) async {
+      String alias, User? user, String photoUrl, String school) async {
     if (user != null) {
       var document = await FirebaseFirestore.instance
           .collection('Users')
@@ -128,7 +128,10 @@ class AuthenticationService {
       if (userData == null) {
         // Update data to server if new user
         try {
-          FirebaseFirestore.instance.collection('Users').doc(user.uid).set({
+          await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(user.uid)
+              .set({
             'uid': user.uid,
             'displayName': user.displayName,
             'alias': alias,
@@ -138,7 +141,7 @@ class AuthenticationService {
             'specialChattedWith': [],
             'blocked': [],
             'chatRooms': [],
-            'school': 'MHS',
+            'school': school,
             // peer: role, 'Chat Buddy'
             'role': 'Peer',
             'reports': 0,
@@ -160,7 +163,7 @@ class AuthenticationService {
           return 'Success';
         } catch (e) {
           print(e.toString());
-          return 'Your email domain is not a part of mtsd';
+          return 'Your email domain is not verified';
         }
       } else {
         return 'You already have an account, signing in now';

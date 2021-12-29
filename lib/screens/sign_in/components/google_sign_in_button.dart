@@ -3,6 +3,7 @@ import 'package:connect_anon/screens/account_creation/update_user_info.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/services/authentication.dart';
 import 'package:connect_anon/services/user_provider.dart';
+import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
@@ -69,6 +70,9 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                       ),
                     );
                   }
+                } else {
+                  CustomSnackbar.buildWarningMessage(context, 'Error',
+                      'Error signing into Google Account. Please try again.');
                 }
               },
               child: Padding(

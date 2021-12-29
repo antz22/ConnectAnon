@@ -1,6 +1,7 @@
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/services/firestore_services.dart';
+import 'package:connect_anon/services/volunteer_services.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -93,7 +94,7 @@ class _ChangeVolunteerStatusState extends State<ChangeVolunteerStatus> {
             ElevatedButton(
               onPressed: () async {
                 String response = await context
-                    .read<FirestoreServices>()
+                    .read<VolunteerServices>()
                     .changeRequestStatus(
                         widget.volunteerId, value!, widget.isAccepting);
                 if (response == 'Success') {
