@@ -1,16 +1,11 @@
-import 'dart:io';
-
 import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/screens/chat_rooms/chat_rooms.dart';
 import 'package:connect_anon/screens/conversations/conversations_screen.dart';
 import 'package:connect_anon/screens/volunteer/requests/requests_screen.dart';
 import 'package:connect_anon/services/user_provider.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
@@ -30,9 +25,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
-  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
 
   int _selectedIndex = 0;
   String currentUserId = '';
@@ -70,67 +65,67 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  void registerNotification() {
-    firebaseMessaging.requestPermission();
+  // void registerNotification() {
+  //   firebaseMessaging.requestPermission();
 
-    FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
-      print('onMessage: $message');
-      if (message.notification != null) {
-        showNotification(message.notification!);
-      }
-    });
+  //   FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
+  //     print('onMessage: $message');
+  //     if (message.notification != null) {
+  //       showNotification(message.notification!);
+  //     }
+  //   });
 
-    firebaseMessaging.getToken().then((token) {
-      print('token: $token');
-      FirebaseFirestore.instance
-          .collection('Users')
-          .doc(currentUserId)
-          .update({'pushToken': token});
-    }).catchError((err) {
-      CustomSnackbar.buildWarningMessage(
-          context, 'Error', err.message.toString());
-    });
-  }
+  //   firebaseMessaging.getToken().then((token) {
+  //     print('token: $token');
+  //     FirebaseFirestore.instance
+  //         .collection('Users')
+  //         .doc(currentUserId)
+  //         .update({'pushToken': token});
+  //   }).catchError((err) {
+  //     CustomSnackbar.buildWarningMessage(
+  //         context, 'Error', err.message.toString());
+  //   });
+  // }
 
-  void configLocalNotification() {
-    AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
-    IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings();
-    InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
+  // void configLocalNotification() {
+  //   AndroidInitializationSettings initializationSettingsAndroid =
+  //       AndroidInitializationSettings('app_icon');
+  //   IOSInitializationSettings initializationSettingsIOS =
+  //       IOSInitializationSettings();
+  //   InitializationSettings initializationSettings = InitializationSettings(
+  //       android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  //   flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  // }
 
-  void showNotification(RemoteNotification remoteNotification) async {
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      Platform.isAndroid
-          ? 'com.antz.connect_anon'
-          : 'com.antz.connect_anon_ios_ting',
-      'ConnectAnon Chat App',
-      'your channel description',
-      // playSound: true,
-      // enableVibration: true,
-      // importance: Importance.max,
-      // priority: Priority.high,
-    );
-    IOSNotificationDetails iOSPlatformChannelSpecifics =
-        IOSNotificationDetails();
-    NotificationDetails platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics);
+  // void showNotification(RemoteNotification remoteNotification) async {
+  //   AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(
+  //     Platform.isAndroid
+  //         ? 'com.antz.connect_anon'
+  //         : 'com.antz.connect_anon_ios_ting',
+  //     'ConnectAnon Chat App',
+  //     'your channel description',
+  //     // playSound: true,
+  //     // enableVibration: true,
+  //     // importance: Importance.max,
+  //     // priority: Priority.high,
+  //   );
+  //   IOSNotificationDetails iOSPlatformChannelSpecifics =
+  //       IOSNotificationDetails();
+  //   NotificationDetails platformChannelSpecifics = NotificationDetails(
+  //       android: androidPlatformChannelSpecifics,
+  //       iOS: iOSPlatformChannelSpecifics);
 
-    print(remoteNotification);
+  //   print(remoteNotification);
 
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      remoteNotification.title,
-      remoteNotification.body,
-      platformChannelSpecifics,
-      payload: null,
-    );
-  }
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     remoteNotification.title,
+  //     remoteNotification.body,
+  //     platformChannelSpecifics,
+  //     payload: null,
+  //   );
+  // }
 
   @override
   bool get wantKeepAlive => true;
