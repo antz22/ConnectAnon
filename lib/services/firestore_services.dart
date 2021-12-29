@@ -258,13 +258,15 @@ class FirestoreServices {
       snapshot.docs.forEach((DocumentSnapshot<dynamic> doc) {
         String id = doc.id;
         Map<String, dynamic>? data = doc.data();
-        String otherSchool = data?['name'];
+        String otherSchool = data?['school'];
+        bool otherIsBanned = data?['isBanned'];
 
         allIds.add(id);
         if (id != currentUserId &&
             !chattedWith.contains(id) &&
             !blocked.contains(id) &&
-            school == otherSchool) {
+            school == otherSchool &&
+            otherIsBanned == false) {
           userIds.add(id);
         }
       });
