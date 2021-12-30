@@ -70,6 +70,8 @@ class AuthenticationService {
                   .doc(user.uid.trim())
                   .update({
                 'isBanned': false,
+                'lastActiveAt':
+                    DateTime.now().millisecondsSinceEpoch.toString(),
               });
 
               await prefs.setBool('isBanned', false);
@@ -79,10 +81,17 @@ class AuthenticationService {
               Provider.of<UserProvider>(context, listen: false).initUser(prefs);
             }
           } else {
+            // if userdoc exists and is not banned
             await prefs.setBool('isBanned', false);
             await prefs.setString('alias', alias);
             await prefs.setString('photoUrl', photoUrl);
             await prefs.setString('role', role);
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(user.uid.trim())
+                .update({
+              'lastActiveAt': DateTime.now().millisecondsSinceEpoch.toString(),
+            });
             Provider.of<UserProvider>(context, listen: false).initUser(prefs);
           }
         } else {
@@ -148,6 +157,7 @@ class AuthenticationService {
             'lastReportedAt': '',
             'lastRequestedAt': '',
             'lastPeerConnectedAt': '',
+            'lastActiveAt': '',
             'requestedIds': [],
             'totalRequests': 0,
             'peerConnects': 0,

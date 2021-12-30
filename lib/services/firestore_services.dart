@@ -75,6 +75,7 @@ class FirestoreServices {
         .doc(currentUserId.trim())
         .update({
       'lastReportedAt': timestamp,
+      'lastActiveAt': timestamp,
     });
 
     var reports = await FirebaseFirestore.instance.collection('Reports');
@@ -92,11 +93,13 @@ class FirestoreServices {
   }
 
   Future<String> blockUser(currentUserId, peerId, groupId) async {
+    String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     await FirebaseFirestore.instance
         .collection('Users')
         .doc(currentUserId)
         .update({
       'blocked': FieldValue.arrayUnion([peerId]),
+      'lastActiveAt': timestamp,
     });
 
     try {
@@ -131,6 +134,7 @@ class FirestoreServices {
       FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
         'groups': FieldValue.arrayRemove([groupId]),
         'chattedWith': FieldValue.arrayRemove([peerId]),
+        'lastActiveAt': DateTime.now().millisecondsSinceEpoch.toString(),
       });
 
       // this won't work...
@@ -150,6 +154,7 @@ class FirestoreServices {
 
     FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
       'chatRooms': FieldValue.arrayUnion([chatRoomId]),
+      'lastActiveAt': DateTime.now().millisecondsSinceEpoch.toString(),
     });
 
     FirebaseFirestore.instance.collection('ChatRooms').doc(chatRoomId).update({
@@ -177,6 +182,7 @@ class FirestoreServices {
 
     FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
       'chatRooms': FieldValue.arrayRemove([chatRoomId]),
+      'lastActiveAt': DateTime.now().millisecondsSinceEpoch.toString(),
     });
 
     return 'Success';
@@ -205,11 +211,11 @@ class FirestoreServices {
       'createdAt': timestamp,
       'createdBy': currentUserId,
     }).then((doc) {
-      String roomId = doc.id;
+      // String roomId = doc.id;
 
-      FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
-        'chatRooms': FieldValue.arrayUnion([roomId]),
-      });
+      // FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
+      //   'chatRooms': FieldValue.arrayUnion([roomId]),
+      // });
 
       status = 'Success';
     }).catchError((err) {
@@ -259,15 +265,24 @@ class FirestoreServices {
         String id = doc.id;
         Map<String, dynamic>? data = doc.data();
         String otherSchool = data?['school'];
+        String lastLoggedInAt = data?['lastActiveAt'];
         bool otherIsBanned = data?['isBanned'];
+        String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+        int timeDiff = int.parse(timestamp) - int.parse(lastLoggedInAt);
 
-        allIds.add(id);
         if (id != currentUserId &&
             !chattedWith.contains(id) &&
             !blocked.contains(id) &&
             school == otherSchool &&
+            timeDiff <= 7200000 &&
             otherIsBanned == false) {
           userIds.add(id);
+        } else if (id != currentUserId &&
+            !chattedWith.contains(id) &&
+            !blocked.contains(id) &&
+            school == otherSchool &&
+            otherIsBanned == false) {
+          allIds.add(id);
         }
       });
 
@@ -275,17 +290,15 @@ class FirestoreServices {
       int randomNum;
       String randomId;
 
-      if (userIds.isEmpty) {
-        // don't really want to be doing this i think - if it grows large enough
-        // refresh history and stuff
-        // randomNum = rng.nextInt(allIds.length);
-        // randomId = allIds[randomNum];
-        // keepHistory = false;
+      if (userIds.isEmpty && allIds.isEmpty) {
         status = 'No more users left';
       } else {
-        randomNum = rng.nextInt(userIds.length);
-        randomId = userIds[randomNum];
-        keepHistory = true;
+        // if there are active users, choose them
+        // if there are no active users available, choose inactive users
+        randomNum = userIds.isEmpty
+            ? rng.nextInt(allIds.length)
+            : rng.nextInt(userIds.length);
+        randomId = userIds.isEmpty ? allIds[randomNum] : userIds[randomNum];
 
         var randomUserDocument = await FirebaseFirestore.instance
             .collection('Users')
@@ -322,6 +335,7 @@ class FirestoreServices {
             'lastPeerConnectedAt':
                 DateTime.now().millisecondsSinceEpoch.toString(),
             'peerConnects': FieldValue.increment(1),
+            'lastActiveAt': DateTime.now().millisecondsSinceEpoch.toString(),
           });
 
           FirebaseFirestore.instance.collection('Users').doc(randomId).update({
@@ -375,6 +389,10 @@ class FirestoreServices {
         'idTo': idTo,
         'timestamp': timestamp,
         'content': content,
+      });
+
+      FirebaseFirestore.instance.collection('Users').doc(idFrom).update({
+        'lastActiveAt': DateTime.now().millisecondsSinceEpoch.toString(),
       });
 
       var groupReference = FirebaseFirestore.instance
