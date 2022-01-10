@@ -86,6 +86,11 @@ This app was created using the Flutter framework developed by Google, using the 
 
 - add an if check sayign that if users is over like 50 then dont check thorugh each one?
 
+### iOS Debugging
+
+- Had to add url scheme when changing googleservice-info.plist > https://github.com/googlesamples/google-services/issues/81
+- A bunch of stuff with architectures and stuff?? check git history to see what i changed
+
 ### Problems
 - there will probably be duplicate conversations somewhere, a person will get someone they've already talked to.
 - volunteers might get duplicate requests. will rarely happen though, hopefully.
