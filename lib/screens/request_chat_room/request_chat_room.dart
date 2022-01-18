@@ -105,6 +105,7 @@ class _RequestChatRoomScreenState extends State<RequestChatRoomScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 2 * kDefaultPadding),
                 ],
               ),
             ),

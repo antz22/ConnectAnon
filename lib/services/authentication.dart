@@ -95,7 +95,9 @@ class AuthenticationService {
             Provider.of<UserProvider>(context, listen: false).initUser(prefs);
           }
         } else {
+          // if userdoc doesn't exist
           await prefs.setBool('isBanned', false);
+          Provider.of<UserProvider>(context, listen: false).initUser(prefs);
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {

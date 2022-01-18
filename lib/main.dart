@@ -67,8 +67,10 @@ class AuthenticationWrapper extends StatelessWidget {
         future: initUser(context),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            // return HomePage();
-            return LandingPage();
+            // normal
+            return HomePage();
+            // for debugging
+            // return LandingPage();
           } else {
             return Center(child: CircularProgressIndicator());
           }

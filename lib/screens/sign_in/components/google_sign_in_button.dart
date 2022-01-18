@@ -54,11 +54,25 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                     _isSigningIn = false;
                   });
                   if (widget.action == 'Sign in') {
-                    bool? isBanned = context.read<UserProvider>().isBanned;
-                    if (!isBanned!) {
-                      Navigator.of(context).pushReplacement(
+                    if (context.read<UserProvider>().alias != null) {
+                      // User has logged in and has an account
+                      bool? isBanned = context.read<UserProvider>().isBanned;
+                      if (!isBanned!) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ),
+                        );
+                      } else {
+                        CustomSnackbar.buildWarningMessage(context, 'Error',
+                            'You have been temporarily banned.');
+                      }
+                    } else {
+                      // User has logged in but doesn't have an account
+                      Navigator.push(
+                        context,
                         MaterialPageRoute(
-                          builder: (context) => HomePage(),
+                          builder: (context) => UpdateUserInfoPage(user: user),
                         ),
                       );
                     }

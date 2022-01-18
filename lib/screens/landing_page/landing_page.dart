@@ -31,7 +31,7 @@ class LandingPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 35.0),
             child: Text(
-              'Talk with random classmates to make new friends and have spicy conversations',
+              'Talk with anonymous classmates to make new friends in a fun and exciting way',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey.shade500,
