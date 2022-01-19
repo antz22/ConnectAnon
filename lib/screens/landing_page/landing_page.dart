@@ -18,7 +18,7 @@ class LandingPage extends StatelessWidget {
               bottom: MediaQuery.of(context).size.height / 14,
             ),
             decoration: BoxDecoration(),
-            child: SvgPicture.asset('assets/svgs/landing_page.svg'),
+            child: SvgPicture.asset('assets/svgs/landing_page.svg', width: MediaQuery.of(context).size.width * 0.8),
           ),
           Text(
             'Connect to Peers Anonymously',

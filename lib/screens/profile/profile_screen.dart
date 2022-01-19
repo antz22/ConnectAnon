@@ -179,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         : MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: 85.0,
+                        width: 87.0,
                         margin: EdgeInsets.only(
                             right: hasReport ? 0 : 1.3 * kDefaultPadding),
                         child: Column(
@@ -191,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       hasReport
                           ? Container(
-                              width: 85.0,
+                              width: 87.0,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -209,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )
                           : const SizedBox.shrink(),
                       Container(
-                        width: 85.0,
+                        width: 87.0,
                         margin: EdgeInsets.only(
                             left: hasReport ? 0 : 1.3 * kDefaultPadding),
                         child: Column(
