@@ -78,7 +78,8 @@ class AuthenticationService {
               await prefs.setString('alias', alias);
               await prefs.setString('photoUrl', photoUrl);
               await prefs.setString('role', role);
-              Provider.of<UserProvider>(context, listen: false).initUser(prefs);
+              await Provider.of<UserProvider>(context, listen: false)
+                  .initUser(prefs);
             }
           } else {
             // if userdoc exists and is not banned
@@ -92,29 +93,21 @@ class AuthenticationService {
                 .update({
               'lastActiveAt': DateTime.now().millisecondsSinceEpoch.toString(),
             });
-            Provider.of<UserProvider>(context, listen: false).initUser(prefs);
+            await Provider.of<UserProvider>(context, listen: false)
+                .initUser(prefs);
           }
         } else {
           // if userdoc doesn't exist
           await prefs.setBool('isBanned', false);
-          Provider.of<UserProvider>(context, listen: false).initUser(prefs);
+          await Provider.of<UserProvider>(context, listen: false)
+              .initUser(prefs);
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   AuthenticationService.customSnackBar(
-          //     content: 'The account already exists with a different credential',
-          //   ),
-          // );
           CustomSnackbar.buildWarningMessage(context, 'Error',
               'The account already exists with a different credential');
           print(e);
         } else if (e.code == 'invalid-credential') {
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   AuthenticationService.customSnackBar(
-          //     content: 'Error occurred while accessing credentials. Try again.',
-          //   ),
-          // );
           CustomSnackbar.buildWarningMessage(context, 'Error',
               'Error occurred while accessing credentials. Try again.');
           print(e);
@@ -184,31 +177,13 @@ class AuthenticationService {
     return 'Error';
   }
 
-  // Future<String> signIn({String email, String password}) async {
-  //   try {
-  //     await _firebaseAuth.signInWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-  //     return "Signed in";
-  //   } on FirebaseAuthException catch (e) {
-  //     return e.message;
-  //   }
-  // }
-
-  // Future<String> signUp({String email, String password}) async {
-  //   try {
-  //     await _firebaseAuth.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-  //     return "Signed up";
-  //   } on FirebaseAuthException catch (e) {
-  //     return e.message;
-  //   }
-  // }
-
   Future<String> signOut({required BuildContext context}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isBanned');
+    await prefs.remove('role');
+    await prefs.remove('alias');
+    await prefs.remove('photoUrl');
+    await prefs.remove('id');
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
       await _googleSignIn.signOut();
