@@ -243,7 +243,7 @@ class FirestoreServices {
     String lastPeerConnectedAt = userData?['lastPeerConnectedAt'];
     String school = userData?['school'];
     int peerConnects = userData?['peerConnects'];
-    bool keepHistory = false;
+    // bool keepHistory = false;
     var status;
     if (lastPeerConnectedAt != '') {
       DateTime lastPeerConnectedTimeAt =
@@ -330,8 +330,9 @@ class FirestoreServices {
               .doc(currentUserId)
               .update({
             'groups': FieldValue.arrayUnion([groupId]),
-            'chattedWith':
-                keepHistory ? FieldValue.arrayUnion([randomId]) : [randomId],
+            // 'chattedWith':
+            //     keepHistory ? FieldValue.arrayUnion([randomId]) : [randomId],
+            'chattedWith': FieldValue.arrayUnion([randomId]),
             'lastPeerConnectedAt':
                 DateTime.now().millisecondsSinceEpoch.toString(),
             'peerConnects': FieldValue.increment(1),
@@ -360,11 +361,11 @@ class FirestoreServices {
       return err;
     });
 
-    if (status == 'Success' && keepHistory) {
+    if (status == 'Success') {
       return 'Success';
-    } else if (status == 'Success' && !keepHistory) {
-      // maybe make this instead just throw an error and not make the conversation - users should archive convos anyway.
-      return 'Clearing peer conversation history - no more new users left! You might get a duplicate conversation.';
+      // } else if (status == 'Success' && !keepHistory) {
+      //   // maybe make this instead just throw an error and not make the conversation - users should archive convos anyway.
+      //   return 'Clearing peer conversation history - no more new users left! You might get a duplicate conversation.';
     } else {
       return status;
     }
