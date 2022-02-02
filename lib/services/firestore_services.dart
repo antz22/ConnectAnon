@@ -253,7 +253,7 @@ class FirestoreServices {
           currentDateTime.difference(lastPeerConnectedTimeAt).inMilliseconds;
       // it's been less than an 1 hour, has reported % 3 times
       // if (difference <= 3600000 || totalRequests % 3 == 0) {
-      if (difference <= 3600000 && peerConnects % 1 != 0) {
+      if (difference <= 3600000 && peerConnects % 2 != 0) {
         return 'Peer Connect cool down (1 hour)';
       }
     }
