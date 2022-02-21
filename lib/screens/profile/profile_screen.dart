@@ -227,11 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               context, profile.isAccepting!)
                           : const SizedBox.shrink()
                       : widget.isReviewing
-                          ? Container(
-                              margin: const EdgeInsets.only(
-                                  top: 2 * kDefaultPadding),
-                              child: _buildReferralButton(context),
-                            )
+                          ? const SizedBox.shrink()
                           : Column(
                               children: [
                                 SizedBox(

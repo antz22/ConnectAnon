@@ -350,7 +350,9 @@ class FirestoreServices {
   }
 
   Future<String> grantPeerRequest(
-      String userId, String requestId, String peerId) async {
+      String requestedPeerId, String requestId, String peerId) async {
+    // peerId is the id of the person who initiated
+
     var status;
 
     var peerUserDocument = await FirebaseFirestore.instance
@@ -370,30 +372,33 @@ class FirestoreServices {
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
     groups.add({
-      'members': [peerId, userId],
+      'members': [peerId, requestedPeerId],
       'memberNames': [peerName, alias],
       'memberPhotoUrls': [peerPhotoUrl, photoUrl],
       'lastMessage': 'New Conversation - Hi!',
       'lastTimestamp': timestamp,
-      'lastUpdatedBy': userId,
+      'lastUpdatedBy': requestedPeerId,
       'createdAt': timestamp,
       'createdBy': peerId,
       'type': 'Peer-Peer',
     }).then((doc) async {
       String groupId = doc.id;
 
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(requestedPeerId)
+          .update({
+        'groups': FieldValue.arrayUnion([groupId]),
+        'requestedIds': FieldValue.arrayRemove([requestedPeerId]),
+        'chattedWith': FieldValue.arrayUnion([requestedPeerId]),
+        'lastPeerConnectedAt': timestamp,
+        'lastActiveAt': timestamp,
+      });
       FirebaseFirestore.instance.collection('Users').doc(peerId).update({
         'groups': FieldValue.arrayUnion([groupId]),
-        'requestedIds': FieldValue.arrayRemove([userId]),
-        'chattedWith': FieldValue.arrayUnion([userId]),
-        'lastPeerConnectedAt': timestamp,
-      });
-      FirebaseFirestore.instance.collection('Users').doc(userId).update({
-        'groups': FieldValue.arrayUnion([groupId]),
-        'chattedWith': FieldValue.arrayUnion([userId]),
+        'chattedWith': FieldValue.arrayUnion([requestedPeerId]),
         'lastPeerConnectedAt': timestamp,
         'peerConnects': FieldValue.increment(1),
-        'lastActiveAt': timestamp,
       });
 
       await FirebaseFirestore.instance

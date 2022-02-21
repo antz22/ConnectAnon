@@ -3,6 +3,7 @@ import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/request.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/screens/profile/profile_screen.dart';
+import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/services/volunteer_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
@@ -120,7 +121,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                               builder: (context) =>
                                                   ProfileScreen(
                                                 isMe: false,
-                                                id: request.peer,
+                                                id: request.peerId,
                                                 isReviewing: true,
                                               ),
                                             ),
@@ -202,6 +203,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                       .declineRequest(
                                                           request.id);
 
+                                                  setState(() {});
+
                                                   if (response == 'Success') {
                                                     CustomSnackbar
                                                         .buildInfoMessage(
@@ -242,14 +245,13 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                               child: InkWell(
                                                 onTap: () async {
                                                   String response = await context
-                                                      .read<VolunteerServices>()
+                                                      .read<FirestoreServices>()
                                                       .grantPeerRequest(
-                                                        request.volunteerId,
+                                                        request.requestedPeerId,
                                                         request.id,
-                                                        request.peer,
-                                                        request.keepHistory,
-                                                        request.addHistory,
+                                                        request.peerId,
                                                       );
+                                                  print(response);
                                                   if (response == 'Success') {
                                                     Navigator.push(
                                                       context,
