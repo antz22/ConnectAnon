@@ -3,7 +3,6 @@ import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/request.dart';
 import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/screens/profile/profile_screen.dart';
-import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/services/volunteer_services.dart';
 import 'package:connect_anon/widgets/custom_avatar.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';

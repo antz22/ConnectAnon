@@ -230,20 +230,21 @@ class FirestoreServices {
   // ==WORK IN PROGRESS==
 
   Future<String> requestPeer(String currentUserId) async {
-    var users = await FirebaseFirestore.instance.collection('Users');
+    // initialize lists for user IDs to select from to request a chat iwth
     List<String> userIds = new List.from([]);
     List<String> allIds = new List.from([]);
-    List<String> acceptingIds = new List.from([]);
+    // obtain current user info
+    var users = await FirebaseFirestore.instance.collection('Users');
     var userDocument = await FirebaseFirestore.instance
         .collection('Users')
         .doc(currentUserId.trim())
         .get();
     Map<String, dynamic>? userData = userDocument.data();
+    List<dynamic> chattedWith = userData?['chattedWith'];
+    List<dynamic> blocked = userData?['blocked'];
     String lastRequestedAt = userData?['lastRequestedAt'];
     int totalRequests = userData?['totalRequests'];
-    List<dynamic> volunteersChattedWith = userData?['specialChattedWith'];
     String school = userData?['school'];
-    List<dynamic> blocked = userData?['blocked'];
     List<dynamic> requestedIds = userData?['requestedIds'];
     var status;
     if (lastRequestedAt != '') {
@@ -255,99 +256,101 @@ class FirestoreServices {
       // it's been less than an 1 hour, has requested % 3 times
       // if (difference <= 3600000 || totalRequests % 3 == 0) {
       if (difference <= 3600000 && totalRequests % 3 == 0) {
-        return 'Volunteer Request cool down (1 hour)';
+        return 'Peer Connect cool down (1 hour)';
       }
     }
     await users
-        // status - active?
-        // .where('role', isEqualTo: 'Chat Buddy')
+        .where('role', isEqualTo: 'Peer')
         .get()
         .then((QuerySnapshot snapshot) async {
-      snapshot.docs.forEach((DocumentSnapshot doc) {
-        allIds.add(doc.id);
+      snapshot.docs.forEach((DocumentSnapshot<dynamic> doc) {
         String id = doc.id;
-        bool isAccepting = doc.get('isAccepting');
-        if (isAccepting) {
-          acceptingIds.add(id);
-        }
+        Map<String, dynamic>? data = doc.data();
+        String otherSchool = data?['school'];
+        String lastLoggedInAt = data?['lastActiveAt'];
+        bool otherIsBanned = data?['isBanned'];
+        String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+        int timeDiff = int.parse(timestamp) - int.parse(lastLoggedInAt);
+
         if (id != currentUserId &&
-            !volunteersChattedWith.contains(id) &&
+            !chattedWith.contains(id) &&
             !blocked.contains(id) &&
             !requestedIds.contains(id) &&
-            isAccepting) {
+            school == otherSchool &&
+            timeDiff <= 7200000 &&
+            otherIsBanned == false) {
           userIds.add(id);
+        } else if (id != currentUserId &&
+            !chattedWith.contains(id) &&
+            !blocked.contains(id) &&
+            !requestedIds.contains(id) &&
+            school == otherSchool &&
+            otherIsBanned == false) {
+          allIds.add(id);
         }
       });
 
       Random rng = new Random();
-      String randomId;
       int randomNum;
-      bool keepHistory;
-      bool addHistory;
+      String randomId;
 
-      if (userIds.isEmpty) {
-        // will disregard history
-        if (acceptingIds.isEmpty) {
-          randomNum = rng.nextInt(allIds.length);
-          randomId = allIds[randomNum];
-          keepHistory = false;
-          addHistory = false;
-        } else {
-          randomNum = rng.nextInt(acceptingIds.length);
-          randomId = acceptingIds[randomNum];
-          keepHistory = true;
-          addHistory = false;
-        }
+      if (userIds.isEmpty && allIds.isEmpty) {
+        status = 'No more users left';
       } else {
-        randomNum = rng.nextInt(userIds.length);
-        randomId = userIds[randomNum];
-        keepHistory = true;
-        addHistory = true;
-      }
+        // if there are active users, choose them
+        // if there are no active users available, choose inactive users
+        randomNum = userIds.isEmpty
+            ? rng.nextInt(allIds.length)
+            : rng.nextInt(userIds.length);
+        randomId = userIds.isEmpty ? allIds[randomNum] : userIds[randomNum];
 
-      var requests = await FirebaseFirestore.instance.collection('Requests');
+        var requests = await FirebaseFirestore.instance.collection('Requests');
 
-      String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+        String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? photoUrl = await prefs.getString('photoUrl');
-      String? currentUserName = await prefs.getString('alias');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? photoUrl = await prefs.getString('photoUrl');
+        String? currentUserName = await prefs.getString('alias');
 
-      requests.add({
-        'peer': currentUserId,
-        'peerPhotoUrl': photoUrl,
-        'volunteer': randomId,
-        'peerName': currentUserName,
-        'timestamp': timestamp,
-        'keepHistory': keepHistory,
-        'addHistory': addHistory,
-      }).then((doc) async {
-        await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(currentUserId)
-            .update({
-          'lastRequestedAt': timestamp,
-          'totalRequests': FieldValue.increment(1),
-          'requestedIds': FieldValue.arrayUnion([randomId]),
+        requests.add({
+          'peer': currentUserId,
+          'peerPhotoUrl': photoUrl,
+          'volunteer': randomId,
+          'peerName': currentUserName,
+          'timestamp': timestamp,
+        }).then((doc) async {
+          await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(currentUserId)
+              .update({
+            'lastRequestedAt': timestamp,
+            'totalRequests': FieldValue.increment(1),
+            'requestedIds': FieldValue.arrayUnion([randomId]),
+          });
+          status = 'Success';
+          return 'Success';
+        }).catchError((err) {
+          print('Error processing request: $err');
+          status = err.toString();
+          return err.toString();
         });
         status = 'Success';
-        return 'Success';
-      }).catchError((err) {
-        print('Error processing request: $err');
-        status = err.toString();
-        return err.toString();
-      });
-      status = 'Success';
+      }
     }).catchError((err) {
       print('Error processing request: $err');
       status = err.toString();
       return err;
     });
-    return status;
+
+    if (status == 'Success') {
+      return 'Success';
+    } else {
+      return status;
+    }
   }
 
-  Future<String> grantPeerRequest(String userId, String requestId,
-      String peerId, bool keepHistory, bool addHistory) async {
+  Future<String> grantPeerRequest(
+      String userId, String requestId, String peerId) async {
     var status;
 
     var peerUserDocument = await FirebaseFirestore.instance
@@ -375,37 +378,23 @@ class FirestoreServices {
       'lastUpdatedBy': userId,
       'createdAt': timestamp,
       'createdBy': peerId,
-      'type': 'Peer-Volunteer',
+      'type': 'Peer-Peer',
     }).then((doc) async {
       String groupId = doc.id;
 
-      if (addHistory) {
-        // keep history if still users they havent talked to
-        FirebaseFirestore.instance.collection('Users').doc(peerId).update({
-          'groups': FieldValue.arrayUnion([groupId]),
-          'specialChattedWith':
-              keepHistory ? FieldValue.arrayUnion([userId]) : [userId],
-          // 'lastConnected': timestamp,
-          'requestedIds': FieldValue.arrayRemove([userId]),
-        });
-        FirebaseFirestore.instance.collection('Users').doc(userId).update({
-          'groups': FieldValue.arrayUnion([groupId]),
-          'specialChattedWith': FieldValue.arrayUnion([peerId]),
-          'lastConnected': timestamp,
-        });
-      } else {
-        FirebaseFirestore.instance.collection('Users').doc(peerId).update({
-          'groups': FieldValue.arrayUnion([groupId]),
-          // 'lastConnected': timestamp,
-          'requestedIds': FieldValue.arrayRemove([userId]),
-        });
-        FirebaseFirestore.instance.collection('Users').doc(userId).update({
-          'groups': FieldValue.arrayUnion([groupId]),
-          // doesn't really matter for the volunteer
-          // 'specialChattedWith': FieldValue.arrayUnion([peerId]),
-          'lastConnected': timestamp,
-        });
-      }
+      FirebaseFirestore.instance.collection('Users').doc(peerId).update({
+        'groups': FieldValue.arrayUnion([groupId]),
+        'requestedIds': FieldValue.arrayRemove([userId]),
+        'chattedWith': FieldValue.arrayUnion([userId]),
+        'lastPeerConnectedAt': timestamp,
+      });
+      FirebaseFirestore.instance.collection('Users').doc(userId).update({
+        'groups': FieldValue.arrayUnion([groupId]),
+        'chattedWith': FieldValue.arrayUnion([userId]),
+        'lastPeerConnectedAt': timestamp,
+        'peerConnects': FieldValue.increment(1),
+        'lastActiveAt': timestamp,
+      });
 
       await FirebaseFirestore.instance
           .collection('Requests')
@@ -413,14 +402,12 @@ class FirestoreServices {
           .delete();
 
       status = 'Success';
-
       return 'Success';
     }).catchError((err) {
       print('Error creating group: $err');
       status = err;
       return err;
     });
-    status = 'Success';
 
     return status;
   }
@@ -462,7 +449,7 @@ class FirestoreServices {
           currentDateTime.difference(lastPeerConnectedTimeAt).inMilliseconds;
       // it's been less than an 1 hour, has reported % 3 times
       // if (difference <= 3600000 || totalRequests % 3 == 0) {
-      if (difference <= 3600000 && peerConnects % 2 != 0) {
+      if (difference <= 3600000 && peerConnects % 3 == 0) {
         return 'Peer Connect cool down (1 hour)';
       }
     }
@@ -539,20 +526,16 @@ class FirestoreServices {
               .doc(currentUserId)
               .update({
             'groups': FieldValue.arrayUnion([groupId]),
-            // 'chattedWith':
-            //     keepHistory ? FieldValue.arrayUnion([randomId]) : [randomId],
             'chattedWith': FieldValue.arrayUnion([randomId]),
-            'lastPeerConnectedAt':
-                DateTime.now().millisecondsSinceEpoch.toString(),
+            'lastPeerConnectedAt': timestamp,
             'peerConnects': FieldValue.increment(1),
-            'lastActiveAt': DateTime.now().millisecondsSinceEpoch.toString(),
+            'lastActiveAt': timestamp,
           });
 
           FirebaseFirestore.instance.collection('Users').doc(randomId).update({
             'groups': FieldValue.arrayUnion([groupId]),
             'chattedWith': FieldValue.arrayUnion([currentUserId]),
-            'lastPeerConnectedAt':
-                DateTime.now().millisecondsSinceEpoch.toString(),
+            'lastPeerConnectedAt': timestamp,
           });
 
           status = 'Success';
