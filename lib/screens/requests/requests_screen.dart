@@ -84,7 +84,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                     StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('Requests')
-                          .where('volunteer', isEqualTo: widget.currentUserId)
+                          .where('requestedPeer',
+                              isEqualTo: widget.currentUserId)
                           .orderBy('timestamp', descending: true)
                           .limit(_limit)
                           .snapshots(),

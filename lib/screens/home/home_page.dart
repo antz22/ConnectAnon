@@ -161,53 +161,31 @@ class _HomePageState extends State<HomePage>
   }
 
   BottomNavigationBar buildBottomNavigationBar() {
-    List<BottomNavigationBarItem> items = role == 'Chat Buddy'
-        ? [
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/svgs/chat.svg',
-                  color: _selectedIndex == 0
-                      ? kPrimaryColor
-                      : Colors.grey.shade400),
-              label: "Messages",
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 3.0),
-                child: SvgPicture.asset(
-                  'assets/svgs/request.svg',
-                  color: _selectedIndex == 1
-                      ? kPrimaryColor
-                      : Colors.grey.shade400,
-                ),
-              ),
-              label: "Requests",
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/svgs/chat_room.svg',
-                color:
-                    _selectedIndex == 2 ? kPrimaryColor : Colors.grey.shade400,
-              ),
-              label: "Chat Rooms",
-            ),
-          ]
-        : [
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/svgs/chat.svg',
-                  color: _selectedIndex == 0
-                      ? kPrimaryColor
-                      : Colors.grey.shade400),
-              label: "Messages",
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/svgs/chat_room.svg',
-                color:
-                    _selectedIndex == 1 ? kPrimaryColor : Colors.grey.shade400,
-              ),
-              label: "Chat Rooms",
-            ),
-          ];
+    List<BottomNavigationBarItem> items = [
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset('assets/svgs/chat.svg',
+            color: _selectedIndex == 0 ? kPrimaryColor : Colors.grey.shade400),
+        label: "Messages",
+      ),
+      BottomNavigationBarItem(
+        icon: Padding(
+          padding: const EdgeInsets.only(bottom: 3.0),
+          child: SvgPicture.asset(
+            'assets/svgs/request.svg',
+            color: _selectedIndex == 1 ? kPrimaryColor : Colors.grey.shade400,
+          ),
+        ),
+        label: "Requests",
+      ),
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset(
+          'assets/svgs/chat_room.svg',
+          color: _selectedIndex == 2 ? kPrimaryColor : Colors.grey.shade400,
+        ),
+        label: "Chat Rooms",
+      ),
+    ];
+
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       unselectedIconTheme: IconThemeData(

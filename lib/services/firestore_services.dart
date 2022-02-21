@@ -315,7 +315,7 @@ class FirestoreServices {
         requests.add({
           'peer': currentUserId,
           'peerPhotoUrl': photoUrl,
-          'volunteer': randomId,
+          'requestedPeer': randomId,
           'peerName': currentUserName,
           'timestamp': timestamp,
         }).then((doc) async {

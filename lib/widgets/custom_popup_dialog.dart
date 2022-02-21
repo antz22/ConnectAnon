@@ -135,12 +135,13 @@ class CustomPopupDialog {
                 String currentUserId = params['currentUserId'];
                 String response = await context
                     .read<FirestoreServices>()
-                    .createGroup(currentUserId);
+                    .requestPeer(currentUserId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => HomePage(
-                        message: 'New conversation with anonymous peer created',
+                        message:
+                            'New conversation with anonymous peer requested',
                         messageStatus: 'Success',
                       ),
                     ),
@@ -304,12 +305,13 @@ class CustomPopupDialog {
                 String currentUserId = params['currentUserId'];
                 String response = await context
                     .read<FirestoreServices>()
-                    .createGroup(currentUserId);
+                    .requestPeer(currentUserId);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => HomePage(
-                        message: 'New conversation with anonymous peer created',
+                        message:
+                            'New conversation with anonymous peer requested',
                         messageStatus: 'Success',
                       ),
                     ),
