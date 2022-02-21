@@ -203,8 +203,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                       .declineRequest(
                                                           request.id);
 
-                                                  setState(() {});
-
+                                                  // throws error because this widget gets destroyed once no requests are left
                                                   if (response == 'Success') {
                                                     CustomSnackbar
                                                         .buildInfoMessage(
