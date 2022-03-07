@@ -131,6 +131,7 @@ class AuthenticationService {
       Map<String, dynamic>? userData = document.data();
       if (userData == null) {
         // Update data to server if new user
+        String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
         try {
           await FirebaseFirestore.instance
               .collection('Users')
@@ -152,7 +153,7 @@ class AuthenticationService {
             'lastReportedAt': '',
             'lastRequestedAt': '',
             'lastPeerConnectedAt': '',
-            'lastActiveAt': '',
+            'lastActiveAt': timestamp,
             'requestedIds': [],
             'totalRequests': 0,
             'peerConnects': 0,
@@ -187,6 +188,7 @@ class AuthenticationService {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
       await _googleSignIn.signOut();
+      await _firebaseAuth.signOut();
       return "Signed out";
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
