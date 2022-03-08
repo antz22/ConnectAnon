@@ -2,10 +2,12 @@ import 'package:connect_anon/screens/home/home_page.dart';
 import 'package:connect_anon/screens/landing_page/landing_page.dart';
 import 'package:connect_anon/services/authentication.dart';
 import 'package:connect_anon/services/firestore_services.dart';
+import 'package:connect_anon/services/user_provider.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomPopupDialog {
   static Widget buildMaterialPopupDialog(
@@ -35,6 +37,9 @@ class CustomPopupDialog {
                 var response = await context
                     .read<AuthenticationService>()
                     .updateUserInfo(controllerText, user, photoUrl, school);
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await Provider.of<UserProvider>(context, listen: false)
+                    .initUser(prefs);
                 if (response == 'Success') {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
