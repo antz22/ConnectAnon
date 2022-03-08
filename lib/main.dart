@@ -1,5 +1,4 @@
 import 'package:connect_anon/constants/constants.dart';
-import 'package:connect_anon/screens/account_creation/update_user_info.dart';
 import 'package:connect_anon/screens/landing_page/landing_page.dart';
 import 'package:connect_anon/services/authentication.dart';
 import 'package:connect_anon/services/firestore_services.dart';

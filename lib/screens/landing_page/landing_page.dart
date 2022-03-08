@@ -1,4 +1,4 @@
-import 'package:connect_anon/screens/account_creation/getting_started.dart';
+import 'package:connect_anon/screens/account_creation/on_boarding_page.dart';
 import 'package:connect_anon/screens/sign_in/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,7 +18,8 @@ class LandingPage extends StatelessWidget {
               bottom: MediaQuery.of(context).size.height / 14,
             ),
             decoration: BoxDecoration(),
-            child: SvgPicture.asset('assets/svgs/landing_page.svg', width: MediaQuery.of(context).size.width * 0.8),
+            child: SvgPicture.asset('assets/svgs/landing_page.svg',
+                width: MediaQuery.of(context).size.width * 0.8),
           ),
           Text(
             'Connect to Peers Anonymously',
@@ -46,7 +47,7 @@ class LandingPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GettingStartedPage(),
+                  builder: (context) => OnBoardingPage(),
                 ),
               );
             },

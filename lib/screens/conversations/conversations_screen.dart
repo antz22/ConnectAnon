@@ -4,14 +4,11 @@ import 'package:connect_anon/constants/constants.dart';
 import 'package:connect_anon/models/conversation.dart';
 import 'package:connect_anon/screens/chat/conversations/chat_screen.dart';
 import 'package:connect_anon/screens/conversations/components/conversation_preview.dart';
-import 'package:connect_anon/services/firestore_services.dart';
 import 'package:connect_anon/widgets/custom_popup_dialog.dart';
-import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:connect_anon/widgets/info_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ConversationsScreen extends StatefulWidget {
   const ConversationsScreen({

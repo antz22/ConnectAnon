@@ -27,6 +27,9 @@ class FirestoreServices {
   Future<String> reportUser(currentUserId, peerId, topic, description) async {
     // might have to only do this after manual review
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? alias = await prefs.getString('alias');
+
     var userDocument = await FirebaseFirestore.instance
         .collection('Users')
         .doc(currentUserId.trim())
@@ -59,15 +62,10 @@ class FirestoreServices {
         'bannedSince': timestamp,
         'reports': FieldValue.increment(1),
       });
-      print('ahhh');
     } else {
       FirebaseFirestore.instance.collection('Users').doc(peerId).update({
         'reports': FieldValue.increment(1),
       });
-      print('ahhh2');
-      print(peerData);
-      print(peerData['reports']);
-      print(peerData['isBanned']);
     }
 
     FirebaseFirestore.instance
@@ -82,6 +80,7 @@ class FirestoreServices {
 
     await reports.add({
       'reportedBy': currentUserId,
+      'reportedByAlias': alias,
       'reportedOn': peerId,
       'timestamp': timestamp,
       'reviewed': false,
