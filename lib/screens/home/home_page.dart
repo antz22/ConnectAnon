@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage>
   //     FlutterLocalNotificationsPlugin();
 
   int _selectedIndex = 0;
-  String currentUserId = '';
+  String? currentUserId = '';
   String? role = '';
   String? photoUrl = '';
   String? alias = '';
@@ -39,16 +39,16 @@ class _HomePageState extends State<HomePage>
 
   Future<void> _retrieveId() async {
     UserProvider user = context.read<UserProvider>();
-    currentUserId = user.id!;
+    currentUserId = user.id;
     role = user.role;
     photoUrl = user.photoUrl;
     alias = user.alias;
     tabs = [
       ConversationsScreen(
-          currentUserId: currentUserId, role: role, photoUrl: photoUrl),
-      RequestsScreen(currentUserId: currentUserId, photoUrl: photoUrl),
+          currentUserId: currentUserId!, role: role, photoUrl: photoUrl),
+      RequestsScreen(currentUserId: currentUserId!, photoUrl: photoUrl),
       ChatRoomsScreen(
-          currentUserId: currentUserId,
+          currentUserId: currentUserId!,
           photoUrl: photoUrl ?? '',
           alias: alias ?? ''),
     ];
