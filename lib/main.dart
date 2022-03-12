@@ -60,19 +60,19 @@ class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firebaseUser = Provider.of<User?>(context, listen: true);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    if (firebaseUser != null &&
-        userProvider.alias != null &&
-        userProvider.alias != '') {
+    if (firebaseUser != null) {
       return FutureBuilder(
         future: initUser(context),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            // normal
-            return HomePage();
-            // for debugging
-            // return LandingPage();
+            final userProvider =
+                Provider.of<UserProvider>(context, listen: false);
+            if (userProvider.alias != null && userProvider.alias != '') {
+              return HomePage();
+            } else {
+              return LandingPage();
+            }
           } else {
             return Center(child: CircularProgressIndicator());
           }

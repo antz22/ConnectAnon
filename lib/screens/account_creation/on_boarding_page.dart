@@ -101,6 +101,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
+        spacing: EdgeInsets.symmetric(horizontal: 5.0),
       ),
     );
   }
