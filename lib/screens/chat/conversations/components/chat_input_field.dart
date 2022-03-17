@@ -98,6 +98,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                     ),
                     border: InputBorder.none,
                   ),
+                  textCapitalization: TextCapitalization.sentences,
                   minLines: 1,
                   maxLines: 5,
                   controller: _textEditingController,

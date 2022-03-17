@@ -54,10 +54,6 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                     _isSigningIn = false;
                   });
                   if (widget.action == 'Sign in') {
-                    print('alias: ${context.read<UserProvider>().alias}');
-                    print('isBanned: ${context.read<UserProvider>().isBanned}');
-                    print('id: ${context.read<UserProvider>().id}');
-                    print('photoUrl: ${context.read<UserProvider>().photoUrl}');
                     if (context.read<UserProvider>().alias != null) {
                       // User has logged in and has an account
                       bool? isBanned = context.read<UserProvider>().isBanned;

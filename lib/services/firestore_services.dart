@@ -127,12 +127,12 @@ class FirestoreServices {
 
       FirebaseFirestore.instance.collection('Users').doc(peerId).update({
         'groups': FieldValue.arrayRemove([groupId]),
-        'chattedWith': FieldValue.arrayRemove([currentUserId]),
+        // 'chattedWith': FieldValue.arrayRemove([currentUserId]),
       });
 
       FirebaseFirestore.instance.collection('Users').doc(currentUserId).update({
         'groups': FieldValue.arrayRemove([groupId]),
-        'chattedWith': FieldValue.arrayRemove([peerId]),
+        // 'chattedWith': FieldValue.arrayRemove([peerId]),
         'lastActiveAt': DateTime.now().millisecondsSinceEpoch.toString(),
       });
 

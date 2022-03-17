@@ -33,33 +33,47 @@ class ConversationPreview extends StatelessWidget {
           const SizedBox(width: 0.9 * kDefaultPadding),
           Container(
             height: 53.0,
+            width: 0.70 * MediaQuery.of(context).size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  peerName,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w700,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      peerName,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      _buildLastTimestamp(lastTimestamp),
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Color(0xFF959595),
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  lastMessage,
-                  style: TextStyle(
-                    color: Color(0xFF535353),
-                    fontSize: 15.0,
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(
+                          maxWidth: 0.70 * MediaQuery.of(context).size.width),
+                      child: Text(
+                        lastMessage,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Color(0xFF535353),
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ),
-          Spacer(),
-          Text(
-            _buildLastTimestamp(lastTimestamp),
-            style: TextStyle(
-              fontSize: 15.0,
-              color: Color(0xFF959595),
             ),
           ),
         ],
