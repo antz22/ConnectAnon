@@ -1,4 +1,5 @@
 import 'package:connect_anon/constants/constants.dart';
+import 'package:connect_anon/screens/account_creation/components/email_sign_in_button.dart';
 import 'package:connect_anon/screens/sign_in/components/google_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,13 +33,15 @@ class GettingStartedPage extends StatelessWidget {
               Container(
                 margin: EdgeInsets.all(10.0),
                 child: Text(
-                  'To get started, we need to make sure you are a student. Sign into google with your school email below.',
+                  // 'To get started, we need to make sure you are a student. Sign into Google with your school email below, or create a new account with your school email.',
+                  'To get started, we need to make sure you are a student. Sign into Google with your school email below.',
                   style: TextStyle(fontSize: 17.0),
                   textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: kDefaultPadding),
               GoogleSignInButton(action: 'Update user'),
+              // EmailSignInButton(action: 'Sign in'),
             ],
           ),
         ),

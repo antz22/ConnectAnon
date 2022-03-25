@@ -389,7 +389,7 @@ class FirestoreServices {
           .update({
         'groups': FieldValue.arrayUnion([groupId]),
         'requestedIds': FieldValue.arrayRemove([requestedPeerId]),
-        'chattedWith': FieldValue.arrayUnion([requestedPeerId]),
+        'chattedWith': FieldValue.arrayUnion([peerId]),
         'lastPeerConnectedAt': timestamp,
         'lastActiveAt': timestamp,
       });
@@ -404,6 +404,24 @@ class FirestoreServices {
           .collection('Requests')
           .doc(requestId)
           .delete();
+
+      // if the user who granted the request had previously requested a conversation
+      // with the peer he/she just granted the request to, delete the request from
+      // the requests collection
+
+      var requests = await FirebaseFirestore.instance
+          .collection('Requests')
+          .where('peer', isEqualTo: requestedPeerId)
+          .where('requestedPeer', isEqualTo: peerId)
+          .get();
+
+      if (requests.docs.isNotEmpty) {
+        var id = requests.docs.first.id;
+        await FirebaseFirestore.instance
+            .collection('Requests')
+            .doc(id)
+            .delete();
+      }
 
       status = 'Success';
       return 'Success';

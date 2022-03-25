@@ -2,6 +2,7 @@ import 'package:connect_anon/services/user_provider.dart';
 import 'package:connect_anon/widgets/custom_snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -111,8 +112,20 @@ class AuthenticationService {
           CustomSnackbar.buildWarningMessage(context, 'Error',
               'Error occurred while accessing credentials. Try again.');
           print(e);
+        } else {
+          await FirebaseCrashlytics.instance.recordError(
+            e,
+            StackTrace.current,
+            reason: 'Google Sign In Failure (FirebaseAuthException)',
+          );
+          print(e);
         }
       } catch (e) {
+        await FirebaseCrashlytics.instance.recordError(
+          e,
+          StackTrace.current,
+          reason: 'Google Sign In Failure',
+        );
         CustomSnackbar.buildWarningMessage(context, 'Error',
             'Error occurred using Google Sign In. Try again.');
         print(e);
